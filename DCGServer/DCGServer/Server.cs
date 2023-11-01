@@ -28,9 +28,10 @@ class Server
 		int currentClientId = clients.Count + 1;
 
 		clients.Add(currentClientId, new Client(currentClientId));
+
 		clients[currentClientId].tcp.Connect(_client);
 
-		Console.WriteLine($"Client connected to client with id: {0}", currentClientId);
+		Console.WriteLine($"Client connected to client with id: {currentClientId}");
 
 		tcpListener.BeginAcceptTcpClient(ClientAcceptCallback, null);
 	}
@@ -40,6 +41,6 @@ class Server
 		clients[id].tcp.Disconnect();
 		clients.Remove(id);
 
-		Console.WriteLine($"Disconnected from client with id: {0}", id);
+		Console.WriteLine($"Disconnected from client with id: {id}");
 	}
 }
