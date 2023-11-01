@@ -51,7 +51,7 @@ class Client
 
 				Console.WriteLine(Encoding.ASCII.GetString(buffer));
 
-				stream.WriteAsync(Encoding.ASCII.GetBytes("Goodbye"));
+				stream.WriteAsync(Encoding.ASCII.GetBytes(id.ToString()));
 
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)

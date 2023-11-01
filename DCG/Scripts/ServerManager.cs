@@ -5,10 +5,14 @@ using System.Text;
 
 public partial class ServerManager : Godot.Node
 {
+
+	public Label label;
+
 	private TcpClient client = null;
 	private NetworkStream stream = null;
-
 	private byte[] buffer = new byte[1024];
+
+	private string str = null;
 
 	public override void _Ready()
 	{
@@ -16,6 +20,8 @@ public partial class ServerManager : Godot.Node
 		{
 			client = new TcpClient();
 		}
+
+		label = GetNode<Label>("/root/ServerManager/CanvasLayer/Label");
 
 		client.BeginConnect("127.0.0.1", 5001, ConnectCallback, client);
 	}
@@ -26,7 +32,7 @@ public partial class ServerManager : Godot.Node
 
 		stream = client.GetStream();
 
-		stream.Write(Encoding.ASCII.GetBytes("Hello"), 0, 5);
+		stream.Write(Encoding.ASCII.GetBytes("Here"), 0, 4);
 
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
@@ -42,6 +48,8 @@ public partial class ServerManager : Godot.Node
 				GD.Print("Lost connection with the server!");
 				return;
 			}
+
+			str = "ID: " + Encoding.ASCII.GetString(buffer);
 
 			GD.Print(Encoding.ASCII.GetString(buffer));
 
@@ -66,5 +74,13 @@ public partial class ServerManager : Godot.Node
 
 		client = null;
 		stream = null;
+	}
+
+	public override void _Process(double delta)
+	{
+		if(str != null)
+		{
+			label.Text = str;
+		}
 	}
 }
