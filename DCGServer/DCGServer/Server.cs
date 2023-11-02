@@ -43,7 +43,7 @@ class Server
 
 		tempClient[_currentClientId].tcp.Connect(_client);
 
-		Console.WriteLine($"Client connected to client with id: {_currentClientId}");
+		Console.WriteLine($"Client connected with id: {_currentClientId}");
 
 		CheckMatch();
 
@@ -93,6 +93,8 @@ class Server
 		tempClient.Add(_id, _client);
 
 		Console.WriteLine("Client Added To Queue! Id: {0}", _id);
+
+		CheckMatch();
 	}
 
 	public static void Disconnect(int id)

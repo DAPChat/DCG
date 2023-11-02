@@ -11,20 +11,18 @@ public class Game
 		id = _id;
 	}
 
-	public Game(int _id, Client _client)
-	{
-		id = _id;
-
-        int currentClientId = _client.id;
-
-        _client.tcp.WriteStream(ToByte(id));
-		_client.gameId = id;
-
-		clients.Add(currentClientId, _client);
-	}
-
 	public Game(int _id, List<Client> _clients)
 	{
+		if(_clients.Count > 2)
+		{
+            Console.WriteLine("Error Creating Match!");
+			foreach(Client _client in _clients)
+			{
+				Server.Queue(_client.id, _client);
+			}
+            return;
+        }
+
 		id = _id;
 
 		foreach (Client _client in _clients)
@@ -47,6 +45,13 @@ public class Game
 
 	public void AddClient(Client _client)
 	{
+		if(clients.Count >= 2)
+		{
+			Console.WriteLine("Error Joining Match!");
+			Server.Queue(_client.id, _client);
+			return;
+		}
+
 		clients.Add(_client.id, _client);
 
 		_client.tcp.WriteStream(ToByte(id));
