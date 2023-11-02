@@ -10,9 +10,11 @@ public class Client
 
 	public Client(int _id)
 	{
+		// Create a new TCP that manages all client functions
 		id = _id;
 
-		tcp = new TCP(id, this);
+        // Pass the Client class so variables are accessible in TCP
+        tcp = new TCP(id, this);
 	}
 
 	public class TCP
@@ -34,6 +36,7 @@ public class Client
 		{
 			client = _client;
 			
+			// Start reading the stream
 			stream = client.GetStream();
 			buffer = new byte[4096];
 
@@ -42,6 +45,7 @@ public class Client
 
         public void WriteStream(byte[] _msg)
         {
+			// Write the message to the stream to the correct client
 			stream.BeginWrite(_msg, 0, _msg.Length, null, null);
         }
 
@@ -51,8 +55,12 @@ public class Client
 			{
 				int _readBytesLength = stream.EndRead(_result);
 
+				// Check if the client disconnected
+				// (the TCP sends a packet of length 0 on disconnect)
 				if (_readBytesLength <= 0)
 				{
+					// Disconnects from server if not in game
+					// Disconnect from game if in game
 					if (instance.gameId == 0)
 						Server.Disconnect(id);
 					else
@@ -76,6 +84,7 @@ public class Client
 
 		public void Disconnect()
 		{
+			// Closes the client and stream
 			stream.Close();
 			client.Close();
 
