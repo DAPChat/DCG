@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.Json;
 
 public class Game
 {
@@ -7,6 +8,9 @@ public class Game
 
 	// Store the clients in the game with their id
 	public Dictionary<int, Client> clients = new Dictionary<int, Client>();
+	public List<int> clientIds = new List<int>();
+
+	GameBoard currentBoard;
 
 	public Game(int _id)
 	{
@@ -35,13 +39,18 @@ public class Game
 			int currentClientId = _client.id;
 			clients.Add(currentClientId, _client);
 
+			clientIds.Add(currentClientId);
+
 			Console.Write(id + ": ");
 			Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
 			_client.tcp.WriteStream(IntToByte(_id));
 			_client.gameId = id;
 		}
-	}
+
+
+         currentBoard = new GameBoard(this);
+    }
 
 	byte[] IntToByte(int _msg)
 	{
@@ -75,5 +84,31 @@ public class Game
 		clients.First().Value.gameId = 0;
 
 		Server.Queue(clients.First().Key, clients.First().Value);
+	}
+
+	class GameBoard
+	{
+		bool gameState;
+		int turn;
+		int phase;
+		int round;
+
+		string image;
+
+		Player player1;
+		Player player2;
+
+		public GameBoard(Game _game)
+		{
+			gameState = true;
+			turn = 0;
+			phase = 0;
+			round = 1;
+
+			image = null;
+
+			player1 = new Player(_game.clientIds[0]);
+			player2 = new Player(_game.clientIds[1]);
+		}
 	}
 }

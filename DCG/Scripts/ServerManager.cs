@@ -2,21 +2,28 @@
 
 public partial class ServerManager : Node
 {
-    Label label;
+    Label idLabel;
+    Button connectButton;
+    TextureRect p;
 
     public override void _Ready()
     {
-        label = (Label)GetNode("/root/ServerManager/CanvasLayer/Label");
+        idLabel = (Label)GetNode("/root/ServerManager/CanvasLayer/Label");
+        connectButton = (Button)GetNode("/root/ServerManager/CanvasLayer/Button");
 
         // School IP: 10.72.100.135
-        Client.Connect();
+        connectButton.ButtonDown += () => {
+            connectButton.Hide();
+            Client.Connect();
+        };
     }
 
     public override void _Process(double delta)
     {
+        // Update the current game id for display
         if (Client.str != null)
         {
-            label.Text = Client.str;
+            idLabel.Text = Client.str;
             Client.str = null;
         }
     }

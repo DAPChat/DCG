@@ -9,15 +9,20 @@ public partial class Client
 	private static byte[] buffer = new byte[1024];
 
 	public static string str = null;
+	public static bool connected = false;
 
 	public static void Connect()
 	{
+		if(connected) return;
+
+		// Try to connect to the client
+		// If it fails, try again
 		try
 		{
-            if (client == null)
-            {
-                client = new TcpClient();
-            }
+			if (client == null)
+			{
+				client = new TcpClient();
+			}
 
             client.BeginConnect("127.1.1.0", 5001, ConnectCallback, client);
 		}catch (Exception e)
@@ -31,10 +36,11 @@ public partial class Client
 	{
 		client.EndConnect(result);
 
+		connected = true;
+
 		stream = client.GetStream();
 
-		// stream.Write(Encoding.ASCII.GetBytes("Here"), 0, 4);
-
+		// Read the incoming messages
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
 
@@ -44,8 +50,10 @@ public partial class Client
 		{
 			int _bytesRead = stream.EndRead(result);
 
+			// Check if the server stops
 			if (_bytesRead <= 0)
 			{
+				connected = false;
 				return;
 			}
 
@@ -55,7 +63,7 @@ public partial class Client
 		}
 		catch (Exception e)
 		{
-			
+			connected = false;
 		}
 	}
 }
