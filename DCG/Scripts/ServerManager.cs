@@ -5,7 +5,6 @@ using System.Text;
 
 public partial class ServerManager : Godot.Node
 {
-
 	public Label label;
 
 	private TcpClient client = null;
@@ -23,7 +22,13 @@ public partial class ServerManager : Godot.Node
 
 		label = GetNode<Label>("/root/ServerManager/CanvasLayer/Label");
 
+<<<<<<< Updated upstream
 		client.BeginConnect("10.72.100.135", 5001, ConnectCallback, client);
+=======
+        // School IP: 10.72.100.135
+
+        client.BeginConnect("127.1.1.0", 5001, ConnectCallback, client);
+>>>>>>> Stashed changes
 	}
 
 	private void ConnectCallback(IAsyncResult result)
@@ -32,7 +37,7 @@ public partial class ServerManager : Godot.Node
 
 		stream = client.GetStream();
 
-		stream.Write(Encoding.ASCII.GetBytes("Here"), 0, 4);
+		// stream.Write(Encoding.ASCII.GetBytes("Here"), 0, 4);
 
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
@@ -81,6 +86,7 @@ public partial class ServerManager : Godot.Node
 		if(str != null)
 		{
 			label.Text = str;
+			str = null;
 		}
 	}
 }

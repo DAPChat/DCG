@@ -12,20 +12,22 @@ public class Client
 	{
 		id = _id;
 
-		tcp = new TCP(id);
+		tcp = new TCP(id, this);
 	}
 
 	public class TCP
 	{
 		public TcpClient client;
+		public Client instance;
 
 		private readonly int id;
 		private NetworkStream stream;
 		private byte[] buffer;
 
-		public TCP(int _id)
+		public TCP(int _id, Client _client)
 		{
 			id = _id;
+			instance = _client;
 		}
 
 		public void Connect(TcpClient _client)
@@ -38,7 +40,12 @@ public class Client
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}
 
-		private void ReadCallback(IAsyncResult _result)
+        public void WriteStream(byte[] _msg)
+        {
+			stream.BeginWrite(_msg, 0, _msg.Length, null, null);
+        }
+
+        private void ReadCallback(IAsyncResult _result)
 		{
 			try
 			{
@@ -46,18 +53,24 @@ public class Client
 
 				if (_readBytesLength <= 0)
 				{
-					Server.Disconnect(id);
+					if (instance.gameId == 0)
+						Server.Disconnect(id);
+					else
+						Server.LeaveGame(instance.gameId, id);
 					return;
 				}
 
 				Console.WriteLine(Encoding.ASCII.GetString(buffer));
 
-				stream.WriteAsync(Encoding.ASCII.GetBytes(id.ToString()));
+				// WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
 
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)
 			{
-				Server.Disconnect(id);
+				if (instance.gameId == 0)
+					Server.Disconnect(id);
+				else
+					Server.LeaveGame(instance.gameId, id);
 			}
 		}
 
