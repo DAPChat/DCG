@@ -10,6 +10,9 @@ class Server
 	public static Dictionary<int, Game> games = new Dictionary<int, Game>();
 	public static Dictionary<int, Client> tempClient = new Dictionary<int, Client>();
 
+	private static int playerCount = 0;
+	private static List<int> ids = new List<int>();
+
 	public static void Start()
 	{
 		Console.Write("Starting Server...");
@@ -26,21 +29,32 @@ class Server
 	{
 		TcpClient _client = tcpListener.EndAcceptTcpClient(result);
 
-		int currentClientId = tempClient.Count + 1;
+		playerCount++;
 
-		tempClient.Add(currentClientId, new Client(currentClientId));
+		int _currentClientId = 1;
 
-		tempClient[currentClientId].tcp.Connect(_client);
+		while(ids.Contains(_currentClientId))
+		{
+			_currentClientId++;
+		}
 
-		Console.WriteLine($"Client connected to client with id: {currentClientId}");
+		ids.Add(_currentClientId);
+		tempClient.Add(_currentClientId, new Client(_currentClientId));
+
+		tempClient[_currentClientId].tcp.Connect(_client);
+
+		Console.WriteLine($"Client connected to client with id: {_currentClientId}");
 
 		tcpListener.BeginAcceptTcpClient(ClientAcceptCallback, null);
 	}
 
 	public static void Disconnect(int id)
 	{
+		ids.Remove(id);
 		tempClient[id].tcp.Disconnect();
 		tempClient.Remove(id);
+
+		playerCount--;
 
 		Console.WriteLine($"Disconnected from client with id: {id}");
 	}

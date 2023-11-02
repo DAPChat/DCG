@@ -3,7 +3,7 @@
 public class Game
 {
 	public int id;
-	public Dictionary<int, Client> clients = new Dictionary<int, Client>;
+	public Dictionary<int, Client> clients = new Dictionary<int, Client>();
 
 	public Game(int _id)
 	{
