@@ -23,7 +23,7 @@ public partial class ServerManager : Godot.Node
 
 		label = GetNode<Label>("/root/ServerManager/CanvasLayer/Label");
 
-		client.BeginConnect("127.0.0.1", 5001, ConnectCallback, client);
+		client.BeginConnect("10.72.100.135", 5001, ConnectCallback, client);
 	}
 
 	private void ConnectCallback(IAsyncResult result)

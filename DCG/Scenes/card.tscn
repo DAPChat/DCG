@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://df4fy3rrrwxnq"]
+
+[ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
+[ext_resource type="Material" uid="uid://cjpdibwq8y4pu" path="res://Materials/Basic Card/CardBackBasic.tres" id="2_8734q"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ln1oc"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qosl6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3md3"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Card" type="Node3D"]
+
+[node name="FrontFace" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ln1oc")
+
+[node name="Name" type="MeshInstance3D" parent="FrontFace"]
+transform = Transform3D(0.893, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0.001, -0.856)
+mesh = SubResource("PlaneMesh_qosl6")
+surface_material_override/0 = ExtResource("1_olrt8")
+
+[node name="Picture" type="MeshInstance3D" parent="FrontFace"]
+transform = Transform3D(0.892992, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0.001, -0.323)
+mesh = SubResource("PlaneMesh_qosl6")
+surface_material_override/0 = SubResource("StandardMaterial3D_r3md3")
+
+[node name="Description" type="MeshInstance3D" parent="FrontFace"]
+transform = Transform3D(0.892992, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0.001, 0.517244)
+mesh = SubResource("PlaneMesh_qosl6")
+surface_material_override/0 = ExtResource("1_olrt8")
+
+[node name="BackFace" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1.5, 0, -0.001, 0)
+mesh = SubResource("PlaneMesh_ln1oc")
+skeleton = NodePath("../FrontFace")
+surface_material_override/0 = ExtResource("2_8734q")

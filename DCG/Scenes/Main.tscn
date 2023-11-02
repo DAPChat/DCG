@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxtatqsh1uegg"]
+
+[ext_resource type="PackedScene" uid="uid://df4fy3rrrwxnq" path="res://Scenes/card.tscn" id="1_l21al"]
+
+[node name="Main" type="Node"]
+
+[node name="Main Page" type="Node2D" parent="."]
+
+[node name="Game" type="Node3D" parent="."]
+
+[node name="Card" parent="." instance=ExtResource("1_l21al")]
