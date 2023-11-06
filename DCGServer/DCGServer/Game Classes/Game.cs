@@ -44,19 +44,12 @@ public class Game
 			Console.Write(id + ": ");
 			Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
-			_client.tcp.WriteStream(IntToByte(_id));
 			_client.gameId = id;
 		}
 
 
          currentBoard = new GameBoard(this);
     }
-
-	byte[] IntToByte(int _msg)
-	{
-		// Convert an integer to a byte
-		return Encoding.ASCII.GetBytes(_msg.ToString());
-	}
 
 	// Shouldn't be used... just for testing right now and opens for future concepts
 	public void AddClient(Client _client)
@@ -70,7 +63,6 @@ public class Game
 
 		clients.Add(_client.id, _client);
 
-		_client.tcp.WriteStream(IntToByte(id));
 		_client.gameId = id;
 	}
 

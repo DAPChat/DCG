@@ -68,9 +68,7 @@ public class Client
 					return;
 				}
 
-				Console.WriteLine(Encoding.ASCII.GetString(buffer));
-
-				// WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
+				Packet.Decode(buffer);
 
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)

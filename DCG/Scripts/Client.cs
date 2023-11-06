@@ -40,6 +40,8 @@ public partial class Client
 
 		stream = client.GetStream();
 
+		stream.WriteAsync(Encoding.ASCII.GetBytes("{\"type\":\"Connection\",\"parameters\": \"{\"time\":\"" + DateTime.Now + "\"}\"}"));
+
 		// Read the incoming messages
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
