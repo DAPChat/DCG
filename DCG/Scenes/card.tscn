@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://df4fy3rrrwxnq"]
+[gd_scene load_steps=11 format=3 uid="uid://df4fy3rrrwxnq"]
 
 [ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
+[ext_resource type="Script" path="res://Scripts/Game Classes/Card.cs" id="1_pe65v"]
 [ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_v18lx"]
 [ext_resource type="Material" uid="uid://cjpdibwq8y4pu" path="res://Materials/Basic Card/CardBackBasic.tres" id="2_8734q"]
 [ext_resource type="Texture2D" uid="uid://ct0sajuvtvium" path="res://Materials/Basic Card/testcard/_59bba27d-976e-49ec-bf6f-8bdcfcd3eed1.jpg" id="3_q25o5"]
@@ -26,6 +27,7 @@ heightmap_min_layers = 8
 heightmap_max_layers = 32
 
 [node name="Card" type="Node3D"]
+script = ExtResource("1_pe65v")
 
 [node name="FrontFace" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0, 0)
