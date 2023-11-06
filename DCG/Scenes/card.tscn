@@ -1,11 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://df4fy3rrrwxnq"]
+[gd_scene load_steps=10 format=3 uid="uid://df4fy3rrrwxnq"]
 
 [ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
+[ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_v18lx"]
 [ext_resource type="Material" uid="uid://cjpdibwq8y4pu" path="res://Materials/Basic Card/CardBackBasic.tres" id="2_8734q"]
+[ext_resource type="Texture2D" uid="uid://cyrbaxja42ikf" path="res://Materials/Basic Card/testcard/_c15facf7-31d7-4ed3-b36b-8f56fdb13d2e.jpg" id="3_6kcp7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8plr"]
+albedo_color = Color(1, 0.298039, 0.619608, 1)
+albedo_texture = ExtResource("1_v18lx")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ln1oc"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qosl6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qng4u"]
+albedo_texture = ExtResource("3_6kcp7")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3md3"]
 vertex_color_use_as_albedo = true
@@ -15,6 +24,7 @@ albedo_color = Color(0, 0, 0, 1)
 
 [node name="FrontFace" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_f8plr")
 mesh = SubResource("PlaneMesh_ln1oc")
 
 [node name="Name" type="MeshInstance3D" parent="FrontFace"]
@@ -22,8 +32,13 @@ transform = Transform3D(0.893, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0.001, -0.856)
 mesh = SubResource("PlaneMesh_qosl6")
 surface_material_override/0 = ExtResource("1_olrt8")
 
+[node name="Name" type="Label3D" parent="FrontFace/Name"]
+transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, -0.498, 0.001, 0.0540943)
+text = "Test Card"
+
 [node name="Picture" type="MeshInstance3D" parent="FrontFace"]
 transform = Transform3D(0.892992, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0.001, -0.323)
+material_override = SubResource("StandardMaterial3D_qng4u")
 mesh = SubResource("PlaneMesh_qosl6")
 surface_material_override/0 = SubResource("StandardMaterial3D_r3md3")
 
