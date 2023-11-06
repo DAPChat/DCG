@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
 [ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_v18lx"]
 [ext_resource type="Material" uid="uid://cjpdibwq8y4pu" path="res://Materials/Basic Card/CardBackBasic.tres" id="2_8734q"]
-[ext_resource type="Texture2D" uid="uid://cyrbaxja42ikf" path="res://Materials/Basic Card/testcard/_c15facf7-31d7-4ed3-b36b-8f56fdb13d2e.jpg" id="3_6kcp7"]
+[ext_resource type="Texture2D" uid="uid://ct0sajuvtvium" path="res://Materials/Basic Card/testcard/_59bba27d-976e-49ec-bf6f-8bdcfcd3eed1.jpg" id="3_q25o5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8plr"]
 albedo_color = Color(1, 0.298039, 0.619608, 1)
@@ -13,8 +13,9 @@ albedo_texture = ExtResource("1_v18lx")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qosl6"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qng4u"]
-albedo_texture = ExtResource("3_6kcp7")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cmi8e"]
+albedo_texture = ExtResource("3_q25o5")
+uv1_scale = Vector3(1, 0.7, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3md3"]
 vertex_color_use_as_albedo = true
@@ -48,7 +49,7 @@ text = "S"
 
 [node name="Picture" type="MeshInstance3D" parent="FrontFace"]
 transform = Transform3D(0.892992, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0.001, -0.323)
-material_override = SubResource("StandardMaterial3D_qng4u")
+material_override = SubResource("StandardMaterial3D_cmi8e")
 mesh = SubResource("PlaneMesh_qosl6")
 surface_material_override/0 = SubResource("StandardMaterial3D_r3md3")
 
