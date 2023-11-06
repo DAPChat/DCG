@@ -38,9 +38,11 @@ public class Client
 			
 			// Start reading the stream
 			stream = client.GetStream();
-			buffer = new byte[4096];
+			buffer = new byte[1028];
 
-			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+			WriteStream(Encoding.ASCII.GetBytes("1"));
+
+			stream.BeginRead(buffer, 0, 1028, ReadCallback, null);
 		}
 
         public void WriteStream(byte[] _msg)
@@ -68,9 +70,9 @@ public class Client
 					return;
 				}
 
-				Packet.Decode(buffer);
+				if (instance.gameId != 0) Server.games[instance.gameId].Manage(buffer, id);
 
-				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+				stream.BeginRead(buffer, 0, 1028, ReadCallback, null);
 			}catch (Exception e)
 			{
 				if (instance.gameId == 0)

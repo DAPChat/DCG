@@ -78,6 +78,20 @@ public class Game
 		Server.Queue(clients.First().Key, clients.First().Value);
 	}
 
+	public void Manage(byte[] data, int _clientId)
+	{
+		Packet packet = new Packet();
+		packet.Decode(data);
+
+		foreach (int i in clientIds)
+		{
+			if (i != _clientId)
+			{
+				clients[i].tcp.WriteStream(data);
+			}
+		}
+	}
+
 	class GameBoard
 	{
 		bool gameState;

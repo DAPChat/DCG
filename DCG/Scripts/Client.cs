@@ -6,7 +6,7 @@ public partial class Client
 {
 	private static TcpClient client = null;
 	private static NetworkStream stream = null;
-	private static byte[] buffer = new byte[1024];
+	private static byte[] buffer = new byte[1028];
 
 	public static string str = null;
 	public static bool connected = false;
@@ -40,8 +40,6 @@ public partial class Client
 
 		stream = client.GetStream();
 
-		stream.WriteAsync(Encoding.ASCII.GetBytes("{\"type\":\"Connection\",\"parameters\": \"{\"time\":\"" + DateTime.Now + "\"}\"}"));
-
 		// Read the incoming messages
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
@@ -59,10 +57,15 @@ public partial class Client
 				return;
 			}
 
-			str = "ID: " + Encoding.ASCII.GetString(buffer);
+			Packet p = new Packet();
+			p.Decode(buffer);
 
+			byte[] b =  Encoding.ASCII.GetBytes("{\"type\":\"Connection\",\"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
+
+            stream.BeginWrite(b, 0, b.Length, null, null);
+			
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
-		}
+        }
 		catch (Exception e)
 		{
 			connected = false;

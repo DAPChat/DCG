@@ -19,6 +19,8 @@ public class Packet
             if (lt.type == "Connection")
             {
                 Connection c = JsonConvert.DeserializeObject<Connection>(lt.parameters);
+
+                Client.str = c.CheckPing().ToString();
             }
         }
         catch (Exception e)
