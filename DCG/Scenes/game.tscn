@@ -182,3 +182,6 @@ transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 7.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 8.16667, 10.4473)
