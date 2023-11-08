@@ -1,6 +1,6 @@
 ﻿
-[Serializable]
-public class Connection
+
+public class Connection : Packet
 {
     public DateTime time;
 

@@ -41,6 +41,8 @@ public class Game
 
 			clientIds.Add(currentClientId);
 
+			// _client.tcp.WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
+
 			Console.Write(id + ": ");
 			Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
@@ -80,7 +82,7 @@ public class Game
 
 	public void Manage(byte[] data, int _clientId)
 	{
-		Packet packet = new Packet();
+		PacketManager packet = new PacketManager();
 		packet.Decode(data);
 
 		foreach (int i in clientIds)
@@ -94,15 +96,15 @@ public class Game
 
 	class GameBoard
 	{
-		bool gameState;
-		int turn;
-		int phase;
-		int round;
+		static bool gameState;
+		static int turn;
+		static int phase;
+		static int round;
 
-		string image;
+		static string image;
 
-		Player player1;
-		Player player2;
+		static Player player1;
+		static Player player2;
 
 		public GameBoard(Game _game)
 		{
