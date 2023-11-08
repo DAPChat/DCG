@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=7 format=3 uid="uid://dektufe3c6aw"]
 
+[ext_resource type="Script" path="res://Scripts/Game Classes/Main.cs" id="1_hrbee"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4cm6"]
@@ -16,6 +17,7 @@ albedo_color = Color(1, 1, 1, 0.0941176)
 [sub_resource type="PlaneMesh" id="PlaneMesh_ytwr5"]
 
 [node name="Game" type="Node3D"]
+script = ExtResource("1_hrbee")
 
 [node name="Board" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0)
