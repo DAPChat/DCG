@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -10,7 +12,7 @@ public class Game
 	public Dictionary<int, Client> clients = new Dictionary<int, Client>();
 	public List<int> clientIds = new List<int>();
 
-	GameBoard currentBoard;
+	GameBoard currentBoard = null;
 
 	public Game(int _id)
 	{
@@ -19,42 +21,34 @@ public class Game
 
 	public Game(int _id, List<Client> _clients)
 	{
-		// Ensures only 2 players can be in each game
-		// Re-adds the clients to the queue to give them a second-chance
-		if(_clients.Count > 2)
-		{
-            Console.WriteLine("Error Creating Match!");
-			foreach(Client _client in _clients)
-			{
-				Server.Queue(_client.id, _client);
-			}
-            return;
-        }
-
 		id = _id;
-
-		// Add each client and update the client's data
-		foreach (Client _client in _clients)
-		{
-			int currentClientId = _client.id;
-			clients.Add(currentClientId, _client);
-
-			clientIds.Add(currentClientId);
-
-			// _client.tcp.WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
-
-			Console.Write(id + ": ");
-			Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
-
-			_client.gameId = id;
-		}
-
 
          currentBoard = new GameBoard(this);
     }
 
+	public void AddClients(List<Client> _clients)
+	{
+		// Ensures only 2 players can be in each game
+		// Re-adds the clients to the queue to give them a second-chance
+		if (_clients.Count > 2)
+		{
+			Console.WriteLine("Error Creating Match!");
+			foreach (Client _client in _clients)
+			{
+				Server.Queue(_client.id, _client);
+			}
+			return;
+		}
+
+		// Add each client and update the client's data
+		foreach (Client _client in _clients)
+		{
+			AddClient(_client);
+		}
+	}
+
 	// Shouldn't be used... just for testing right now and opens for future concepts
-	public void AddClient(Client _client)
+	private void AddClient(Client _client)
 	{
 		if(clients.Count >= 2)
 		{
@@ -63,27 +57,32 @@ public class Game
 			return;
 		}
 
-		clients.Add(_client.id, _client);
+		int currentClientId = _client.id;
+		clients.Add(currentClientId, _client);
+
+		clientIds.Add(currentClientId);
+
+		// _client.tcp.WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
+
+		Console.Write(id + ": ");
+		Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
 		_client.gameId = id;
-	}
 
-	// Remove the specified client from the game
-	// Add the remaining client to the queue
-	public void Disconnect(int _id)
-	{
-		clients[_id].Disconnect();
-		clients.Remove(_id);
+		GSP gsp = new();
+		gsp.gameId = id;
+		gsp.senderId = _client.id;
 
-		clients.First().Value.gameId = 0;
+		byte[] msg = Encoding.ASCII.GetBytes("[Packet]" + Encoding.ASCII.GetString(PacketManager.ToJson(gsp)));
 
-		Server.Queue(clients.First().Key, clients.First().Value);
+		_client.tcp.WriteStream(msg);
 	}
 
 	public void Manage(byte[] data, int _clientId)
 	{
-		PacketManager packet = new PacketManager();
-		packet.Decode(data);
+		PacketManager packetManager = new PacketManager();
+
+		packetManager.Decode(data, clients[_clientId]);
 
 		foreach (int i in clientIds)
 		{
@@ -92,6 +91,23 @@ public class Game
 				clients[i].tcp.WriteStream(data);
 			}
 		}
+	}
+
+	public void LeaveGame(int _clientId)
+	{
+		clients[_clientId].Disconnect();
+		clients.Remove(_clientId);
+		Server.ids.Remove(_clientId);
+
+		Server.playerCount--;
+
+		Console.WriteLine("Client Removed! With ID {0} on server {1}, {2} player(s) remain!", _clientId, id, Server.playerCount);
+
+		if (clients.Count < 1) return;
+
+		Server.Queue(clients.First().Key, clients.First().Value);
+
+		Server.RemoveGame(id);
 	}
 
 	class GameBoard

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -40,9 +41,7 @@ public class Client
 			stream = client.GetStream();
 			buffer = new byte[1028];
 
-			WriteStream(Encoding.ASCII.GetBytes("1"));
-
-			stream.BeginRead(buffer, 0, 1028, ReadCallback, null);
+			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}
 
         public void WriteStream(byte[] _msg)
@@ -66,19 +65,21 @@ public class Client
 					if (instance.gameId == 0)
 						Server.Disconnect(id);
 					else
-						Server.LeaveGame(instance.gameId, id);
+						Server.games[instance.gameId].LeaveGame(id);
 					return;
 				}
 
-				if (instance.gameId != 0) Server.games[instance.gameId].Manage(buffer, id);
+				if (instance.gameId != 0) Server.games[instance.gameId].Manage((byte[])buffer.Clone(), id);
 
-				stream.BeginRead(buffer, 0, 1028, ReadCallback, null);
+				buffer = new byte[buffer.Length];
+
+				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)
 			{
 				if (instance.gameId == 0)
 					Server.Disconnect(id);
 				else
-					Server.LeaveGame(instance.gameId, id);
+					Server.games[instance.gameId].LeaveGame(id);
 			}
 		}
 

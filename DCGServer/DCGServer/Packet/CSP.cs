@@ -1,11 +1,10 @@
-﻿using System;
+﻿
 
-[Serializable]
-public class Connection
+public class CSP : Packet
 {
     public DateTime time;
 
-    public int CheckPing()
+    public int Run()
     {
         DateTime _now = DateTime.UtcNow;
         TimeSpan _ts = _now - time;
