@@ -7,6 +7,8 @@ class Program
 	{
 		Server.Start();
 
-		while(true) { }
+		while(true) 
+		{
+		}
 	}
 }

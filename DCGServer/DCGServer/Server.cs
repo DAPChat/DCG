@@ -32,7 +32,14 @@ class Server
 
 	private static void ClientAcceptCallback(IAsyncResult result)
 	{
-		TcpClient _client = tcpListener.EndAcceptTcpClient(result);
+		TcpClient _client = new TcpClient();
+
+		try
+		{
+			_client = tcpListener.EndAcceptTcpClient(result);
+		}catch (Exception ex)
+		{
+		}
 
 		// On connection, increase playercount
 		playerCount++;

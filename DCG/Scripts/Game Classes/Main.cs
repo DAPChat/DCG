@@ -17,7 +17,7 @@ class Program
     }
     static void Main(string[] args)
     {
-        dynamic[] dict = [new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", ATK = 10000, HP = 10000, Image = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" }];
-        Card cardtest = new(dict, 0);
+        //dynamic[] dict = [new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", ATK = 10000, HP = 10000, Image = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" }];
+        //Card cardtest = new(dict, 0);
     }
 }

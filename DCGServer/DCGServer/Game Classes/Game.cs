@@ -14,20 +14,27 @@ public class Game
 
 	GameBoard currentBoard = null;
 
+	private bool active;
+
 	public Game(int _id)
 	{
 		id = _id;
+
+		active = true;
 	}
 
 	public Game(int _id, List<Client> _clients)
 	{
 		id = _id;
 
-         currentBoard = new GameBoard(this);
+		active = true;
+
+        currentBoard = new GameBoard(this);
     }
 
 	public void AddClients(List<Client> _clients)
 	{
+		if (!active) return;
 		// Ensures only 2 players can be in each game
 		// Re-adds the clients to the queue to give them a second-chance
 		if (_clients.Count > 2)
@@ -50,6 +57,8 @@ public class Game
 	// Shouldn't be used... just for testing right now and opens for future concepts
 	private void AddClient(Client _client)
 	{
+		if (!active) return;
+
 		if(clients.Count >= 2)
 		{
 			Console.WriteLine("Error Joining Match!");
@@ -80,6 +89,8 @@ public class Game
 
 	public void Manage(byte[] data, int _clientId)
 	{
+		if (!active) return;
+
 		PacketManager packetManager = new PacketManager();
 
 		packetManager.Decode(data, clients[_clientId]);
@@ -95,6 +106,8 @@ public class Game
 
 	public void LeaveGame(int _clientId)
 	{
+		active = false;
+
 		clients[_clientId].Disconnect();
 		clients.Remove(_clientId);
 		Server.ids.Remove(_clientId);
