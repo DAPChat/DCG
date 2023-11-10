@@ -21,13 +21,21 @@ public partial class Main : Node3D
     {
         List<CardObject> list = new List<CardObject>();
         list.Add(new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", ATK = 10000, HP = 10000, Image = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" });
-        Card cardtest = new(list.ToArray(), 0);
-
-        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-        /*thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();*/
-        AddChild(thescene);
         
 
+        //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+
+        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+        
+        AddChild(thescene);
+        //Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
+        //thescene.SetScript("res://Scripts/Card.cs");
+        //thescene.Call("setCard", [list.ToArray(), 0]);
+
+        Card c = thescene as Card;
+
+        c.setCard(list.ToArray(), 0);
+        
     }
 
     public override void _Ready()
