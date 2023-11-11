@@ -9,6 +9,10 @@ class Program
 
 		while(true) 
 		{
+			if (Console.ReadLine() == "Stop")
+			{
+				Server.Stop();
+			}
 		}
 	}
 }

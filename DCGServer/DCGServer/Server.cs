@@ -30,6 +30,16 @@ class Server
 		Console.WriteLine("Started");
 	}
 
+	public static void Stop()
+	{
+		foreach (Game game in games.Values)
+		{
+			game.Close();
+		}
+
+		tcpListener.Stop();
+	}
+
 	private static void ClientAcceptCallback(IAsyncResult result)
 	{
 		TcpClient _client = new TcpClient();

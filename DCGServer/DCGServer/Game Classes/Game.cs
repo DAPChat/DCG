@@ -123,6 +123,25 @@ public class Game
 		Server.RemoveGame(id);
 	}
 
+	public void Close()
+	{
+		active = false;
+
+		foreach (var client in clients)
+		{
+			client.Value.gameId = 0;
+
+			Server.ids.Remove(client.Key);
+
+			client.Value.Disconnect();
+		}
+
+		clients.Clear();
+		clientIds.Clear();
+
+		Server.RemoveGame(id);
+	}
+
 	class GameBoard
 	{
 		static bool gameState;

@@ -76,7 +76,7 @@ public class Client
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)
 			{
-				Console.WriteLine(e);
+				Console.WriteLine(e.Message);
 
 				if (instance.gameId == 0)
 					Server.Disconnect(id);
@@ -90,6 +90,9 @@ public class Client
 			// Closes the client and stream
 			client.Close();
 			stream.Close();
+
+			stream.Dispose();
+			client.Dispose();
 
 			client = null;
 			stream = null;
