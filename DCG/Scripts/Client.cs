@@ -13,7 +13,7 @@ public partial class Client
 
 	public static void Connect()
 	{
-		if(connected) return;
+		if (connected) return;
 
 		// Try to connect to the client
 		// If it fails, try again
@@ -23,8 +23,9 @@ public partial class Client
 			{
 				client = new TcpClient();
 			}
-
-            client.BeginConnect("127.1.1.0", 5001, ConnectCallback, client);
+            // 127.1.1.0
+            // 10.72.97.65
+            client.BeginConnect("10.72.97.65", 5001, ConnectCallback, client);
 		}catch (Exception e)
 		{
 			Connect();
