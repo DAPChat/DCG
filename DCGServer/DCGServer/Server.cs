@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Text;
 
 class Server
 {
 	private static TcpListener tcpListener;
 
-    private static int playerCount = 0;
+    public static int playerCount = 0;
 	// List of all active ids to negate duplicates
-    private static List<int> ids = new List<int>();
+    public static List<int> ids = new List<int>();
 
 	// Active games and their ids
     public static Dictionary<int, Game> games = new Dictionary<int, Game>();
@@ -29,9 +31,26 @@ class Server
 		Console.WriteLine("Started");
 	}
 
+	public static void Stop()
+	{
+		foreach (Game game in games.Values)
+		{
+			game.Close();
+		}
+
+		tcpListener.Stop();
+	}
+
 	private static void ClientAcceptCallback(IAsyncResult result)
 	{
-		TcpClient _client = tcpListener.EndAcceptTcpClient(result);
+		TcpClient _client = new TcpClient();
+
+		try
+		{
+			_client = tcpListener.EndAcceptTcpClient(result);
+		}catch (Exception ex)
+		{
+		}
 
 		// On connection, increase playercount
 		playerCount++;
@@ -49,6 +68,12 @@ class Server
 
 		// Tell the client to connect to player
 		tempClient[_currentClientId].tcp.Connect(_client);
+
+		Player p = new(_currentClientId);
+
+		byte[] msg = PacketManager.ToJson(p);
+
+		tempClient[_currentClientId].tcp.WriteStream(msg);
 
 		Console.WriteLine($"Client connected with id: {_currentClientId}, {playerCount} player(s) online!");
 
@@ -82,36 +107,38 @@ class Server
 			}
 
 			// Create a new game and add the clients
-			Game game = new Game(gameId, clientsToAdd);
+			Game game = new Game(gameId);
 
 			games.Add(gameId, game);
 
+			game.AddClients(clientsToAdd);
+
 			return;
 		}
-	}
-
-	public static void LeaveGame(int _gameId, int _clientId)
-	{
-		// Disconnect the client from the game and close the game
-		// Add more functionality later
-		games[_gameId].Disconnect(_clientId);
-		ids.Remove(_clientId);
-		playerCount--;
-
-        Console.WriteLine("Client Removed! With ID {0} on server {1}, {2} player(s) remain!", _clientId, _gameId, playerCount);
-
-        games.Remove(_gameId);
 	}
 
 	public static void Queue(int _id, Client _client)
 	{
 		// Add a client back to a queue if the game closed (called from Game class)
 		// Add more functionality later
+		_client.gameId = 0;
+
+		GSP gsp = new();
+		gsp.gameId = 0;
+		gsp.senderId = _id;
+
+		_client.tcp.WriteStream(PacketManager.ToJson(gsp));
+
 		tempClient.Add(_id, _client);
 
 		Console.WriteLine("Client Added To Queue! Id: {0}", _id);
 
 		CheckMatch();
+	}
+
+	public static void RemoveGame(int _gameId)
+	{
+		games.Remove(_gameId);
 	}
 
 	public static void Disconnect(int id)

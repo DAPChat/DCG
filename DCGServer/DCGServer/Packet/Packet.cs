@@ -1,11 +1,10 @@
-﻿
-[Serializable]
+﻿[Serializable]
 public class Packet
 {
-    Player sender;
-    Player target;
+    public int senderId;
+    public int targetId;
 
-    public void Run()
+    public virtual void Run(Client client)
     {
 
     }

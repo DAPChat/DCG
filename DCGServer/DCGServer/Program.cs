@@ -7,6 +7,12 @@ class Program
 	{
 		Server.Start();
 
-		while(true) { }
+		while(true) 
+		{
+			if (Console.ReadLine() == "Stop")
+			{
+				Server.Stop();
+			}
+		}
 	}
 }

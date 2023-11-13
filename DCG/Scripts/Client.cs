@@ -1,17 +1,26 @@
+using Godot.Collections;
+using Godot;
 using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Net;
 
-public partial class Client
+public class Client
 {
-	private static TcpClient client = null;
-	private static NetworkStream stream = null;
-	private static byte[] buffer = new byte[1028];
+	public TcpClient client = null;
 
-	public static string str = null;
-	public static bool connected = false;
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 5001);
 
-	public static void Connect()
+	private NetworkStream stream = null;
+	private byte[] buffer = new byte[1028];
+
+	public Dictionary<string, string> values = new Dictionary<string, string>();
+	public bool connected = false;
+
+	public int id;
+	public int gameId;
+
+	public void Connect()
 	{
 		if (connected) return;
 
@@ -23,17 +32,16 @@ public partial class Client
 			{
 				client = new TcpClient();
 			}
-            // 127.1.1.0
-            // 10.72.97.65
-            client.BeginConnect("10.72.97.65", 5001, ConnectCallback, client);
-		}catch (Exception e)
+			// 127.1.1.0
+			client.BeginConnect(endPoint.Address, endPoint.Port, ConnectCallback, client);
+		}
+		catch (Exception e)
 		{
 			Connect();
 		}
-    }
+	}
 
-
-	private static void ConnectCallback(IAsyncResult result)
+	private void ConnectCallback(IAsyncResult result)
 	{
 		client.EndConnect(result);
 
@@ -45,7 +53,7 @@ public partial class Client
 		stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 	}
 
-	private static void ReadCallback(IAsyncResult result)
+	private void ReadCallback(IAsyncResult result)
 	{
 		try
 		{
@@ -58,15 +66,17 @@ public partial class Client
 				return;
 			}
 
-			Packet p = new Packet();
-			p.Decode(buffer);
+			PacketManager.Decode(buffer, this);
 
-			byte[] b =  Encoding.ASCII.GetBytes("{\"type\":\"Connection\",\"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
+			byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
 
-            stream.BeginWrite(b, 0, b.Length, null, null);
-			
-			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
-        }
+			if(gameId > 0)
+				stream.BeginWrite(b, 0, b.Length, null, null);
+
+			buffer = new byte[buffer.Length];
+
+			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+		}
 		catch (Exception e)
 		{
 			connected = false;
