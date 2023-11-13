@@ -1,11 +1,13 @@
 ﻿using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
-class Program
+public partial class Main : Node3D 
 {
-    class CardObject
+    public class CardObject
     {
         public string? Name { get; set; }
         public string? Rank { get; set; }
@@ -15,9 +17,29 @@ class Program
         public int HP { get; set; }
         public string? Image { get; set; }
     }
-    static void Main(string[] args)
+    public void Run ()
     {
-        //dynamic[] dict = [new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", ATK = 10000, HP = 10000, Image = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" }];
-        //Card cardtest = new(dict, 0);
+        List<CardObject> list = new List<CardObject>();
+        list.Add(new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", ATK = 10000, HP = 10000, Image = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" });
+        
+
+        //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+
+        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+        
+        AddChild(thescene);
+        //Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
+        //thescene.SetScript("res://Scripts/Card.cs");
+        //thescene.Call("setCard", [list.ToArray(), 0]);
+
+        Card c = thescene as Card;
+
+        c.setCard(list.ToArray(), 0);
+        
+    }
+
+    public override void _Ready()
+    {
+        Run();
     }
 }
