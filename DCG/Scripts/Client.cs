@@ -18,6 +18,7 @@ public class Client
 	public bool connected = false;
 
 	public int id;
+	public int gameId;
 
 	public void Connect()
 	{
@@ -69,7 +70,8 @@ public class Client
 
 			byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
 
-			stream.BeginWrite(b, 0, b.Length, null, null);
+			if(gameId > 0)
+				stream.BeginWrite(b, 0, b.Length, null, null);
 
 			buffer = new byte[buffer.Length];
 

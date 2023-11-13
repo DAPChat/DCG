@@ -77,6 +77,7 @@ public class Client
 			}catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
+				Console.WriteLine(e.TargetSite);
 
 				if (instance.gameId == 0)
 					Server.Disconnect(id);
@@ -88,8 +89,8 @@ public class Client
 		public void Disconnect()
 		{
 			// Closes the client and stream
-			client.Close();
 			stream.Close();
+			client.Close();
 
 			stream.Dispose();
 			client.Dispose();

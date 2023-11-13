@@ -82,7 +82,7 @@ public class Game
 		gsp.gameId = id;
 		gsp.senderId = _client.id;
 
-		byte[] msg = Encoding.ASCII.GetBytes("[Packet]" + Encoding.ASCII.GetString(PacketManager.ToJson(gsp)));
+		byte[] msg = PacketManager.ToJson(gsp);
 
 		_client.tcp.WriteStream(msg);
 	}

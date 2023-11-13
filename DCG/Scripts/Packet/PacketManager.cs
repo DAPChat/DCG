@@ -18,17 +18,26 @@ public class PacketManager
 
 				switch (lt.type)
 				{
-					case ("CSP"):
+					case "CSP":
 						var c = JsonConvert.DeserializeObject<CSP>(lt.parameters);
 
 						client.values["Connection"] = c.Run().ToString();
 
 						break;
 
-					case ("GSP"):
+					case "GSP":
 						var g = JsonConvert.DeserializeObject<GSP>(lt.parameters);
 
+						client.gameId = g.gameId;
+
 						client.values["Game Id"] =  g.gameId.ToString();
+
+						break;
+
+					case "Player":
+						var p = JsonConvert.DeserializeObject<Player>(lt.parameters);
+
+						client.values["Player Id"] = p.id.ToString();
 
 						break;
 				}

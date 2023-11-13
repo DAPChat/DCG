@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Text;
 
 class Server
 {
@@ -68,6 +69,12 @@ class Server
 		// Tell the client to connect to player
 		tempClient[_currentClientId].tcp.Connect(_client);
 
+		Player p = new(_currentClientId);
+
+		byte[] msg = PacketManager.ToJson(p);
+
+		tempClient[_currentClientId].tcp.WriteStream(msg);
+
 		Console.WriteLine($"Client connected with id: {_currentClientId}, {playerCount} player(s) online!");
 
 		// Check if there is an available player to join game
@@ -115,6 +122,12 @@ class Server
 		// Add a client back to a queue if the game closed (called from Game class)
 		// Add more functionality later
 		_client.gameId = 0;
+
+		GSP gsp = new();
+		gsp.gameId = 0;
+		gsp.senderId = _id;
+
+		_client.tcp.WriteStream(PacketManager.ToJson(gsp));
 
 		tempClient.Add(_id, _client);
 

@@ -45,7 +45,7 @@ public class PacketManager
 		loadType.parameters = JsonConvert.SerializeObject(json);
 		loadType.type = json.GetType().Name;
 
-		return ToBytes(JsonConvert.SerializeObject(loadType));
+		return ToBytes("[Packet]" + JsonConvert.SerializeObject(loadType));
 	}
 
     public static byte[] ToBytes(int i)
