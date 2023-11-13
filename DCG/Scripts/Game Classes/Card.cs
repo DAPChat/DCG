@@ -41,6 +41,8 @@ public partial class Card : Node3D
         //    var materialBg = meshBg.GetActiveMaterial(0) as StandardMaterial3D;
         //    materialBg!.AlbedoTexture = newImageBg;
         //}
+        
+
     }
    
     private Godot.Image getImg(string url)
