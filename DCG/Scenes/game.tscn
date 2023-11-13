@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=7 format=3 uid="uid://dektufe3c6aw"]
 
+[ext_resource type="Script" path="res://Scripts/Game Classes/Main.cs" id="1_hrbee"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4cm6"]
@@ -16,6 +17,10 @@ albedo_color = Color(1, 1, 1, 0.0941176)
 [sub_resource type="PlaneMesh" id="PlaneMesh_ytwr5"]
 
 [node name="Game" type="Node3D"]
+script = ExtResource("1_hrbee")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 0)
 
 [node name="Board" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0)
@@ -24,79 +29,79 @@ mesh = SubResource("PlaneMesh_md2u3")
 
 [node name="Player1" type="Node3D" parent="."]
 
-[node name="Card1" type="MeshInstance3D" parent="Player1"]
+[node name="Spell1" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card6" type="MeshInstance3D" parent="Player1"]
+[node name="Unforgotten" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -7.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card2" type="MeshInstance3D" parent="Player1"]
+[node name="Spell2" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -2.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card3" type="MeshInstance3D" parent="Player1"]
+[node name="Spell3" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card4" type="MeshInstance3D" parent="Player1"]
+[node name="Spell4" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 2.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card5" type="MeshInstance3D" parent="Player1"]
+[node name="Spell5" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card7" type="MeshInstance3D" parent="Player1"]
+[node name="Deck" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 7.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card8" type="MeshInstance3D" parent="Player1"]
+[node name="Slot1" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card9" type="MeshInstance3D" parent="Player1"]
+[node name="Slot2" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -2.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card10" type="MeshInstance3D" parent="Player1"]
+[node name="Slot3" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card11" type="MeshInstance3D" parent="Player1"]
+[node name="Slot4" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 2.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card12" type="MeshInstance3D" parent="Player1"]
+[node name="Slot5" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card13" type="MeshInstance3D" parent="Player1"]
+[node name="Forgotten" type="MeshInstance3D" parent="Player1"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 7.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
@@ -105,83 +110,87 @@ skeleton = NodePath("../..")
 [node name="Player2" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="Card1" type="MeshInstance3D" parent="Player2"]
+[node name="Spell1" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card6" type="MeshInstance3D" parent="Player2"]
+[node name="Unforgotten" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -7.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card2" type="MeshInstance3D" parent="Player2"]
+[node name="Spell2" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -2.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card3" type="MeshInstance3D" parent="Player2"]
+[node name="Spell3" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card4" type="MeshInstance3D" parent="Player2"]
+[node name="Spell4" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 2.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card5" type="MeshInstance3D" parent="Player2"]
+[node name="Spell5" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card7" type="MeshInstance3D" parent="Player2"]
+[node name="Deck" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 7.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card8" type="MeshInstance3D" parent="Player2"]
+[node name="Slot1" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card9" type="MeshInstance3D" parent="Player2"]
+[node name="Slot2" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -2.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card10" type="MeshInstance3D" parent="Player2"]
+[node name="Slot3" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 0, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card11" type="MeshInstance3D" parent="Player2"]
+[node name="Slot4" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 2.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card12" type="MeshInstance3D" parent="Player2"]
+[node name="Slot5" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Card13" type="MeshInstance3D" parent="Player2"]
+[node name="Forgotten" type="MeshInstance3D" parent="Player2"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, 7.5, 0.001, 2.5)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 0)
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 8.16667, 10.4473)
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 8.16667, 11.8627)
+visible = false
