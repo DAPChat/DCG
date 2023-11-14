@@ -9,7 +9,7 @@ public partial class Card : Node3D
 
     //when using this you will do var newcard = new Card(dictionary,cardnum)
 
-    public void setCard(Main.CardObject[] cards, int req) //add added child card
+    public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
     {
         var cardName = GetNode<Label3D>("FrontFace/Name/Name");
         cardName.Text = cards[req].Name.ToString();
@@ -20,7 +20,8 @@ public partial class Card : Node3D
         var cardStats = GetNode<Label3D>("FrontFace/Description/Stats");
         cardStats.Text = cards[req].ATK.ToString() + " ATK / " + cards[req].HP.ToString() + " HP";
         getImg(cards[req].Image.ToString());
-        
+        Position = pos;
+        Position = new Vector3(Position.X, 0.005f, Position.Z);
         //if (cards[req].Type != null)
         //{
         //    string imageBg;
