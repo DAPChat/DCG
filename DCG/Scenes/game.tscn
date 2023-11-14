@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=13 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/Main.cs" id="1_hrbee"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
@@ -20,6 +20,13 @@ albedo_color = Color(1, 1, 1, 0.0941176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nap47"]
 bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21e7g"]
+bg_color = Color(0, 0, 0, 0.65098)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -218,7 +225,7 @@ anchors_preset = 0
 offset_right = 1151.0
 offset_bottom = 648.0
 
-[node name="Button" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="Hand" type="Button" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -231,12 +238,15 @@ offset_right = -10.0
 offset_bottom = 155.0
 grow_horizontal = 0
 grow_vertical = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Hand"
 
-[node name="Button2" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="EndTurn" type="Button" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -249,6 +259,8 @@ offset_right = -10.0
 offset_bottom = 80.0
 grow_horizontal = 0
 grow_vertical = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_27wk7")

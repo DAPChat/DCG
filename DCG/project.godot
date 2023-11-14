@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 ServerManagerScript="*res://Scripts/ServerManager.cs"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="DCG"
