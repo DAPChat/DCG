@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=14 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/Main.cs" id="1_hrbee"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
@@ -27,6 +27,13 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21e7g"]
 bg_color = Color(0, 0, 0, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8216"]
+bg_color = Color(0.498039, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -245,6 +252,42 @@ theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Hand"
+
+[node name="Phase" type="Button" parent="Camera3D/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -151.0
+offset_top = 20.0
+offset_right = -10.0
+offset_bottom = 74.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_dywko")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+text = "Game Phase"
+
+[node name="Surrender" type="Button" parent="Camera3D/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -151.0
+offset_top = 80.0
+offset_right = -10.0
+offset_bottom = 118.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_dywko")
+theme_override_styles/normal = SubResource("StyleBoxFlat_e8216")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+text = "Surrender"
 
 [node name="EndTurn" type="Button" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
