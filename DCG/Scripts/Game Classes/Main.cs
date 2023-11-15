@@ -31,7 +31,7 @@ public partial class Main : Node3D
         //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
 
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-        
+        var cardPosition = GetNode<MeshInstance3D>("Player1/Spell1").Position;
         AddChild(thescene);
         //Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
         //thescene.SetScript("res://Scripts/Card.cs");
@@ -39,7 +39,7 @@ public partial class Main : Node3D
 
         Card c = thescene as Card;
 
-        c.setCard(list.ToArray(), 0);
+        c.setCard(list.ToArray(), 0, cardPosition);
         
     }
 

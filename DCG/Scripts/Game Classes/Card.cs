@@ -9,7 +9,7 @@ public partial class Card : Node3D
 
     //when using this you will do var newcard = new Card(dictionary,cardnum)
 
-    public void setCard(Main.CardObject[] cards, int req) //add added child card
+    public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
     {
         var cardName = GetNode<Label3D>("FrontFace/Name/Name");
         cardName.Text = cards[req].Name.ToString();

@@ -1,9 +1,332 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxtatqsh1uegg"]
+[gd_scene load_steps=11 format=3 uid="uid://bxtatqsh1uegg"]
 
-[ext_resource type="PackedScene" uid="uid://dektufe3c6aw" path="res://Scenes/game.tscn" id="1_7xslv"]
+[ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="1_566v3"]
+[ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_ie1ch"]
+[ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="2_6q5yj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ju3iw"]
+bg_color = Color(0.619608, 0.101961, 0.219608, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em0xo"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k24we"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tt5j0"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vsnwm"]
+bg_color = Color(1, 1, 1, 0.392157)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hh8k7"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2445"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [node name="Main" type="Node"]
 
-[node name="Main Page" type="Node2D" parent="."]
+[node name="Home" type="Node2D" parent="."]
 
-[node name="Game" parent="." instance=ExtResource("1_7xslv")]
+[node name="UI" type="CanvasLayer" parent="Home"]
+
+[node name="Home" type="Control" parent="Home/UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1153.0
+offset_bottom = 648.0
+
+[node name="Bg" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 0
+offset_right = 1150.0
+offset_bottom = 644.0
+texture = ExtResource("1_ie1ch")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Play" type="Button" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -179.5
+offset_top = 179.0
+offset_right = 179.5
+offset_bottom = 249.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
+theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
+text = "Play"
+
+[node name="ColorRect" type="ColorRect" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0, 0, 0, 1)
+
+[node name="Deck1" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -269.0
+offset_right = -140.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Equip" type="Button" parent="Home/UI/Home/Deck1"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 324.0
+offset_right = 175.0
+offset_bottom = 368.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+text = "Equip"
+
+[node name="Deck2" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 55.0
+offset_right = 100.0
+offset_bottom = 355.0
+grow_horizontal = 2
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Equip" type="Button" parent="Home/UI/Home/Deck2"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 324.0
+offset_right = 175.0
+offset_bottom = 368.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+text = "Equip"
+
+[node name="Deck3" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 139.0
+offset_top = -269.0
+offset_right = 339.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Equip" type="Button" parent="Home/UI/Home/Deck3"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 324.0
+offset_right = 175.0
+offset_bottom = 368.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+text = "Equip"
+
+[node name="Logo" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 120.0
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
+
+[node name="Character" type="TextureRect" parent="Home/UI/Home"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 120.0
+grow_horizontal = 0
+tooltip_text = "Character"
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
+
+[node name="Login" type="Node2D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="Login"]
+visible = false
+
+[node name="Login" type="Control" parent="Login/UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1155.0
+offset_bottom = 649.0
+
+[node name="Title" type="Label" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_top = 60.0
+offset_right = 75.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 50
+text = "Login"
+
+[node name="UsernameLabel" type="Label" parent="Login/UI/Login"]
+layout_mode = 0
+offset_left = 377.5
+offset_top = 189.5
+offset_right = 502.5
+offset_bottom = 227.5
+theme_override_font_sizes/font_size = 25
+text = "Username"
+
+[node name="PasswordLabel" type="Label" parent="Login/UI/Login"]
+layout_mode = 0
+offset_left = 377.5
+offset_top = 296.5
+offset_right = 502.5
+offset_bottom = 334.5
+theme_override_font_sizes/font_size = 25
+text = "Password"
+
+[node name="Username" type="TextEdit" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -96.0
+offset_right = 200.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
+placeholder_text = "   Type Username Here..."
+caret_blink = true
+
+[node name="Password" type="TextEdit" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 11.0
+offset_right = 200.0
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
+placeholder_text = "   Type Password Here..."
+caret_blink = true
+
+[node name="Login" type="Button" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 92.0
+offset_right = 200.0
+offset_bottom = 152.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
+text = "Login"
+
+[node name="Signup" type="Node2D" parent="."]
