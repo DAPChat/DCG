@@ -18,9 +18,16 @@ public partial class Card : Node3D
         var cardDescription = GetNode<Label3D>("FrontFace/Description/Description");
         cardDescription.Text = cards[req].Description.ToString();
         var cardStats = GetNode<Label3D>("FrontFace/Description/Stats");
+<<<<<<< Updated upstream
         cardStats.Text = cards[req].ATK.ToString() + " ATK / " + cards[req].HP.ToString() + " HP";
         getImg(cards[req].Image.ToString());
         
+=======
+        cardStats.Text = cards[req].Atk.ToString() + " ATK / " + cards[req].Hp.ToString() + " HP";
+        getImg(cards[req].Img.ToString());
+        Position = pos;
+        Position = new Vector3(Position.X, 0.005f, Position.Z);
+>>>>>>> Stashed changes
         //if (cards[req].Type != null)
         //{
         //    string imageBg;
