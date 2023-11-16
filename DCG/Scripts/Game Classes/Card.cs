@@ -50,6 +50,7 @@ public partial class Card : Node3D
    
 	private Godot.Image getImg(string url)
 	{
+		url = "https://publicfiles.dapchat.repl.co/" + url;
 		HttpRequest request = new HttpRequest();
 		AddChild(request);
 		Godot.Image img = new Godot.Image();

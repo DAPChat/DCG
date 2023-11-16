@@ -43,13 +43,15 @@ public class PacketManager
 
 					case "Card":
 						var card = JsonConvert.DeserializeObject<Main.CardObject>(lt.parameters);
-						
+
+						Main.cardObject = card;
+
 						break;
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"{e.Message}");
+				ServerManager.Print($"{e.Message}");
 			}
 		}
 	}

@@ -13,7 +13,7 @@ public partial class ServerManager : Node
 	{
 		client = new Client();
 
-		// client.Connect();
+		client.Connect();
 
 		return;
 
@@ -50,6 +50,11 @@ public partial class ServerManager : Node
 		}
 
 		idLabel.Text = text;
+	}
+
+	public static void Print(string str)
+	{
+		GD.Print(str);
 	}
 
 	public override void _ExitTree()
