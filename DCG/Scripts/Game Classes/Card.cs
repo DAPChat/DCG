@@ -1,8 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 public partial class Card : Node3D
 {
@@ -12,8 +8,13 @@ public partial class Card : Node3D
 	public Area3D collision;
 	public bool mouse = false;
 
+	public Main.CardObject card;
+	public bool set = false;
+
 	public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
 	{
+		card = cards[req];
+
 		var cardName = GetNode<Label3D>("FrontFace/Name/Name");
 		cardName.Text = cards[req].Name.ToString();
 		var cardRank = GetNode<Label3D>("FrontFace/Name/Rank");
@@ -72,9 +73,14 @@ public partial class Card : Node3D
 	{
 		if (@event is InputEventMouseButton eventMouseButton && eventMouseButton.Pressed && eventMouseButton.ButtonIndex == MouseButton.Left)
 		{
-			if (!mouse) return;
-			
-
+			if (!mouse || set)
+			{
+				CardPrev.card = null;
+				set = false;
+				return;
+			}
+			CardPrev.card = card;
+			set = true;
 		}
 	}
 	public override void _Ready()
