@@ -19,32 +19,39 @@ public class PacketManager
 				switch (lt.type)
 				{
 					case "CSP":
-						var c = JsonConvert.DeserializeObject<CSP>(lt.parameters);
+						var csp= JsonConvert.DeserializeObject<CSP>(lt.parameters);
 
-						client.values["Connection"] = c.Run().ToString();
+						client.values["Connection"] = csp.Run().ToString();
 
 						break;
 
 					case "GSP":
-						var g = JsonConvert.DeserializeObject<GSP>(lt.parameters);
+						var gsp = JsonConvert.DeserializeObject<GSP>(lt.parameters);
 
-						client.gameId = g.gameId;
+						client.gameId = gsp.gameId;
 
-						client.values["Game Id"] =  g.gameId.ToString();
+						client.values["Game Id"] =  gsp.gameId.ToString();
 
 						break;
 
 					case "Player":
-						var p = JsonConvert.DeserializeObject<Player>(lt.parameters);
+						var player = JsonConvert.DeserializeObject<Player>(lt.parameters);
 
-						client.values["Player Id"] = p.id.ToString();
+						client.values["Player Id"] = player.id.ToString();
+
+						break;
+
+					case "Card":
+						var card = JsonConvert.DeserializeObject<Main.CardObject>(lt.parameters);
+
+						Main.cardObject = card;
 
 						break;
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"{e.Message}");
+				ServerManager.Print($"{e.Message}");
 			}
 		}
 	}

@@ -41,6 +41,8 @@ public class Client
 			stream = client.GetStream();
 			buffer = new byte[1028];
 
+			WriteStream(Database.GetCard(0));
+
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}
 

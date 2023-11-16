@@ -223,6 +223,7 @@ skeleton = NodePath("../..")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 9, 10)
+current = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Camera3D"]
 
@@ -252,6 +253,27 @@ theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Hand"
+
+[node name="ChangeView" type="Button" parent="Camera3D/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -151.0
+offset_top = -124.0
+offset_right = -10.0
+offset_bottom = -70.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_dywko")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+text = "Change View"
 
 [node name="Phase" type="Button" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
@@ -334,5 +356,5 @@ offset_bottom = 140.5
 theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
 
 [node name="Camera3D2" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11, 0)
+size = 0.07

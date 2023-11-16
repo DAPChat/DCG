@@ -70,6 +70,8 @@ public class Client
 
 			byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
 
+			//ServerManager.Print(Encoding.ASCII.GetString(buffer));
+
 			if(gameId > 0)
 				stream.BeginWrite(b, 0, b.Length, null, null);
 
