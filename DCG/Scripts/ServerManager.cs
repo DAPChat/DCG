@@ -13,7 +13,7 @@ public partial class ServerManager : Node
 	{
 		client = new Client();
 
-		client.Connect();
+		// client.Connect();
 
 		return;
 

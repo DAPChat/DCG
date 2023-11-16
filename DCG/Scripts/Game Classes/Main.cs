@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using static System.Net.Mime.MediaTypeNames;
 
 public partial class Main : Node3D 
 {
-    public class CardObject
-    {
+	public class CardObject
+	{
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Rank { get; set; }
@@ -22,26 +22,50 @@ public partial class Main : Node3D
 		public string Pack { get; set; }
 		public string CurrentStatus { get; set; }
 	}
-    public void Run ()
-    {
-        List<CardObject> list = new List<CardObject>();
-        list.Add(new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", Atk = 10000, Hp = 10000, Img = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" });
-        
 
-        //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+	private bool CameraView = true;
 
-        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-        var cardPosition = GetNode<MeshInstance3D>("Player1/Spell1").Position;
-        AddChild(thescene);
-        //Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
-        //thescene.SetScript("res://Scripts/Card.cs");
-        //thescene.Call("setCard", [list.ToArray(), 0]);
+	public void Run ()
+	{
 
-        Card c = thescene as Card;
+		Button button = (Button)GetNode("/root/Game/Camera3D/CanvasLayer/Control/ChangeView");
+		Camera3D cam1 = (Camera3D)GetNode("/root/Game/Camera3D");
+		Camera3D cam2 = (Camera3D)GetNode("/root/Game/Camera3D2");
 
-        c.setCard(list.ToArray(), 0, cardPosition);
-        
-    }
+		cam1.MakeCurrent();
+
+		button.ButtonDown += () =>
+		{
+			if (CameraView) 
+			{
+				cam2.MakeCurrent();
+				CameraView = false;
+			}
+			else
+			{
+				cam1.MakeCurrent();
+				CameraView = true;
+			}
+		};
+
+		List<CardObject> list = new List<CardObject>();
+		list.Add(new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", Atk = 10000, Hp = 10000, Img = "https://publicfiles.dapchat.repl.co/dcgtest/reaper.jpg" });
+		
+
+		//var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+
+		var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+		var cardPosition = GetNode<MeshInstance3D>("Player1/Spell1").Position;
+		AddChild(thescene);
+		//Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
+		//thescene.SetScript("res://Scripts/Card.cs");
+		//thescene.Call("setCard", [list.ToArray(), 0]);
+
+		Card c = thescene as Card;
+
+		c.setCard(list.ToArray(), 0, cardPosition);
+		
+	}
 
 	public void CreateCard(CardObject _c)
 	{
@@ -67,7 +91,7 @@ public partial class Main : Node3D
 	}
 
 	public override void _Ready()
-    {
-        Run();
-    }
+	{
+		Run();
+	}
 }
