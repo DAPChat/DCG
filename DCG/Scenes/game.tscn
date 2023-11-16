@@ -310,7 +310,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_27wk7")
 disabled = true
 text = "End Turn"
 
-[node name="PanelContainer" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
+[node name="Player1Pic" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -325,7 +325,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
 
-[node name="PanelContainer2" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
+[node name="Player2Pic" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
 layout_mode = 1
 offset_left = 20.0
 offset_top = 20.0
