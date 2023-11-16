@@ -6,7 +6,7 @@ public class Card
 	public ObjectId Id { get; set; }
 	public string Name { get; set; }
 	public string Rank { get; set; }
-	public int SacrificialValue { get; set; }
+	public double SacrificialValue { get; set; }
 	public int Atk {  get; set; }
 	public int Hp { get; set; }
 	public int Mana { get; set; }

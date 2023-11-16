@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://df4fy3rrrwxnq"]
+[gd_scene load_steps=12 format=3 uid="uid://df4fy3rrrwxnq"]
 
 [ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
 [ext_resource type="Script" path="res://Scripts/Game Classes/Card.cs" id="1_pe65v"]
@@ -28,6 +28,9 @@ heightmap_scale = 0.326
 heightmap_deep_parallax = true
 heightmap_min_layers = 8
 heightmap_max_layers = 32
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nwfo6"]
+size = Vector3(2, 0.5, 3)
 
 [node name="Card" type="Node3D"]
 script = ExtResource("1_pe65v")
@@ -80,3 +83,8 @@ transform = Transform3D(-1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1.5, 0, -
 mesh = SubResource("PlaneMesh_ln1oc")
 skeleton = NodePath("../FrontFace")
 surface_material_override/0 = ExtResource("2_8734q")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_nwfo6")

@@ -9,6 +9,9 @@ public partial class Card : Node3D
 	private const float RayLength = 1000.0f;
 	//when using this you will do var newcard = new Card(dictionary,cardnum)
 
+	public Area3D collision;
+	public bool mouse = false;
+
 	public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
 	{
 		var cardName = GetNode<Label3D>("FrontFace/Name/Name");
@@ -69,11 +72,17 @@ public partial class Card : Node3D
 	{
 		if (@event is InputEventMouseButton eventMouseButton && eventMouseButton.Pressed && eventMouseButton.ButtonIndex == MouseButton.Left)
 		{
-			var camera3D = GetNode<Camera3D>("/root/Game/Camera3D");
-			var from = camera3D.ProjectRayOrigin(eventMouseButton.Position);
-			var to = from + camera3D.ProjectRayNormal(eventMouseButton.Position) * RayLength;
-			GD.Print("sdfg");
+			if (!mouse) return;
+			
+
 		}
+	}
+	public override void _Ready()
+	{
+		collision = (Area3D)GetNode("Area3D");
+
+		collision.MouseEntered += () => { mouse = true; };
+		collision.MouseExited += () => { mouse = false; };
 	}
 }
 
