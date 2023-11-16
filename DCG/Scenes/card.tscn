@@ -69,7 +69,6 @@ font_size = 25
 [node name="Description" type="Label3D" parent="FrontFace/Description"]
 transform = Transform3D(1.00001, 0, 0, 0, -2.18557e-07, 1, 0, -1.25, -1.09278e-08, -0.916419, 0.001, -0.282718)
 outline_modulate = Color(0, 0, 0, 0)
-text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 font_size = 20
 horizontal_alignment = 0
 vertical_alignment = 0

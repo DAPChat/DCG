@@ -8,7 +8,7 @@ public partial class Main : Node3D
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Rank { get; set; }
-		public int SacrificialValue { get; set; }
+		public double SacrificialValue { get; set; }
 		public int Atk { get; set; }
 		public int Hp { get; set; }
 		public int Mana { get; set; }
@@ -48,53 +48,53 @@ public partial class Main : Node3D
 	}
 	public override void _Ready()
 	{
-        Button button = (Button)GetNode("/root/Game/Camera3D/CanvasLayer/Control/ChangeView");
-        Camera3D cam1 = (Camera3D)GetNode("/root/Game/Camera3D");
-        Camera3D cam2 = (Camera3D)GetNode("/root/Game/Camera3D2");
+		Button button = (Button)GetNode("/root/Game/Camera3D/CanvasLayer/Control/ChangeView");
+		Camera3D cam1 = (Camera3D)GetNode("/root/Game/Camera3D");
+		Camera3D cam2 = (Camera3D)GetNode("/root/Game/Camera3D2");
 
-        cam1.MakeCurrent();
+		cam1.MakeCurrent();
 
-        button.ButtonDown += () =>
-        {
-            if (CameraView)
-            {
-                cam2.MakeCurrent();
-                CameraView = false;
-            }
-            else
-            {
-                cam1.MakeCurrent();
-                CameraView = true;
-            }
-        };
+		button.ButtonDown += () =>
+		{
+			if (CameraView)
+			{
+				cam2.MakeCurrent();
+				CameraView = false;
+			}
+			else
+			{
+				cam1.MakeCurrent();
+				CameraView = true;
+			}
+		};
 
-        mesh = GetNode<MeshInstance3D>("Player1/Spell1");
+		mesh = GetNode<MeshInstance3D>("Player1/Spell1");
 		meshPos = mesh.Position;
 
-    }
+	}
 
-    public override void _Process(double delta)
-    {
+	public override void _Process(double delta)
+	{
 		if (cardObject != null)
 		{
-            List<CardObject> list = new List<CardObject>{ cardObject };
+			List<CardObject> list = new List<CardObject>{ cardObject };
 
-            //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+			//var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
 
-            var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-            var cardPosition = meshPos;
-            AddChild(thescene);
-            //Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
-            //thescene.SetScript("res://Scripts/Card.cs");
-            //thescene.Call("setCard", [list.ToArray(), 0]);
+			var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+			var cardPosition = meshPos;
+			AddChild(thescene);
+			//Card cardtest = new(list.ToArray(), 0, thescene.NodePath);
+			//thescene.SetScript("res://Scripts/Card.cs");
+			//thescene.Call("setCard", [list.ToArray(), 0]);
 
-            Card c = thescene as Card;
+			Card c = thescene as Card;
 
-            c.setCard(list.ToArray(), 0, cardPosition);
+			c.setCard(list.ToArray(), 0, cardPosition);
 
 			cardObject = null;
-        }
+		}
 
-        base._Process(delta);
-    }
+		base._Process(delta);
+	}
 }

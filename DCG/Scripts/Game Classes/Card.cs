@@ -6,7 +6,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 public partial class Card : Node3D
 {
-
+	private const float RayLength = 1000.0f;
 	//when using this you will do var newcard = new Card(dictionary,cardnum)
 
 	public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
@@ -65,4 +65,18 @@ public partial class Card : Node3D
 		Error error = request.Request(url);
 		return img;
 	}
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton eventMouseButton && eventMouseButton.Pressed && eventMouseButton.ButtonIndex == MouseButton.Left)
+		{
+			var camera3D = GetNode<Camera3D>("/root/Game/Camera3D");
+			var from = camera3D.ProjectRayOrigin(eventMouseButton.Position);
+			var to = from + camera3D.ProjectRayNormal(eventMouseButton.Position) * RayLength;
+			GD.Print("sdfg");
+		}
+	}
 }
+
+
+
+
