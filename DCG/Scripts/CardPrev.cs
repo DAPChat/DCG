@@ -3,7 +3,7 @@ using System;
 
 public partial class CardPrev : ColorRect
 {
-	public static Main.CardObject card = null;
+	public static GameScene.CardObject card = null;
 
 	private Label name;
 	private Label rank;

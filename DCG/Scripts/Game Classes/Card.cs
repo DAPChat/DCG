@@ -8,10 +8,10 @@ public partial class Card : Node3D
 	public Area3D collision;
 	public bool mouse = false;
 
-	public Main.CardObject card;
+	public GameScene.CardObject card;
 	public bool set = false;
 
-	public void setCard(Main.CardObject[] cards, int req,dynamic pos) //add added child card
+	public void setCard(GameScene.CardObject[] cards, int req,dynamic pos) //add added child card
 	{
 		card = cards[req];
 

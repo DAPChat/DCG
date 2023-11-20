@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class Main : Node3D 
+public partial class GameScene : Node3D 
 {
 	public class CardObject
 	{

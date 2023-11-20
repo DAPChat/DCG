@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxtatqsh1uegg"]
+[gd_scene load_steps=12 format=3 uid="uid://bxtatqsh1uegg"]
 
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_02f83"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="1_566v3"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_ie1ch"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="2_6q5yj"]
@@ -54,10 +55,12 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
 [node name="Main" type="Node"]
+script = ExtResource("1_02f83")
 
 [node name="Home" type="Node2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="Home"]
+visible = false
 
 [node name="Home" type="Control" parent="Home/UI"]
 layout_mode = 3
@@ -67,8 +70,8 @@ offset_bottom = 648.0
 
 [node name="Bg" type="TextureRect" parent="Home/UI/Home"]
 layout_mode = 0
-offset_right = 1150.0
-offset_bottom = 644.0
+offset_right = 1152.0
+offset_bottom = 648.0
 texture = ExtResource("1_ie1ch")
 expand_mode = 1
 stretch_mode = 6
@@ -229,7 +232,6 @@ expand_mode = 1
 [node name="Login" type="Node2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="Login"]
-visible = false
 
 [node name="Login" type="Control" parent="Login/UI"]
 layout_mode = 3
@@ -329,6 +331,27 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
 text = "Login"
+
+[node name="Signup" type="Button" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.5
+offset_top = 178.5
+offset_right = 200.5
+offset_bottom = 238.5
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
+text = "Signup"
 
 [node name="Signup" type="Node2D" parent="."]
 
