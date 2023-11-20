@@ -271,7 +271,7 @@ offset_bottom = 334.5
 theme_override_font_sizes/font_size = 25
 text = "Password"
 
-[node name="Username" type="TextEdit" parent="Login/UI/Login"]
+[node name="Username" type="LineEdit" parent="Login/UI/Login"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -290,7 +290,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Username Here..."
 caret_blink = true
 
-[node name="Password" type="TextEdit" parent="Login/UI/Login"]
+[node name="Password" type="LineEdit" parent="Login/UI/Login"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -351,6 +351,21 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
 text = "Signup"
 
+[node name="Error" type="Label" parent="Login/UI/Login"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.5
+offset_top = -58.0
+offset_right = 181.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Error:"
+
 [node name="Signup" type="Node2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="Signup"]
@@ -403,7 +418,7 @@ offset_bottom = 413.5
 theme_override_font_sizes/font_size = 25
 text = "Confirm Password"
 
-[node name="Username" type="TextEdit" parent="Signup/UI/Signup"]
+[node name="Username" type="LineEdit" parent="Signup/UI/Signup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -422,7 +437,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Username Here..."
 caret_blink = true
 
-[node name="Password" type="TextEdit" parent="Signup/UI/Signup"]
+[node name="Password" type="LineEdit" parent="Signup/UI/Signup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -441,7 +456,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Password Here..."
 caret_blink = true
 
-[node name="ConfirmPassword" type="TextEdit" parent="Signup/UI/Signup"]
+[node name="ConfirmPassword" type="LineEdit" parent="Signup/UI/Signup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

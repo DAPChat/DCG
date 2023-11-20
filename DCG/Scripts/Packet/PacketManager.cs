@@ -53,7 +53,7 @@ public class PacketManager
 
 						if (!login.create)
 						{
-							Main.Retry();
+							Main.Retry(login.error);
 						}
 
 						break;

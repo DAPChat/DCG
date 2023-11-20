@@ -5,6 +5,8 @@
     public string username;
     public string password;
 
+    public string error;
+
     public ACP(bool _create, string _username, string _password)
     {
         create = _create;
@@ -26,6 +28,7 @@
             else
             {
                 create = false;
+                error = "Username already exists";
                 client.tcp.WriteStream(PacketManager.ToJson(this));
             }
         }
@@ -39,6 +42,7 @@
             else
             {
                 create = false;
+                error = "Username or Password is incorrect";
                 client.tcp.WriteStream(PacketManager.ToJson(this));
             }
         }

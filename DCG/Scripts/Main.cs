@@ -4,12 +4,12 @@ using System;
 public partial class Main : Node
 {
 
-	static TextEdit LUsername;
-    static TextEdit LPassword;
+	static LineEdit LUsername;
+    static LineEdit LPassword;
 
-	static TextEdit SUsername;
-	static TextEdit SPassword;
-	static TextEdit SCPassword;
+	static LineEdit SUsername;
+	static LineEdit SPassword;
+	static LineEdit SCPassword;
 
 	static Button LButton;
 	static Button LSButton;
@@ -20,15 +20,17 @@ public partial class Main : Node
 	static CanvasLayer SignupLayer;
 	static CanvasLayer HomeLayer;
 
+	static Label LError;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		LUsername = (TextEdit)GetNode("Login/UI/Login/Username");
-		LPassword = (TextEdit)GetNode("Login/UI/Login/Password");
+		LUsername = (LineEdit)GetNode("Login/UI/Login/Username");
+		LPassword = (LineEdit)GetNode("Login/UI/Login/Password");
 
-		SUsername = (TextEdit)GetNode("Signup/UI/Signup/Username");
-		SPassword = (TextEdit)GetNode("Signup/UI/Signup/Password");
-		SCPassword = (TextEdit)GetNode("Signup/UI/Signup/ConfirmPassword");
+		SUsername = (LineEdit)GetNode("Signup/UI/Signup/Username");
+		SPassword = (LineEdit)GetNode("Signup/UI/Signup/Password");
+		SCPassword = (LineEdit)GetNode("Signup/UI/Signup/ConfirmPassword");
 
 		LButton = (Button)GetNode("Login/UI/Login/Login");
 		LSButton = (Button)GetNode("Login/UI/Login/Signup");
@@ -39,6 +41,8 @@ public partial class Main : Node
 		SignupLayer = (CanvasLayer)GetNode("Signup/UI");
 		HomeLayer = (CanvasLayer)GetNode("Home/UI");
 
+		LError = (Label)GetNode("Login/UI/Login/Error");
+
 		LButton.Pressed += () => Login();
 		LSButton.Pressed += () => LSignup();
 		SButton.Pressed += () => Signup();
@@ -46,6 +50,7 @@ public partial class Main : Node
 		LoginLayer.Show();
 		HomeLayer.Hide();
 		SignupLayer.Hide();
+		LError.Hide();
 	}
 
 	public void Login()
@@ -61,7 +66,8 @@ public partial class Main : Node
 		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
 
 		LoginLayer.Hide();
-		HomeLayer.Show();
+        LError.Hide();
+        HomeLayer.Show();
 	}
 
 	public void LSignup()
@@ -73,7 +79,7 @@ public partial class Main : Node
 		SUsername.Text = username;
 
 		LoginLayer.Hide();
-		SignupLayer.Show();
+        SignupLayer.Show();
     }
 
 	public void Signup()
@@ -87,14 +93,18 @@ public partial class Main : Node
 		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
 
         SignupLayer.Hide();
-		HomeLayer.Show();
+        LError.Hide();
+        HomeLayer.Show();
 	}
 
-	public static void Retry()
+	public static void Retry(string error)
 	{
 		SignupLayer.CallDeferred(CanvasLayer.MethodName.Hide);
 		HomeLayer.CallDeferred(CanvasLayer.MethodName.Hide);
 		LoginLayer.CallDeferred(CanvasLayer.MethodName.Show);
+
+		LError.CallDeferred(CanvasItem.MethodName.Show);
+		LError.CallDeferred(LineEdit.MethodName.SetText, error);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

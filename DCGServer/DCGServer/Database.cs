@@ -74,8 +74,6 @@ public class Database
 			}
 		}
 
-		Console.WriteLine("User, {0}, failed to login!", username);
-
 		return false;
     }
 }
