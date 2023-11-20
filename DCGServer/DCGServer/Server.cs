@@ -22,7 +22,7 @@ class Server
 	{
 		Console.Write("Starting Server...");
 
-		tcpListener = new TcpListener(IPAddress.Any, 5001);
+		tcpListener = new TcpListener(IPAddress.Any, 60606);
 
 		// Starts server and looks for incoming clients
 		tcpListener.Start();
