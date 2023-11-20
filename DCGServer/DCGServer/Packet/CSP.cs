@@ -1,6 +1,4 @@
-﻿
-
-public class CSP : Packet
+﻿public class CSP : Packet
 {
     public DateTime time;
 

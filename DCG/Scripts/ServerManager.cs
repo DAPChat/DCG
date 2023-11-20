@@ -3,7 +3,7 @@ using System.Linq;
 
 public partial class ServerManager : Node
 {
-	Client client;
+	public static Client client;
 
 	public override void _Ready()
 	{

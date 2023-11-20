@@ -41,7 +41,13 @@ public class Client
 		}
 	}
 
-	private void ConnectCallback(IAsyncResult result)
+    public void WriteStream(byte[] _msg)
+    {
+        // Write the message to the stream to the correct client
+        stream.BeginWrite(_msg, 0, _msg.Length, null, null);
+    }
+
+    private void ConnectCallback(IAsyncResult result)
 	{
 		client.EndConnect(result);
 

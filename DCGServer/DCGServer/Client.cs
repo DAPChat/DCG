@@ -72,6 +72,7 @@ public class Client
 				}
 
 				if (instance.gameId != 0) Server.games[instance.gameId].Manage((byte[])buffer.Clone(), id);
+				else PacketManager.Decode(buffer, instance);
 
 				buffer = new byte[buffer.Length];
 

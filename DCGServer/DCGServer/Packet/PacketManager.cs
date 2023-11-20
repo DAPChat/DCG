@@ -4,7 +4,7 @@ using System.Text;
 
 public class PacketManager
 {
-	public void Decode(byte[] _data, Client client)
+	public static void Decode(byte[] _data, Client client)
 	{
 		string[] dataList = Encoding.ASCII.GetString(_data).Split("[Packet]");
 
@@ -24,6 +24,12 @@ public class PacketManager
 						c.Run(client);
 						break;
 
+					case "ACP":
+						var login = JsonConvert.DeserializeObject<ACP>(lt.parameters);
+
+						login.Run(client);
+						
+						break;
 				}
 			}
 			catch (Exception e)

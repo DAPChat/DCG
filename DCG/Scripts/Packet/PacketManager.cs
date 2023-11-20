@@ -42,9 +42,19 @@ public class PacketManager
 						break;
 
 					case "Card":
-						var card = JsonConvert.DeserializeObject<Main.CardObject>(lt.parameters);
+						var card = JsonConvert.DeserializeObject<GameScene.CardObject>(lt.parameters);
 
-						Main.cardObject = card;
+						GameScene.cardObject = card;
+
+						break;
+
+					case "ACP":
+						var login = JsonConvert.DeserializeObject<ACP>(lt.parameters);
+
+						if (!login.create)
+						{
+							Main.Retry();
+						}
 
 						break;
 				}
@@ -56,7 +66,17 @@ public class PacketManager
 		}
 	}
 
-	public static byte[] ToBytes(int i)
+    public static byte[] ToJson(object json)
+    {
+        LoadType loadType = new LoadType();
+
+        loadType.parameters = JsonConvert.SerializeObject(json);
+        loadType.type = json.GetType().Name;
+
+        return ToBytes("[Packet]" + JsonConvert.SerializeObject(loadType));
+    }
+
+    public static byte[] ToBytes(int i)
 	{
 		return Encoding.ASCII.GetBytes(i.ToString());
 	}

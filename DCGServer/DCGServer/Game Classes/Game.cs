@@ -91,9 +91,7 @@ public class Game
 	{
 		if (!active) return;
 
-		PacketManager packetManager = new PacketManager();
-
-		packetManager.Decode(data, clients[_clientId]);
+		PacketManager.Decode(data, clients[_clientId]);
 
 		foreach (int i in clientIds)
 		{

@@ -13,7 +13,7 @@ public class Database
 			client = new MongoClient(connectionUri);
 
 		var result = client.GetDatabase("DCG").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-		Console.WriteLine("Pinged your deployment. You successfully connected to MongoDB!");
+		Console.WriteLine("Connected to Database!");
 	}
 
 
@@ -32,4 +32,50 @@ public class Database
 
 		return PacketManager.ToJson(card);
 	}
+
+	public static bool CheckAvailableAcc(string username)
+	{
+		var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+		var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.username, username);
+
+		var result = collection.Find(filter).ToList();
+
+		if (result.Count != 0) return false;
+
+		return true;
+	}
+
+	public static void AddAcc(string username, string password)
+	{
+        var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+        collection.InsertOne(new PlayerAccount(username, password));
+
+		Console.WriteLine("Created new account with the username {0}", username);
+    }
+
+	public static bool VerifyAcc(string username, string password)
+	{
+        var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+        var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.username, username);
+
+        var result = collection.Find(filter).ToList();
+
+		if (result.Count == 0) return false;
+
+		if (result.First().username == username)
+		{
+			if(result.First().password == password)
+			{
+				Console.WriteLine("User, {0}, successfully logged in!", username);
+				return true;
+			}
+		}
+
+		Console.WriteLine("User, {0}, failed to login!", username);
+
+		return false;
+    }
 }
