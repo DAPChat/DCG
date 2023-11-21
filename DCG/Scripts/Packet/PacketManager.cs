@@ -19,9 +19,7 @@ public class PacketManager
 				switch (lt.type)
 				{
 					case "CSP":
-						var csp= JsonConvert.DeserializeObject<CSP>(lt.parameters);
-
-						client.values["Connection"] = csp.Run().ToString();
+						var csp = JsonConvert.DeserializeObject<CSP>(lt.parameters);
 
 						break;
 
@@ -30,14 +28,10 @@ public class PacketManager
 
 						client.gameId = gsp.gameId;
 
-						client.values["Game Id"] =  gsp.gameId.ToString();
-
 						break;
 
 					case "Player":
 						var player = JsonConvert.DeserializeObject<Player>(lt.parameters);
-
-						client.values["Player Id"] = player.id.ToString();
 
 						break;
 
@@ -54,6 +48,10 @@ public class PacketManager
 						if (!login.create)
 						{
 							Main.Retry(login.error);
+						}
+						else
+						{
+							Main.Success();
 						}
 
 						break;

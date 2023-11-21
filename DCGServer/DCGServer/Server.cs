@@ -16,7 +16,9 @@ class Server
 	// Active games and their ids
     public static Dictionary<int, Game> games = new Dictionary<int, Game>();
 	// Players queued to join a game
-	public static Dictionary<int, Client> tempClient = new Dictionary<int, Client>();
+	public static Dictionary<int, Client> queue = new Dictionary<int, Client>();
+
+	public static List<Client> clients = new List<Client>();
 
 	public static void Start()
 	{
@@ -55,45 +57,63 @@ class Server
 		// On connection, increase playercount
 		playerCount++;
 
-		int _currentClientId = 1;
+        int _id = 1;
 
-		// Create a unique id for the player
-		while(ids.Contains(_currentClientId))
-		{
-			_currentClientId++;
-		}
+        // Create a unique id for the player
+        while (ids.Contains(_id))
+        {
+            _id++;
+        }
 
-		ids.Add(_currentClientId);
-		tempClient.Add(_currentClientId, new Client(_currentClientId));
+        ids.Add(_id);
+        clients.Add(new Client(_id));
 
-		// Tell the client to connect to player
-		tempClient[_currentClientId].tcp.Connect(_client);
+        Console.WriteLine($"Client connected with id: {_id}, {playerCount} player(s) online!");
 
-		Player p = new(_currentClientId);
-
-		byte[] msg = PacketManager.ToJson(p);
-
-		tempClient[_currentClientId].tcp.WriteStream(msg);
-
-		Console.WriteLine($"Client connected with id: {_currentClientId}, {playerCount} player(s) online!");
-
-		// Check if there is an available player to join game
-		CheckMatch();
+        clients.Last().tcp.Connect(_client);
 
 		// Listen for new player
 		tcpListener.BeginAcceptTcpClient(ClientAcceptCallback, null);
 	}
 
-	private static void CheckMatch()
+    /*
+	 int _currentClientId = 1;
+
+	// Create a unique id for the player
+	while(ids.Contains(_currentClientId))
+	{
+		_currentClientId++;
+	}
+
+	ids.Add(_currentClientId);
+	tempClient.Add(_currentClientId, new Client(_currentClientId));
+
+	// Tell the client to connect to player
+	tempClient[_currentClientId].tcp.Connect(_client);
+
+	Player p = new(_currentClientId);
+
+	byte[] msg = PacketManager.ToJson(p);
+
+	tempClient[_currentClientId].tcp.WriteStream(msg);
+
+	Console.WriteLine($"Client connected with id: {_currentClientId}, {playerCount} player(s) online!");
+
+	// Check if there is an available player to join game
+	CheckMatch();
+	 
+	 */
+
+    private static void CheckMatch()
 	{
 		// Check if there are enough players to create a game (2)
 		// Create a new match and add the clients to the game if possible
-		if (tempClient.Count >= 2)
+		if (queue.Count >= 2)
 		{
 			// Create unique game id
 			int gameId = 1;
 
-			while(games.ContainsKey(gameId))
+			while (games.ContainsKey(gameId))
 			{
 				gameId++;
 			}
@@ -102,8 +122,8 @@ class Server
 
 			for (int i = 0; i < 2; i++)
 			{
-				clientsToAdd.Add(tempClient.First().Value);
-				tempClient.Remove(tempClient.First().Key);
+				clientsToAdd.Add(queue.First().Value);
+				queue.Remove(queue.First().Key);
 			}
 
 			// Create a new game and add the clients
@@ -129,28 +149,36 @@ class Server
 
 		_client.tcp.WriteStream(PacketManager.ToJson(gsp));
 
-		tempClient.Add(_id, _client);
+		queue.Add(_id, _client);
 
-		Console.WriteLine("Client Added To Queue! Id: {0}", _id);
+        Console.WriteLine("Client Added To Queue! Id: {0}", _id);
 
 		CheckMatch();
 	}
 
-	public static void RemoveGame(int _gameId)
+    public static void RemoveGame(int _gameId)
 	{
 		games.Remove(_gameId);
 	}
 
-	public static void Disconnect(int id)
+	public static void Disconnect(int id, int gameId, Client _client)
 	{
 		// Remove the client from the server if they are not in game
 		// Free up the id from the server
 		ids.Remove(id);
-		tempClient[id].tcp.Disconnect();
-		tempClient.Remove(id);
+
+		if (queue.ContainsKey(id))
+		{
+			queue[id].tcp.Disconnect();
+			queue.Remove(id);
+		}
+		else
+		{
+			clients.Remove(_client);
+		}
 
 		playerCount--;
 
-		Console.WriteLine($"Disconnected from client with id: {id}, {playerCount} player(s) remain!");
+        Console.WriteLine($"Disconnected from client with id: {id}, {playerCount} player(s) remain!");
 	}
 }

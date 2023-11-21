@@ -65,7 +65,7 @@ public class Client
 					// Disconnects from server if not in game
 					// Disconnect from game if in game
 					if (instance.gameId == 0)
-						Server.Disconnect(id);
+						Server.Disconnect(id, instance.gameId, instance);
 					else
 						Server.games[instance.gameId].LeaveGame(id);
 					return;
@@ -83,7 +83,7 @@ public class Client
 				Console.WriteLine(e.TargetSite);
 
 				if (instance.gameId == 0)
-					Server.Disconnect(id);
+					Server.Disconnect(id, instance.gameId, instance);
 				else
 					Server.games[instance.gameId].LeaveGame(id);
 			}

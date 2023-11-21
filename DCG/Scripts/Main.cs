@@ -16,6 +16,8 @@ public partial class Main : Node
 	
 	static Button SButton;
 
+	static Button PButton;
+
 	static CanvasLayer LoginLayer;
 	static CanvasLayer SignupLayer;
 	static CanvasLayer HomeLayer;
@@ -37,6 +39,8 @@ public partial class Main : Node
 
 		SButton = (Button)GetNode("Signup/UI/Signup/Signup");
 
+		PButton = (Button)GetNode("Home/UI/Home/Play");
+
 		LoginLayer = (CanvasLayer)GetNode("Login/UI");
 		SignupLayer = (CanvasLayer)GetNode("Signup/UI");
 		HomeLayer = (CanvasLayer)GetNode("Home/UI");
@@ -46,6 +50,12 @@ public partial class Main : Node
 		LButton.Pressed += () => Login();
 		LSButton.Pressed += () => LSignup();
 		SButton.Pressed += () => Signup();
+		PButton.Pressed += () =>
+		{
+			ServerManager.client.WriteStream(PacketManager.ToJson(new CSP()));
+
+			GetTree().ChangeSceneToFile("res://Scenes/game.tscn");
+		};
 
 		LoginLayer.Show();
 		HomeLayer.Hide();
@@ -64,10 +74,6 @@ public partial class Main : Node
 		}
 
 		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
-
-		LoginLayer.Hide();
-        LError.Hide();
-        HomeLayer.Show();
 	}
 
 	public void LSignup()
@@ -91,10 +97,6 @@ public partial class Main : Node
 		if (password != cPassword) return;
 
 		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
-
-        SignupLayer.Hide();
-        LError.Hide();
-        HomeLayer.Show();
 	}
 
 	public static void Retry(string error)
@@ -106,6 +108,15 @@ public partial class Main : Node
 		LError.CallDeferred(CanvasItem.MethodName.Show);
 		LError.CallDeferred(LineEdit.MethodName.SetText, error);
 	}
+
+	public static void Success()
+	{
+        SignupLayer.CallDeferred(CanvasLayer.MethodName.Hide);
+        HomeLayer.CallDeferred(CanvasLayer.MethodName.Show);
+        LoginLayer.CallDeferred(CanvasLayer.MethodName.Hide);
+
+        LError.CallDeferred(CanvasItem.MethodName.Hide);
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

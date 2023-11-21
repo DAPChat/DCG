@@ -9,7 +9,7 @@ public class Client
 {
 	public TcpClient client = null;
 
-	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("96.241.120.101"), 60606);
 
 	private NetworkStream stream = null;
 	private byte[] buffer = new byte[1028];
@@ -74,12 +74,10 @@ public class Client
 
 			PacketManager.Decode(buffer, this);
 
-			byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
+			//byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
 
-			//ServerManager.Print(Encoding.ASCII.GetString(buffer));
-
-			if(gameId > 0)
-				stream.BeginWrite(b, 0, b.Length, null, null);
+			//if(gameId > 0)
+			//	stream.BeginWrite(b, 0, b.Length, null, null);
 
 			buffer = new byte[buffer.Length];
 

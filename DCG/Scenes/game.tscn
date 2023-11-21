@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://dektufe3c6aw"]
 
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_hrbee"]
+[ext_resource type="Script" path="res://Scripts/Game Classes/GameScene.cs" id="1_18285"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="3_dywko"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="4_adb5o"]
@@ -51,7 +51,7 @@ corner_radius_bottom_left = 10
 texture = ExtResource("4_adb5o")
 
 [node name="Game" type="Node3D"]
-script = ExtResource("1_hrbee")
+script = ExtResource("1_18285")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 0)

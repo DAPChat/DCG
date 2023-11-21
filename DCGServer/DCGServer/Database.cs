@@ -13,7 +13,8 @@ public class Database
 			client = new MongoClient(connectionUri);
 
 		var result = client.GetDatabase("DCG").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-		Console.WriteLine("Connected to Database!");
+
+        Console.WriteLine("Connected to Database!");
 	}
 
 
@@ -52,7 +53,7 @@ public class Database
 
         collection.InsertOne(new PlayerAccount(username, password));
 
-		Console.WriteLine("Created new account with the username {0}", username);
+        Console.WriteLine("Created new account with the username {0}", username);
     }
 
 	public static bool VerifyAcc(string username, string password)
@@ -69,7 +70,7 @@ public class Database
 		{
 			if(result.First().password == password)
 			{
-				Console.WriteLine("User, {0}, successfully logged in!", username);
+                Console.WriteLine("User, {0}, successfully logged in!", username);
 				return true;
 			}
 		}

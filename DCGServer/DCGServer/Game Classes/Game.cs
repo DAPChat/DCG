@@ -93,13 +93,13 @@ public class Game
 
 		PacketManager.Decode(data, clients[_clientId]);
 
-		foreach (int i in clientIds)
-		{
-			if (i != _clientId)
-			{
-				clients[i].tcp.WriteStream(data);
-			}
-		}
+		//foreach (int i in clientIds)
+		//{
+		//	if (i != _clientId)
+		//	{
+		//		clients[i].tcp.WriteStream(data);
+		//	}
+		//}
 	}
 
 	public void LeaveGame(int _clientId)
