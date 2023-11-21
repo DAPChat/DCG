@@ -25,6 +25,7 @@ public partial class GameScene : Node3D
 	Vector3 meshPos;
 
 	public static CardObject cardObject = null;
+	public static bool changeScene = false;
 
 	public void Run ()
 	{
@@ -88,6 +89,12 @@ public partial class GameScene : Node3D
 
 			cardObject = null;
 		}
+
+		if (changeScene)
+		{
+            GetTree().ChangeSceneToFile("res://Scenes/main.tscn");
+			changeScene = false;
+        }
 
 		base._Process(delta);
 	}

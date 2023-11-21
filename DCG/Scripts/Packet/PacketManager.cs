@@ -26,7 +26,16 @@ public class PacketManager
 					case "GSP":
 						var gsp = JsonConvert.DeserializeObject<GSP>(lt.parameters);
 
-						client.gameId = gsp.gameId;
+						if (client.gameId != gsp.gameId)
+						{
+							client.gameId = gsp.gameId;
+							Main.inGame = !Main.inGame ? true : false;
+
+							if (!Main.inGame)
+							{
+								GameScene.changeScene = true;
+							}
+                        }
 
 						break;
 

@@ -24,6 +24,9 @@ public partial class Main : Node
 
 	static Label LError;
 
+	public static bool inGame = false;
+	static bool lastSetting = false;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -54,7 +57,8 @@ public partial class Main : Node
 		{
 			ServerManager.client.WriteStream(PacketManager.ToJson(new CSP()));
 
-			GetTree().ChangeSceneToFile("res://Scenes/game.tscn");
+			PButton.SetDeferred(Button.PropertyName.Text, "Queued...");
+			PButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 		};
 
 		LoginLayer.Show();
@@ -73,7 +77,9 @@ public partial class Main : Node
 			return;
 		}
 
-		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
+        LButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
+
+        ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
 	}
 
 	public void LSignup()
@@ -96,7 +102,9 @@ public partial class Main : Node
 
 		if (password != cPassword) return;
 
-		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
+        SButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
+
+        ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
 	}
 
 	public static void Retry(string error)
@@ -107,19 +115,35 @@ public partial class Main : Node
 
 		LError.CallDeferred(CanvasItem.MethodName.Show);
 		LError.CallDeferred(LineEdit.MethodName.SetText, error);
-	}
 
-	public static void Success()
+        SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+        SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+    }
+
+    public static void Success()
 	{
         SignupLayer.CallDeferred(CanvasLayer.MethodName.Hide);
         HomeLayer.CallDeferred(CanvasLayer.MethodName.Show);
         LoginLayer.CallDeferred(CanvasLayer.MethodName.Hide);
 
         LError.CallDeferred(CanvasItem.MethodName.Hide);
+
+		LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+		SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (lastSetting = inGame)
+			if (inGame)
+			{
+				GetTree().ChangeSceneToFile("res://Scenes/game.tscn");
+				lastSetting = inGame;
+			}
+			else
+			{
+				lastSetting = inGame;
+			}
 	}
 }

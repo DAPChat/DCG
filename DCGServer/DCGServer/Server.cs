@@ -156,6 +156,19 @@ class Server
 		CheckMatch();
 	}
 
+	public static void KeepConnect(Client _client)
+	{
+        _client.gameId = 0;
+
+        GSP gsp = new();
+        gsp.gameId = 0;
+        gsp.senderId = _client.id;
+
+        _client.tcp.WriteStream(PacketManager.ToJson(gsp));
+
+        Server.clients.Add(_client);
+    }
+
     public static void RemoveGame(int _gameId)
 	{
 		games.Remove(_gameId);

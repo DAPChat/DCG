@@ -116,7 +116,7 @@ public class Game
 
 		if (clients.Count < 1) return;
 
-		Server.Queue(clients.First().Key, clients.First().Value);
+		Server.KeepConnect(clients.Values.First());
 
 		Server.RemoveGame(id);
 	}
