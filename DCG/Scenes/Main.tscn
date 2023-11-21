@@ -307,6 +307,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Password Here..."
+secret = true
 caret_blink = true
 
 [node name="Login" type="Button" parent="Login/UI/Login"]
@@ -454,6 +455,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Password Here..."
+secret = true
 caret_blink = true
 
 [node name="ConfirmPassword" type="LineEdit" parent="Signup/UI/Signup"]
@@ -473,6 +475,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Confirm Password Here..."
+secret = true
 caret_blink = true
 
 [node name="Signup" type="Button" parent="Signup/UI/Signup"]

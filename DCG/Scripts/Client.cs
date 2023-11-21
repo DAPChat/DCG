@@ -9,7 +9,7 @@ public class Client
 {
 	public TcpClient client = null;
 
-	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("96.241.120.101"), 60606);
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
 
 	private NetworkStream stream = null;
 	private byte[] buffer = new byte[1028];
