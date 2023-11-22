@@ -81,9 +81,6 @@ public class Client
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 			}catch (Exception e)
 			{
-				Console.WriteLine(e.Message);
-				Console.WriteLine(e.TargetSite);
-
 				if (instance.gameId == 0)
 					Server.Disconnect(id, instance.gameId, instance);
 				else

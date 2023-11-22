@@ -42,13 +42,19 @@ public class Database
 
 		var result = collection.Find(filter).ToList();
 
-		if (result.Count != 0) return false;
+		if (result.Count != 0)
+		{
+			return false;
+		}
 
 		return true;
 	}
 
-	public static PlayerAccount AddAcc(string username, string password, Client _client)
+	public static PlayerAccount AddAcc(ACP account, Client _client)
 	{
+		string username = account.username;
+		string password = account.password;
+
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
 		PlayerAccount newAccount = new(username, password);
@@ -57,33 +63,45 @@ public class Database
 
         Console.WriteLine("Created new account with the username {0}", username);
 
-		return VerifyAcc(username, password, _client);
+		return VerifyAcc(account, _client);
     }
 
-	public static PlayerAccount VerifyAcc(string username, string password, Client _client)
+	public static PlayerAccount VerifyAcc(ACP account, Client _client)
 	{
+		string username = account.username;
+		string password = account.password;
+
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
         var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.username, username);
 
         var result = collection.Find(filter).ToList();
 
-		if (result.Count == 0) return null;
+		if (result.Count == 0)
+		{
+			account.error = "Account does not exist";
+			return null;
+		}
 
 		if (result.First().username == username)
 		{
-			if(result.First().password == password)
+			if (result.First().password == password)
 			{
-				if (result.First().loggedIn) return null;
+				if (result.First().loggedIn)
+				{
+					account.error = "This account is already in use elsewhere";
+					return null;
+				}
 
-                Console.WriteLine("User, {0}, successfully logged in!", username);
+				Console.WriteLine("User, {0}, successfully logged in!", username);
 				_client.Login(result.First());
 
-                var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, true);
-                var updateResult = collection.UpdateOne(filter, update);
+				var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, true);
+				var updateResult = collection.UpdateOne(filter, update);
 
-                return result.First();
+				return result.First();
 			}
+			else account.error = "Incorrect password";
 		}
 
 		return null;
