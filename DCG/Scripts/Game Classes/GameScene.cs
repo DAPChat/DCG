@@ -24,26 +24,23 @@ public partial class GameScene : Node3D
 	MeshInstance3D mesh;
 	Vector3 meshPos;
 
-	public static CardObject cardObject = null;
 	public static bool changeScene = false;
 
-	public void Run ()
+	public void PlaceCard(CAP action)
 	{
-		List<CardObject> list = new List<CardObject>();
-		list.Add(new CardObject { Name = "random", Rank = "S", Description = "akdsjfhlaksdfh", Type = "Spell", Atk = 10000, Hp = 10000, Img = "dcgtest/reaper.jpg" });
-		
+		List<CardObject> list = new List<CardObject>() { action.card };
 
-		//var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+        //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
 
-		var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-		var cardPosition = GetNode<MeshInstance3D>("Player1/Spell1").Position;
-		AddChild(thescene);
+        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+        var cardPosition = GetNode<MeshInstance3D>("Player1/" + action.card.Type + action.slot.ToString()).Position;
+        AddChild(thescene);
 
-		Card c = thescene as Card;
+        Card c = thescene as Card;
 
-		c.setCard(list.ToArray(), 0, cardPosition);
-		
-	}
+        c.setCard(list.ToArray(), 0, cardPosition);
+    }
+
 	public override void _Ready()
 	{
 		Button button = (Button)GetNode("/root/Game/Camera3D/CanvasLayer/Control/ChangeView");
@@ -73,23 +70,6 @@ public partial class GameScene : Node3D
 
 	public override void _Process(double delta)
 	{
-		if (cardObject != null)
-		{
-			List<CardObject> list = new List<CardObject>{ cardObject };
-
-			//var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
-
-			var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-			var cardPosition = meshPos;
-			AddChild(thescene);
-
-			Card c = thescene as Card;
-
-			c.setCard(list.ToArray(), 0, cardPosition);
-
-			cardObject = null;
-		}
-
 		if (changeScene)
 		{
             GetTree().ChangeSceneToFile("res://Scenes/main.tscn");
