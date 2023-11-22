@@ -19,11 +19,22 @@ public partial class GameScene : Node3D
 		public string CurrentStatus { get; set; }
 	}
 
-	private bool CameraView = true;
+	static bool CameraView = false;
+	static Camera3D curCamera = null;
 
-	MeshInstance3D mesh;
-	Vector3 meshPos;
+	static Vector3 cam1Pos = new(0, 9, 10);
+	static Vector3 cam2Pos = new(0, 10, 0);
+	static Vector3 cam1Rot = new(-45, 0, 0);
+	static Vector3 cam2Rot = new(-90, 0, 0);
+	static RichTextLabel description;
 
+	static Vector3 camPos = new();
+	static Vector3 camRot;
+
+	static Tween rotTween;
+	static Tween posTween;
+
+    public static CardObject cardObject = null;
 	public static bool changeScene = false;
 
 	public void PlaceCard(CAP action)
@@ -33,46 +44,102 @@ public partial class GameScene : Node3D
         //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
 
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
-        var cardPosition = GetNode<MeshInstance3D>("Player1/" + action.card.Type + action.slot.ToString()).Position;
+
+		string slot = action.card.Type.Contains("Spell") ? "Spell" : "Slot";
+
+        var cardGlobalPosition = GetNode<MeshInstance3D>("Player1/" + slot + action.slot.ToString()).GlobalPosition;
+
         AddChild(thescene);
 
         Card c = thescene as Card;
 
-        c.setCard(list.ToArray(), 0, cardPosition);
+        c.setCard(action.card, cardGlobalPosition);
+    }
+
+	public static void ViewCard(Vector3 cardPos, CardObject card, Label3D node)
+	{
+        //curCamera.RotationDegrees = new Vector3(-90, 0, 0);
+        //curCamera.GlobalPosition = new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z);
+
+        rotTween = curCamera.CreateTween();
+        posTween = curCamera.CreateTween();
+
+		rotTween.Finished += () =>
+		{
+			description.Show();
+			node.Hide();
+		};
+
+        rotTween.TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,0,0), 1);
+		posTween.TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), 1);
+
+		description.Text = card.Description;
+	}
+
+	public static void ReturnView()
+	{
+        rotTween = curCamera.CreateTween();
+        posTween = curCamera.CreateTween();
+
+		description.Hide();
+
+		if (!CameraView)
+        {
+            rotTween.TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
+            posTween.TweenProperty(curCamera, "global_position", cam1Pos, 1);
+        }
+        else
+        {
+            rotTween.TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
+            posTween.TweenProperty(curCamera, "global_position", cam2Pos, 1);
+        }
     }
 
 	public override void _Ready()
 	{
-		Button button = (Button)GetNode("/root/Game/Camera3D/CanvasLayer/Control/ChangeView");
-		Camera3D cam1 = (Camera3D)GetNode("/root/Game/Camera3D");
-		Camera3D cam2 = (Camera3D)GetNode("/root/Game/Camera3D2");
+		Button button = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
+		description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
 
-		cam1.MakeCurrent();
+        curCamera = new Camera3D();
+
+		AddChild(curCamera);
+
+        curCamera.GlobalPosition = cam1Pos;
+		curCamera.RotationDegrees = cam1Rot;
+
+        curCamera.MakeCurrent();
 
 		button.ButtonDown += () =>
 		{
-			if (CameraView)
-			{
-				cam2.MakeCurrent();
+            rotTween = curCamera.CreateTween();
+            posTween = curCamera.CreateTween();
+
+            if (CameraView)
+            {
+                rotTween.TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
+                posTween.TweenProperty(curCamera, "global_position", cam1Pos, 1);
 				CameraView = false;
-			}
-			else
-			{
-				cam1.MakeCurrent();
+            }
+            else
+            {
+                rotTween.TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
+                posTween.TweenProperty(curCamera, "global_position", cam2Pos, 1);
 				CameraView = true;
-			}
-		};
-
-		mesh = GetNode<MeshInstance3D>("Player1/Spell1");
-		meshPos = mesh.Position;
-
+            }
+        };
 	}
 
 	public override void _Process(double delta)
 	{
+		if(cardObject != null)
+		{
+			PlaceCard(new CAP { card = cardObject, slot = 1 });
+			cardObject = null;
+		}
+
 		if (changeScene)
 		{
-            GetTree().ChangeSceneToFile("res://Scenes/main.tscn");
+            GetTree().ChangeSceneToFile("res://Scenes/Main.tscn");
 			changeScene = false;
         }
 

@@ -114,7 +114,11 @@ public class Game
 
 		Console.WriteLine("Client Removed! With ID {0} on server {1}, {2} player(s) remain!", _clientId, id, Server.playerCount);
 
-		if (clients.Count < 1) return;
+		if (clients.Count < 1)
+		{
+			Close();
+			return;
+		}
 
 		Server.KeepConnect(clients.Values.First());
 

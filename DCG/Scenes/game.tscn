@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=14 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/GameScene.cs" id="1_18285"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="3_dywko"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="4_adb5o"]
-[ext_resource type="Script" path="res://Scripts/CardPrev.cs" id="5_6m6ve"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4cm6"]
 transparency = 1
@@ -222,19 +221,15 @@ material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 9, 10)
-current = true
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D"]
-
-[node name="Control" type="Control" parent="Camera3D/CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1151.0
 offset_bottom = 648.0
 
-[node name="Hand" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="Hand" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -255,7 +250,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Hand"
 
-[node name="ChangeView" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="ChangeView" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -276,7 +271,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Change View"
 
-[node name="Phase" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="Phase" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -294,7 +289,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Game Phase"
 
-[node name="Surrender" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="Surrender" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -312,7 +307,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_e8216")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Surrender"
 
-[node name="EndTurn" type="Button" parent="Camera3D/CanvasLayer/Control"]
+[node name="EndTurn" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -333,7 +328,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_27wk7")
 disabled = true
 text = "End Turn"
 
-[node name="Player1Pic" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
+[node name="Player1Pic" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -348,7 +343,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
 
-[node name="Player2Pic" type="PanelContainer" parent="Camera3D/CanvasLayer/Control"]
+[node name="Player2Pic" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
 offset_left = 20.0
 offset_top = 20.0
@@ -356,71 +351,10 @@ offset_right = 140.5
 offset_bottom = 140.5
 theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
 
-[node name="CardPrev" type="ColorRect" parent="Camera3D/CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -249.5
-offset_right = 250.5
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-script = ExtResource("5_6m6ve")
-
-[node name="Name" type="Label" parent="Camera3D/CanvasLayer/Control/CardPrev"]
-layout_mode = 1
-offset_left = 14.0
-offset_top = 41.0
-offset_right = 406.0
-offset_bottom = 126.0
-theme_override_font_sizes/font_size = 59
-text = "Yellow Slime"
-clip_text = true
-text_overrun_behavior = 3
-
-[node name="Stats" type="Label" parent="Camera3D/CanvasLayer/Control/CardPrev"]
-layout_mode = 1
-offset_left = 10.0
-offset_top = 127.0
-offset_right = 457.0
-offset_bottom = 180.0
-theme_override_font_sizes/font_size = 32
-text = "100 ATK / 100 HP"
-clip_text = true
-text_overrun_behavior = 3
-
-[node name="Rank" type="Label" parent="Camera3D/CanvasLayer/Control/CardPrev"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -76.0
-offset_top = 42.0
-offset_bottom = 127.0
-grow_horizontal = 0
-theme_override_font_sizes/font_size = 59
-text = "F"
-clip_text = true
-text_overrun_behavior = 3
-
-[node name="Description" type="RichTextLabel" parent="Camera3D/CanvasLayer/Control/CardPrev"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -32.0
-offset_right = 240.0
-offset_bottom = 321.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 30
-text = "kjsdhflkasdhfkjahsdkjfhalksjdfhlkajsdhfkahsdkjfhakj"
-
-[node name="Camera3D2" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11, 0)
-size = 0.07
+[node name="Desc" type="RichTextLabel" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 0
+offset_left = 414.0
+offset_top = 454.0
+offset_right = 739.0
+offset_bottom = 606.0

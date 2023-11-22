@@ -2,36 +2,32 @@ using Godot;
 
 public partial class Card : Node3D
 {
-	private const float RayLength = 1000.0f;
 	//when using this you will do var newcard = new Card(dictionary,cardnum)
 
 	public Area3D collision;
 	public bool mouse = false;
 
+
 	public GameScene.CardObject card;
 	public bool set = false;
 
-	public void setCard(GameScene.CardObject[] cards, int req,dynamic pos) //add added child card
+	public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
 	{
-		card = cards[req];
+		card = _card;
 
-		var cardName = GetNode<Label3D>("FrontFace/Name/Name");
-		cardName.Text = cards[req].Name.ToString();
-		var cardRank = GetNode<Label3D>("FrontFace/Name/Rank");
-		cardRank.Text = cards[req].Rank.ToString();
-		var cardDescription = GetNode<Label3D>("FrontFace/Description/Description");
-		cardDescription.Text = cards[req].Description.ToString();
-		var cardStats = GetNode<Label3D>("FrontFace/Description/Stats");
+		GetNode<Label3D>("FrontFace/Name/Name").Text = card.Name.ToString();
+		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
+		GetNode<Label3D>("FrontFace/Description/Description").Text = card.Description.ToString().Substr(0,130) + "...";
+		GetNode<Label3D>("FrontFace/Description/Stats").Text = card.Atk.ToString() + " ATK / " + card.Hp.ToString() + " HP";
 
-		cardStats.Text = cards[req].Atk.ToString() + " ATK / " + cards[req].Hp.ToString() + " HP";
-		getImg(cards[req].Img.ToString());
+		getImg(card.Img.ToString());
 		Position = pos;
 		Position = new Vector3(Position.X, 0.005f, Position.Z);
 
-		//if (cards[req].Type != null)
+		//if (card.Type != null)
 		//{
 		//    string imageBg;
-		//    switch (cards[req].Type)
+		//    switch (card.Type)
 		//    {
 		//        case "Spell":
 		//            imageBg = "";
@@ -52,12 +48,12 @@ public partial class Card : Node3D
 
 	}
    
-	private Godot.Image getImg(string url)
+	private Image getImg(string url)
 	{
 		url = "https://publicfiles.dapchat.repl.co/" + url;
 		HttpRequest request = new HttpRequest();
 		AddChild(request);
-		Godot.Image img = new Godot.Image();
+        Image img = new Image();
 		request.RequestCompleted += (_result, responsecode, header, body) =>
 		{
 			Error error = img.LoadJpgFromBuffer(body);
@@ -67,6 +63,9 @@ public partial class Card : Node3D
 			material!.AlbedoTexture = ImageTexture.CreateFromImage(img);
 		};
 		Error error = request.Request(url);
+
+		Show();
+
 		return img;
 	}
 	public override void _Input(InputEvent @event)
@@ -75,16 +74,19 @@ public partial class Card : Node3D
 		{
 			if (!mouse || set)
 			{
-				CardPrev.card = null;
-				set = false;
+				GameScene.ReturnView();
+                GetNode<Label3D>("FrontFace/Description/Description").Show();
+                set = false;
 				return;
 			}
-			CardPrev.card = card;
-			set = true;
+			GameScene.ViewCard(Position, card, GetNode<Label3D>("FrontFace/Description/Description"));
+            set = true;
 		}
 	}
 	public override void _Ready()
 	{
+		Hide();
+
 		collision = (Area3D)GetNode("Area3D");
 
 		collision.MouseEntered += () => { mouse = true; };
