@@ -74,12 +74,29 @@ public class Database
 		{
 			if(result.First().password == password)
 			{
+				if (result.First().loggedIn) return null;
+
                 Console.WriteLine("User, {0}, successfully logged in!", username);
 				_client.Login(result.First());
-				return result.First();
+
+                var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, true);
+                var updateResult = collection.UpdateOne(filter, update);
+
+                return result.First();
 			}
 		}
 
 		return null;
+    }
+
+	public static void Logout(PlayerAccount account)
+	{
+        var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+        var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.username, account.username);
+
+        var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, false);
+
+        var updateResult = collection.UpdateOne(filter, update);
     }
 }

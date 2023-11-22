@@ -93,8 +93,8 @@ public class Client
 
 		public void Disconnect()
 		{
-			// Closes the client and stream
-			stream.Close();
+            // Closes the client and stream
+            stream.Close();
 			client.Close();
 
 			stream.Dispose();
@@ -114,6 +114,8 @@ public class Client
 
     public void Disconnect()
 	{
-		tcp.Disconnect();
+        if (account != null)
+            Database.Logout(account);
+        tcp.Disconnect();
 	}
 }

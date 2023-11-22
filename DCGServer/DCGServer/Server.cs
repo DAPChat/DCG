@@ -187,6 +187,7 @@ class Server
 		}
 		else
 		{
+			clients[clients.IndexOf(_client)].Disconnect();
 			clients.Remove(_client);
 		}
 

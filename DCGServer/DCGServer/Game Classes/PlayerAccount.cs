@@ -8,7 +8,9 @@ public class PlayerAccount
 	public string username;
 	public string password;
 
-	public int rank;
+    public bool loggedIn;
+
+    public int rank;
 	public int streak;
 	public int totalWins;
 	public int totalLosses;

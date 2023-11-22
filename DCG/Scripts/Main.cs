@@ -126,7 +126,7 @@ public partial class Main : Node
 		LError.CallDeferred(LineEdit.MethodName.SetText, error);
 
         SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
-        SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+        LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
     }
 
     public static void Success()
