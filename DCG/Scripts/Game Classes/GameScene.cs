@@ -73,6 +73,7 @@ public partial class GameScene : Node3D
         rotTween.TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,0,0), 1);
 		posTween.TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), 1);
 
+		description.ScrollToLine(0);
 		description.Text = card.Description;
 	}
 
