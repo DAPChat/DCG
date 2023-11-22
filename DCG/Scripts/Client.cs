@@ -8,6 +8,7 @@ using System.Net;
 public class Client
 {
 	public TcpClient client = null;
+	public PlayerAccount account = null;
 
 	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
 

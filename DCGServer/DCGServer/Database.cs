@@ -47,16 +47,20 @@ public class Database
 		return true;
 	}
 
-	public static void AddAcc(string username, string password)
+	public static PlayerAccount AddAcc(string username, string password, Client _client)
 	{
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
-        collection.InsertOne(new PlayerAccount(username, password));
+		PlayerAccount newAccount = new(username, password);
+
+        collection.InsertOne(newAccount);
 
         Console.WriteLine("Created new account with the username {0}", username);
+
+		return VerifyAcc(username, password, _client);
     }
 
-	public static bool VerifyAcc(string username, string password)
+	public static PlayerAccount VerifyAcc(string username, string password, Client _client)
 	{
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
@@ -64,17 +68,18 @@ public class Database
 
         var result = collection.Find(filter).ToList();
 
-		if (result.Count == 0) return false;
+		if (result.Count == 0) return null;
 
 		if (result.First().username == username)
 		{
 			if(result.First().password == password)
 			{
                 Console.WriteLine("User, {0}, successfully logged in!", username);
-				return true;
+				_client.Login(result.First());
+				return result.First();
 			}
 		}
 
-		return false;
+		return null;
     }
 }

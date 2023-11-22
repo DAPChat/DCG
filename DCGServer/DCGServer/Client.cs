@@ -9,6 +9,8 @@ public class Client
 	public int gameId;
 	public TCP tcp;
 
+	private PlayerAccount account;
+
 	public Client(int _id)
 	{
 		// Create a new TCP that manages all client functions
@@ -105,7 +107,12 @@ public class Client
 		}
 	}
 
-	public void Disconnect()
+    public void Login(PlayerAccount _account)
+    {
+        account = _account;
+    }
+
+    public void Disconnect()
 	{
 		tcp.Disconnect();
 	}

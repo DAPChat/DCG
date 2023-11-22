@@ -20,30 +20,36 @@
         {
             if (Database.CheckAvailableAcc(username))
             {
-                Database.AddAcc(username, password);
+                PlayerAccount account = Database.AddAcc(username, password, client);
 
                 create = true;
                 client.tcp.WriteStream(PacketManager.ToJson(this));
+                client.tcp.WriteStream(PacketManager.ToJson(account));
             }
             else
             {
                 create = false;
                 error = "Username already exists";
                 client.tcp.WriteStream(PacketManager.ToJson(this));
+                return;
             }
         }
         else
         {
-            if(Database.VerifyAcc(username, password))
+            PlayerAccount account = Database.VerifyAcc(username, password, client);
+
+            if (account != null)
             {
                 create = true;
                 client.tcp.WriteStream(PacketManager.ToJson(this));
+                client.tcp.WriteStream(PacketManager.ToJson(account));
             }
             else
             {
                 create = false;
                 error = "Username or Password is incorrect";
                 client.tcp.WriteStream(PacketManager.ToJson(this));
+                return;
             }
         }
     }

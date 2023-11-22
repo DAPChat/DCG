@@ -61,8 +61,17 @@ public partial class Main : Node
 			PButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 		};
 
-		LoginLayer.Show();
-		HomeLayer.Hide();
+		if (ServerManager.client.account == null)
+		{
+			LoginLayer.Show();
+			HomeLayer.Hide();
+		}
+		else
+		{
+			HomeLayer.Show();
+			LoginLayer.Hide();
+		}
+
 		SignupLayer.Hide();
 		LError.Hide();
 	}

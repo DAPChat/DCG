@@ -44,6 +44,13 @@ public class PacketManager
 
 						break;
 
+					case "PlayerAccount":
+						var account = JsonConvert.DeserializeObject<PlayerAccount>(lt.parameters);
+
+						client.account = account;
+
+						break;
+
 					case "Card":
 						var card = JsonConvert.DeserializeObject<GameScene.CardObject>(lt.parameters);
 
