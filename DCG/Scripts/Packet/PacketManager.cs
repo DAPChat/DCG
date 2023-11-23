@@ -58,6 +58,13 @@ public class PacketManager
 
 						break;
 
+					case "CAP":
+						var cap = JsonConvert.DeserializeObject<CAP>(lt.parameters);
+
+						GameScene.PlaceCard(cap);
+
+						break;
+
 					case "ACP":
 						var login = JsonConvert.DeserializeObject<ACP>(lt.parameters);
 

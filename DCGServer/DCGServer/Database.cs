@@ -18,7 +18,7 @@ public class Database
 	}
 
 
-	public static byte[] GetCard(int i)
+	public static Card GetCard(int i)
 	{
 		if (client == null) 
 			Connect();
@@ -31,7 +31,7 @@ public class Database
 
 		Card card = result[i];
 
-		return PacketManager.ToJson(card);
+		return card;
 	}
 
 	public static bool CheckAvailableAcc(string username)

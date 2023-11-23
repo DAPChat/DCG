@@ -1,6 +1,6 @@
 ﻿public class CAP : Packet
 {
-    public GameScene.CardObject card;
+    public Card card;
     public string action;
     public int slot;
 }

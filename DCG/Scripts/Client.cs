@@ -13,7 +13,7 @@ public class Client
 	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
 
 	private NetworkStream stream = null;
-	private byte[] buffer = new byte[1028];
+	private byte[] buffer = new byte[4096];
 
 	public Dictionary<string, string> values = new Dictionary<string, string>();
 	public bool connected = false;

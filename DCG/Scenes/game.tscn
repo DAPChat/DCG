@@ -62,14 +62,14 @@ mesh = SubResource("PlaneMesh_md2u3")
 
 [node name="Player1" type="Node3D" parent="."]
 
-[node name="Spell1" type="MeshInstance3D" parent="Player1"]
-transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 6)
+[node name="Unforgotten" type="MeshInstance3D" parent="Player1"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -7.5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
 
-[node name="Unforgotten" type="MeshInstance3D" parent="Player1"]
-transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -7.5, 0.001, 6)
+[node name="Spell1" type="MeshInstance3D" parent="Player1"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1.5, -5, 0.001, 6)
 material_override = SubResource("StandardMaterial3D_trd3a")
 mesh = SubResource("PlaneMesh_ytwr5")
 skeleton = NodePath("../..")
@@ -352,9 +352,10 @@ offset_bottom = 140.5
 theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
 
 [node name="Desc" type="RichTextLabel" parent="CanvasLayer/Control"]
-visible = false
 layout_mode = 0
-offset_left = 414.0
-offset_top = 454.0
-offset_right = 739.0
-offset_bottom = 606.0
+offset_left = 400.0
+offset_top = 455.0
+offset_right = 730.0
+offset_bottom = 607.0
+theme_override_constants/line_separation = 0
+theme_override_font_sizes/normal_font_size = 18

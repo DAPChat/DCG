@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 
 public class Client
@@ -41,9 +42,12 @@ public class Client
 			
 			// Start reading the stream
 			stream = client.GetStream();
-			buffer = new byte[1028];
+			buffer = new byte[4098];
 
-			WriteStream(Database.GetCard(0));
+			for (int i = 0; i <= 3; i++)
+			{
+				WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(RandomNumberGenerator.GetInt32(9)), action = "Place", slot = i+1 }));
+			}
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}

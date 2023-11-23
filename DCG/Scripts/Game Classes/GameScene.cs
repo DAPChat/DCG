@@ -28,71 +28,75 @@ public partial class GameScene : Node3D
 	static Vector3 cam2Rot = new(-90, 0, 0);
 	static RichTextLabel description;
 
+	static GameScene sceneTree;
+
 	static Vector3 camPos = new();
 	static Vector3 camRot;
 
-	static Tween rotTween;
-	static Tween posTween;
+	static Tween tween;
 
     public static CardObject cardObject = null;
 	public static bool changeScene = false;
+	public static Card zoomed = null;
 
-	public void PlaceCard(CAP action)
+	public static void PlaceCard(CAP _action)
 	{
-		List<CardObject> list = new List<CardObject>() { action.card };
+        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
-        //var thescene = ResourceLoader.Load<CSharpScript>("res://Scripts/Card.cs").New();
+		string slot = _action.card.Type.Contains("Spell") ? "Spell" : "Slot";
 
-        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate();
+        var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player1/" + slot + _action.slot.ToString()).GlobalPosition;
 
-		string slot = action.card.Type.Contains("Spell") ? "Spell" : "Slot";
+		sceneTree.CallDeferred(Node.MethodName.AddChild, thescene);
 
-        var cardGlobalPosition = GetNode<MeshInstance3D>("Player1/" + slot + action.slot.ToString()).GlobalPosition;
-
-        AddChild(thescene);
-
-        Card c = thescene as Card;
-
-        c.setCard(action.card, cardGlobalPosition);
+		Card c = thescene as Card;
+		
+        c.setCard(_action.card, cardGlobalPosition);
     }
 
-	public static void ViewCard(Vector3 cardPos, CardObject card, Label3D node)
+	public static void ViewCard(Vector3 cardPos, Card card, Label3D node)
 	{
-        //curCamera.RotationDegrees = new Vector3(-90, 0, 0);
-        //curCamera.GlobalPosition = new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z);
+		//curCamera.RotationDegrees = new Vector3(-90, 0, 0);
+		//curCamera.GlobalPosition = new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z);
 
-        rotTween = curCamera.CreateTween();
-        posTween = curCamera.CreateTween();
+		if (tween != null && tween.IsRunning())
+			tween.Kill();
 
-		rotTween.Finished += () =>
+        tween = curCamera.CreateTween();
+
+		description.Hide();
+
+		tween.Finished += () =>
 		{
 			description.Show();
 			node.Hide();
-		};
+        };
 
-        rotTween.TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,0,0), 1);
-		posTween.TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), 1);
+        tween.Parallel().TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,0,0), 1);
+		tween.Parallel().TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), 1);
 
 		description.ScrollToLine(0);
-		description.Text = card.Description;
+		description.Text = card.card.Description;
 	}
 
-	public static void ReturnView()
+	public static void ReturnView(CardObject card)
 	{
-        rotTween = curCamera.CreateTween();
-        posTween = curCamera.CreateTween();
+		if (tween != null && tween.IsRunning())
+			tween.Kill();
+
+        tween = curCamera.CreateTween();
 
 		description.Hide();
 
 		if (!CameraView)
         {
-            rotTween.TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
-            posTween.TweenProperty(curCamera, "global_position", cam1Pos, 1);
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, 1);
         }
         else
         {
-            rotTween.TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
-            posTween.TweenProperty(curCamera, "global_position", cam2Pos, 1);
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, 1);
         }
     }
 
@@ -100,6 +104,8 @@ public partial class GameScene : Node3D
 	{
 		Button button = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
 		description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
+
+		sceneTree = this;
 
         curCamera = new Camera3D();
 
@@ -112,19 +118,21 @@ public partial class GameScene : Node3D
 
 		button.ButtonDown += () =>
 		{
-            rotTween = curCamera.CreateTween();
-            posTween = curCamera.CreateTween();
+			if (tween != null && tween.IsRunning())
+				tween.Kill();
 
-            if (CameraView)
+            tween = curCamera.CreateTween();
+
+			if (CameraView)
             {
-                rotTween.TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
-                posTween.TweenProperty(curCamera, "global_position", cam1Pos, 1);
+                tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
+                tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, 1);
 				CameraView = false;
             }
             else
             {
-                rotTween.TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
-                posTween.TweenProperty(curCamera, "global_position", cam2Pos, 1);
+                tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
+                tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, 1);
 				CameraView = true;
             }
         };
@@ -132,12 +140,6 @@ public partial class GameScene : Node3D
 
 	public override void _Process(double delta)
 	{
-		if(cardObject != null)
-		{
-			PlaceCard(new CAP { card = cardObject, slot = 1 });
-			cardObject = null;
-		}
-
 		if (changeScene)
 		{
             GetTree().ChangeSceneToFile("res://Scenes/Main.tscn");
