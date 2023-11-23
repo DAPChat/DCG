@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public partial class Card : Node3D
@@ -13,16 +14,19 @@ public partial class Card : Node3D
 	public bool set = false;
 
 	public bool down = false;
+	public Label3D description;
 
 	public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
 	{
 		card = _card;
 
-		GetNode<Label3D>("FrontFace/Name/Name").Text = card.Name.ToString();
-		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
-		GetNode<Label3D>("FrontFace/Description/Description").Text = card.Description.Length > 133 ? card.Description.ToString().Substr(0, 130) + "..." : card.Description.ToString();
+		description = GetNode<Label3D>("FrontFace/Description/Description");
 
-		String statsText = "";
+        GetNode<Label3D>("FrontFace/Name/Name").Text = card.Name.ToString();
+		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
+		description.Text = card.Description.Length > 133 ? card.Description.ToString().Substr(0, 130) + "..." : card.Description.ToString();
+
+        string statsText = "";
 
 		if (card.Atk > 0) statsText += card.Atk.ToString() + " ATK";
 		if (card.Mana > 0 || card.Hp > 0) statsText += " / ";
@@ -39,6 +43,8 @@ public partial class Card : Node3D
 
 		Position = pos;
 		Position = new Vector3(Position.X, 0.005f, Position.Z);
+
+		RotationDegrees = new Vector3(0, 0, 0);
 
 		//if (card.Type != null)
 		//{
@@ -82,32 +88,6 @@ public partial class Card : Node3D
             Show();
         };
 		Error error = request.Request(url);
-	}
-	public override void _Input(InputEvent @event)
-	{
-		if (@event.IsActionPressed("Left_Click") && !@event.IsEcho() && !down)
-		{
-            if (mouse && !set && (this != GameScene.zoomed))
-            {
-                GameScene.zoomed = this;
-                GameScene.ViewCard(Position, this, GetNode<Label3D>("FrontFace/Description/Description"));
-                set = true;
-                return;
-            }
-
-            if (set)
-            {
-				if (this == GameScene.zoomed)
-				{
-                    GameScene.ReturnView(card);
-                    GameScene.zoomed = null;
-                }
-                GetNode<Label3D>("FrontFace/Description/Description").Show();
-                set = false;
-                return;
-            }
-		}
-
 	}
 	public override void _Ready()
 	{

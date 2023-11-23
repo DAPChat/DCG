@@ -9,6 +9,7 @@ class Server
 {
 	private static TcpListener tcpListener;
 
+	public static bool on = false;
     public static int playerCount = 0;
 	// List of all active ids to negate duplicates
     public static List<int> ids = new List<int>();
@@ -24,6 +25,8 @@ class Server
 	{
 		Console.Write("Starting Server...");
 
+		on = true;
+
 		tcpListener = new TcpListener(IPAddress.Any, 60606);
 
 		// Starts server and looks for incoming clients
@@ -35,16 +38,30 @@ class Server
 
 	public static void Stop()
 	{
-		foreach (Game game in games.Values)
+		on = false;
+
+        tcpListener.Stop();
+
+        foreach (Game game in games.Values)
 		{
 			game.Close();
 		}
 
-		tcpListener.Stop();
+		foreach (Client client in clients)
+		{
+			client.Disconnect();
+		}
+
+		foreach (Client client in queue.Values)
+		{
+			client.Disconnect();
+		}
 	}
 
 	private static void ClientAcceptCallback(IAsyncResult result)
 	{
+		if (!on) return;
+
 		TcpClient _client = new TcpClient();
 
 		try
@@ -75,34 +92,6 @@ class Server
 		// Listen for new player
 		tcpListener.BeginAcceptTcpClient(ClientAcceptCallback, null);
 	}
-
-    /*
-	 int _currentClientId = 1;
-
-	// Create a unique id for the player
-	while(ids.Contains(_currentClientId))
-	{
-		_currentClientId++;
-	}
-
-	ids.Add(_currentClientId);
-	tempClient.Add(_currentClientId, new Client(_currentClientId));
-
-	// Tell the client to connect to player
-	tempClient[_currentClientId].tcp.Connect(_client);
-
-	Player p = new(_currentClientId);
-
-	byte[] msg = PacketManager.ToJson(p);
-
-	tempClient[_currentClientId].tcp.WriteStream(msg);
-
-	Console.WriteLine($"Client connected with id: {_currentClientId}, {playerCount} player(s) online!");
-
-	// Check if there is an available player to join game
-	CheckMatch();
-	 
-	 */
 
     private static void CheckMatch()
 	{

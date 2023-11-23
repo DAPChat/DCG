@@ -44,18 +44,15 @@ public class Client
 			stream = client.GetStream();
 			buffer = new byte[4098];
 
-			for (int i = 0; i <= 3; i++)
-			{
-				WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(RandomNumberGenerator.GetInt32(9)), action = "Place", slot = i+1 }));
-			}
-
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}
 
         public void WriteStream(byte[] _msg)
         {
-			// Write the message to the stream to the correct client
-			stream.BeginWrite(_msg, 0, _msg.Length, null, null);
+            if (!client.Connected) return;
+
+            // Write the message to the stream to the correct client
+            stream.BeginWrite(_msg, 0, _msg.Length, null, null);
         }
 
         private void ReadCallback(IAsyncResult _result)
@@ -94,6 +91,8 @@ public class Client
 
 		public void Disconnect()
 		{
+            if (!client.Connected) return;
+
             // Closes the client and stream
             stream.Close();
 			client.Close();

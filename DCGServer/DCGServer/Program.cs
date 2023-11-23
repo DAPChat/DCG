@@ -14,6 +14,7 @@ class Program
 			if (Console.ReadLine() == "Stop")
 			{
 				Server.Stop();
+				break;
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Security.Cryptography;
+using System.Text;
 
 public class Database
 {
@@ -55,6 +57,10 @@ public class Database
 		string username = account.username;
 		string password = account.password;
 
+		SHA256 hash = SHA256.Create();
+
+		password = System.Text.Encoding.UTF8.GetString(hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)));
+
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
 		PlayerAccount newAccount = new(username, password);
@@ -85,6 +91,8 @@ public class Database
 
 		if (result.First().username == username)
 		{
+			password = Encoding.UTF8.GetString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password)));
+
 			if (result.First().password == password)
 			{
 				if (result.First().loggedIn)

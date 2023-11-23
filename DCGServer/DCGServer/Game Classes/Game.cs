@@ -85,7 +85,12 @@ public class Game
 		byte[] msg = PacketManager.ToJson(gsp);
 
 		_client.tcp.WriteStream(msg);
-	}
+
+        for (int i = 0; i <= 3; i++)
+        {
+            _client.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(RandomNumberGenerator.GetInt32(9)), action = "Place", slot = i + 1 }));
+        }
+    }
 
 	public void Manage(byte[] data, int _clientId)
 	{
