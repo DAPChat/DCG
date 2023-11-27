@@ -61,7 +61,12 @@ public class PacketManager
 					case "CAP":
 						var cap = JsonConvert.DeserializeObject<CAP>(lt.parameters);
 
-						GameScene.PlaceCard(cap);
+						switch (cap.action)
+						{
+							case "place":
+								GameScene.PlaceCard(cap);
+								break;
+						}
 
 						break;
 

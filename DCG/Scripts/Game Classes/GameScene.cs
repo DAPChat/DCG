@@ -42,11 +42,17 @@ public partial class GameScene : Node3D
 
 	public static void PlaceCard(CAP _action)
 	{
+        int player = 1;
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
 		string slot = _action.card.Type.Contains("Spell") ? "Spell" : "Slot";
 
-        var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player1/" + slot + _action.slot.ToString()).GlobalPosition;
+		if (_action.placerId != ServerManager.client.id)
+		{
+			player = 2;
+		}
+
+        var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player" + player + "/" + slot + _action.slot.ToString()).GlobalPosition;
 
 		sceneTree.CallDeferred(Node.MethodName.AddChild, thescene);
 
@@ -87,9 +93,9 @@ public partial class GameScene : Node3D
 			yRot = curCamera.RotationDegrees.Y;
         }
 
-        tween.Parallel().TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,yRot,0), card.RotationDegrees.Y == 180 ? 2 : 1);
+        tween.Parallel().TweenProperty(curCamera, "rotation_degrees", new Vector3(-90,yRot,0), card.RotationDegrees.Y == 180 ? 1 : .5);
 
-        tween.Parallel().TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), card.RotationDegrees.Y == 180 ? 2 : 1);
+        tween.Parallel().TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), card.RotationDegrees.Y == 180 ? 1 : .5);
 
         description.ScrollToLine(0);
 		description.Text = card.card.Description;
@@ -108,13 +114,13 @@ public partial class GameScene : Node3D
 
 		if (!CameraView)
         {
-            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, card.RotationDegrees.Y == 180 ? 2 : 1);
-            tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, card.RotationDegrees.Y == 180 ? 2 : 1);
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, card.RotationDegrees.Y == 180 ? 1 : .5);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, card.RotationDegrees.Y == 180 ? 1 : .5);
         }
         else
         {
-            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, card.RotationDegrees.Y == 180 ? 2 : 1);
-            tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, card.RotationDegrees.Y == 180 ? 2 : 1);
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, card.RotationDegrees.Y == 180 ? 1 : .5);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, card.RotationDegrees.Y == 180 ? 1 : .5);
         }
 
 		camRot.Y = curCamera.Position.Y;
@@ -128,10 +134,10 @@ public partial class GameScene : Node3D
 			bool skip = false;
 
 			foreach (Card card in cards) {
-				if (card.mouse && !card.set && (card != GameScene.zoomed))
+				if (card.mouse && !card.set && (card != zoomed))
 				{
-					GameScene.zoomed = card;
-					GameScene.ViewCard(card.Position, card, card.description);
+					zoomed = card;
+					ViewCard(card.Position, card, card.description);
 					card.set = true;
 					skip = true;
 					continue;
@@ -151,8 +157,8 @@ public partial class GameScene : Node3D
 
 			if (c != null && !skip)
 			{
-				GameScene.ReturnView(c);
-				GameScene.zoomed = null;
+                ReturnView(c);
+				zoomed = null;
 			}
         }
     }

@@ -21,6 +21,8 @@ public class Client
 	public int id;
 	public int gameId;
 
+	public int playerNum;
+
 	public void Connect()
 	{
 		if (connected) return;

@@ -10,6 +10,8 @@ public class Client
 	public int gameId;
 	public TCP tcp;
 
+	public int playerNum;
+
 	private PlayerAccount account;
 
 	public Client(int _id)

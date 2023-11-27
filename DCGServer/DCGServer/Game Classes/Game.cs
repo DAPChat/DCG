@@ -77,6 +77,7 @@ public class Game
 		Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
 		_client.gameId = id;
+		_client.playerNum = clients.Count;
 
 		GSP gsp = new();
 		gsp.gameId = id;
@@ -85,11 +86,6 @@ public class Game
 		byte[] msg = PacketManager.ToJson(gsp);
 
 		_client.tcp.WriteStream(msg);
-
-        for (int i = 0; i <= 3; i++)
-        {
-            _client.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(RandomNumberGenerator.GetInt32(9)), action = "Place", slot = i + 1 }));
-        }
     }
 
 	public void Manage(byte[] data, int _clientId)
