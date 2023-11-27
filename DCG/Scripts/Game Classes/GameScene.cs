@@ -20,7 +20,8 @@ public partial class GameScene : Node3D
 	}
 
 	static bool CameraView = false;
-	static Camera3D curCamera = null;
+    static bool HandShown = false;
+    static Camera3D curCamera = null;
 
 	static Vector3 cam1Pos = new(0, 9, 10);
 	static Vector3 cam2Pos = new(0, 10, 0);
@@ -158,8 +159,9 @@ public partial class GameScene : Node3D
 
     public override void _Ready()
 	{
-		Button button = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
-		description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
+		Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
+        Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+        description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
 
 		sceneTree = this;
 
@@ -172,26 +174,40 @@ public partial class GameScene : Node3D
 
         curCamera.MakeCurrent();
 
-		button.ButtonDown += () =>
+		buttonCamera.ButtonDown += () =>
 		{
 			if (tween != null && tween.IsRunning())
 				tween.Kill();
 
-            tween = curCamera.CreateTween();
+			tween = curCamera.CreateTween();
 
 			if (CameraView)
-            {
-                tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
-                tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, 1);
+			{
+				tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, 1);
+				tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, 1);
 				CameraView = false;
+			}
+			else
+			{
+				tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
+				tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, 1);
+				CameraView = true;
+			}
+		}
+		buttonHand.ButtonDown += () =>
+		{
+            if (HandShown)
+            {
+                (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand").Hide;
+                HandShown = false;
+
             }
             else
             {
-                tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, 1);
-                tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, 1);
-				CameraView = true;
+                (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand").Show;
+                HandShown = true;
             }
-        };
+        }
 	}
 
 	public override void _Process(double delta)
