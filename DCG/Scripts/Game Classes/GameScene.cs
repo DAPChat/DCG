@@ -161,9 +161,10 @@ public partial class GameScene : Node3D
 	{
 		Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
         Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+		Button buttonCloseHand = (Button)GetNode("/root/Game/CanvasLayer/Control/PlayerHand/Cancel");
         description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
-
-		sceneTree = this;
+        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+        sceneTree = this;
 
         curCamera = new Camera3D();
 
@@ -193,22 +194,23 @@ public partial class GameScene : Node3D
 				tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, 1);
 				CameraView = true;
 			}
-		}
+		};	
 		buttonHand.ButtonDown += () =>
 		{
-            if (HandShown)
-            {
-                (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand").Hide;
-                HandShown = false;
+			hand.Show();
+			HandShown = true;
+			buttonCloseHand.Disabled = false;
+			buttonHand.Disabled = true;
+		};
+		buttonCloseHand.ButtonDown += () =>
+		{
+			hand.Hide();
+			HandShown = false;
+			buttonCloseHand.Disabled = true;
+            buttonHand.Disabled = false;
+        };
 
-            }
-            else
-            {
-                (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand").Show;
-                HandShown = true;
-            }
-        }
-	}
+    }
 
 	public override void _Process(double delta)
 	{

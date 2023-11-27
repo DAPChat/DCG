@@ -374,7 +374,6 @@ offset_right = 739.0
 offset_bottom = 606.0
 
 [node name="PlayerHand" type="ColorRect" parent="CanvasLayer/Control"]
-visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

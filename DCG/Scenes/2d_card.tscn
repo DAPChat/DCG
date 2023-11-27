@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba5kb3cpe4den"]
+
+[ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_3a8fn"]
+
+[node name="2DCard" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FrontFace" type="TextureRect" parent="CanvasLayer"]
+self_modulate = Color(0.976471, 0, 0.596078, 1)
+offset_right = 150.0
+offset_bottom = 150.0
+scale = Vector2(1.5, 2)
+texture = ExtResource("1_3a8fn")
+expand_mode = 1
