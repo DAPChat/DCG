@@ -1,5 +1,7 @@
 using Godot;
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public partial class GameScene : Node3D 
 {
@@ -159,7 +161,41 @@ public partial class GameScene : Node3D
 			{
                 ReturnView(c);
 				zoomed = null;
-			}
+			}else if (!skip)
+			{
+				var eventMouseButton = (InputEventMouseButton) @event;
+
+                var from = curCamera.ProjectRayOrigin(eventMouseButton.Position);
+                var to = from + curCamera.ProjectRayNormal(eventMouseButton.Position) * 1000;
+
+                var spaceState = GetWorld3D().DirectSpaceState;
+                var query = PhysicsRayQueryParameters3D.Create(from, to);
+                var result = spaceState.IntersectRay(query);
+
+				Node3D collider = (Node3D)((Node3D)result["collider"]).GetParent();
+
+				if (collider.GetParent().Name == "Player2") return;
+
+				if (cardObject.Type == "Spell")
+				{
+					if (!collider.Name.ToString().Contains(cardObject.Type.ToString())) { return; }
+				}
+				else if (collider.Name.ToString().Contains("Spell")) { return; }
+
+				int slot = 0;
+
+				try
+				{
+					slot = Int32.Parse(Regex.Match(collider.Name, @"\d+").Value);
+				}catch (Exception)
+				{
+					return;
+				}
+
+                PlaceCard(new CAP { placerId = 0, card = cardObject, action = "place", slot = slot });
+
+				GD.Print(result);
+            }
         }
     }
 

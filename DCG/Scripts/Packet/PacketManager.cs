@@ -64,7 +64,8 @@ public class PacketManager
 						switch (cap.action)
 						{
 							case "place":
-								GameScene.PlaceCard(cap);
+								GameScene.cardObject = cap.card;
+								// GameScene.PlaceCard(cap);
 								break;
 						}
 
