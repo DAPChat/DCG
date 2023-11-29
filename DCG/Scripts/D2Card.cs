@@ -5,7 +5,7 @@ public partial class D2Card : Node2D
 {
     public GameScene.CardObject card;
     public Label description;
-    public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
+    public void setCard(GameScene.CardObject _card, Vector2 pos) //add added child card
     {
         card = _card;
 
@@ -25,7 +25,8 @@ public partial class D2Card : Node2D
 
         GetNode<Label>("CanvasLayer/FrontFace/BottomCard/Stats").Text = statsText;
 
-
+        Position = pos;
+        Position = new Vector2(Position.X, Position.Y);
     }
 
     private void getImg(string url)
