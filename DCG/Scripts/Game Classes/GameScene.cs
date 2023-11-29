@@ -161,7 +161,7 @@ public partial class GameScene : Node3D
 			{
                 ReturnView(c);
 				zoomed = null;
-			}else if (!skip)
+			}else if (c == null && !skip)
 			{
 				var eventMouseButton = (InputEventMouseButton) @event;
 
@@ -171,6 +171,8 @@ public partial class GameScene : Node3D
                 var spaceState = GetWorld3D().DirectSpaceState;
                 var query = PhysicsRayQueryParameters3D.Create(from, to);
                 var result = spaceState.IntersectRay(query);
+
+				if (result.Count == 0) return;
 
 				Node3D collider = (Node3D)((Node3D)result["collider"]).GetParent();
 
@@ -193,8 +195,6 @@ public partial class GameScene : Node3D
 				}
 
                 PlaceCard(new CAP { placerId = 0, card = cardObject, action = "place", slot = slot });
-
-				GD.Print(result);
             }
         }
     }
