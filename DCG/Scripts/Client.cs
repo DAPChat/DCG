@@ -51,7 +51,12 @@ public class Client
 
 	private async Task TryConnect()
 	{
-		while(!client.Connected)
+        if (client == null)
+        {
+            client = new TcpClient();
+        }
+
+        while (!client.Connected)
 		{
 			cts = new CancellationTokenSource();
 			cts.CancelAfter(5000);
@@ -121,6 +126,9 @@ public class Client
 	{
         stream.Close();
         client.Close();
+
+		client = null;
+		stream = null;
 
 		if (gameId != 0)
 		{
