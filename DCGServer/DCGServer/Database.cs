@@ -17,6 +17,8 @@ public class Database
 		var result = client.GetDatabase("DCG").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
 
         Console.WriteLine("Connected to Database!");
+
+		ResetAccounts();
 	}
 
 
@@ -124,5 +126,21 @@ public class Database
         var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, false);
 
         var updateResult = collection.UpdateOne(filter, update);
+    }
+
+	private static void ResetAccounts()
+	{
+        var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+        var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.loggedIn, true);
+
+        var result = collection.Find(filter).ToList();
+
+        var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, false);
+
+        foreach ( PlayerAccount account in result )
+		{
+			collection.UpdateMany(filter, update);
+		}
     }
 }

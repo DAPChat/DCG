@@ -174,7 +174,7 @@ class Server
 			queue[id].tcp.Disconnect();
 			queue.Remove(id);
 		}
-		else
+		else if (clients.Contains(_client))
 		{
 			clients[clients.IndexOf(_client)].Disconnect();
 			clients.Remove(_client);

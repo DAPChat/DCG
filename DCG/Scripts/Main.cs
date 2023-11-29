@@ -144,11 +144,12 @@ public partial class Main : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (lastSetting = inGame)
+		if (lastSetting != inGame)
 			if (inGame)
 			{
-				GetTree().ChangeSceneToFile("res://Scenes/game.tscn");
-				lastSetting = inGame;
+                lastSetting = inGame;
+				GameScene.changeScene = false;
+                GetTree().ChangeSceneToFile("res://Scenes/game.tscn");
 			}
 			else
 			{

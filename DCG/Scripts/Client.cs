@@ -4,6 +4,8 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class Client
 {
@@ -23,7 +25,9 @@ public class Client
 
 	public int playerNum;
 
-	public void Connect()
+    CancellationTokenSource cts = new CancellationTokenSource();
+
+    public void Connect()
 	{
 		if (connected) return;
 
@@ -36,7 +40,8 @@ public class Client
 				client = new TcpClient();
 			}
 			// 127.1.1.0
-			client.BeginConnect(endPoint.Address, endPoint.Port, ConnectCallback, client);
+			//client.BeginConnect(endPoint.Address, endPoint.Port, ConnectCallback, client);
+			TryConnect();
 		}
 		catch (Exception e)
 		{
@@ -44,15 +49,33 @@ public class Client
 		}
 	}
 
+	private async Task TryConnect()
+	{
+		while(!client.Connected)
+		{
+			cts = new CancellationTokenSource();
+			cts.CancelAfter(5000);
+
+            try
+			{
+				await client.ConnectAsync(endPoint.Address, endPoint.Port, cts.Token);
+			}
+			catch (Exception) { }
+			finally { cts.Dispose(); }
+		}
+
+		ConnectCallback();
+    }
+
     public void WriteStream(byte[] _msg)
     {
         // Write the message to the stream to the correct client
         stream.BeginWrite(_msg, 0, _msg.Length, null, null);
     }
 
-    private void ConnectCallback(IAsyncResult result)
+    private void ConnectCallback() //IAsyncResult result)
 	{
-		client.EndConnect(result);
+		// client.EndConnect(result);
 
 		connected = true;
 
@@ -72,6 +95,7 @@ public class Client
 			if (_bytesRead <= 0)
 			{
 				connected = false;
+				Disconnect();
 				return;
 			}
 
@@ -89,6 +113,23 @@ public class Client
 		catch (Exception e)
 		{
 			connected = false;
+			Disconnect();
 		}
+	}
+
+	private void Disconnect()
+	{
+        stream.Close();
+        client.Close();
+
+		if (gameId != 0)
+		{
+			gameId = 0;
+			GameScene.changeScene = true;
+		}
+
+		account = null;
+
+		TryConnect();
 	}
 }

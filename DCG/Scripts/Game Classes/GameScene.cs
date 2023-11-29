@@ -258,8 +258,8 @@ public partial class GameScene : Node3D
 	{
 		if (changeScene)
 		{
+            changeScene = false;
             GetTree().ChangeSceneToFile("res://Scenes/Main.tscn");
-			changeScene = false;
         }
 
 		base._Process(delta);
