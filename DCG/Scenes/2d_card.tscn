@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba5kb3cpe4den"]
+[gd_scene load_steps=4 format=3 uid="uid://ba5kb3cpe4den"]
 
 [ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_3a8fn"]
+[ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="2_nbm2v"]
+[ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_30cw8"]
 
 [node name="2DCard" type="Node2D"]
 
@@ -13,3 +15,66 @@ offset_bottom = 150.0
 scale = Vector2(1.5, 2)
 texture = ExtResource("1_3a8fn")
 expand_mode = 1
+
+[node name="TopCard" type="ColorRect" parent="CanvasLayer/FrontFace"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 140.0
+offset_bottom = 20.0
+color = Color(1, 1, 1, 0.403922)
+
+[node name="Name" type="Label" parent="CanvasLayer/FrontFace/TopCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 83.0
+offset_bottom = 25.0
+theme_override_font_sizes/font_size = 10
+text = "Card Name"
+
+[node name="Rank" type="Label" parent="CanvasLayer/FrontFace/TopCard"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = -2.0
+offset_right = 126.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 0.917647, 0, 1)
+theme_override_fonts/font = ExtResource("2_nbm2v")
+theme_override_font_sizes/font_size = 10
+text = "S"
+
+[node name="MiddleCard" type="TextureRect" parent="CanvasLayer/FrontFace"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 25.0
+offset_right = 140.0
+offset_bottom = 75.0
+texture = ExtResource("3_30cw8")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BottomCard" type="ColorRect" parent="CanvasLayer/FrontFace"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 140.0
+offset_bottom = 140.0
+color = Color(1, 1, 1, 0.403922)
+
+[node name="Stats" type="Label" parent="CanvasLayer/FrontFace/BottomCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 87.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 8
+text = "0000 ATK / 00000 HP"
+
+[node name="Description" type="RichTextLabel" parent="CanvasLayer/FrontFace/BottomCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 15.0
+offset_right = 125.0
+offset_bottom = 55.0
+theme_override_font_sizes/normal_font_size = 8
+text = "..."
