@@ -67,14 +67,18 @@ public class Game
 		Console.Write(id + ": ");
 		Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
+
+		// Update the client's information
 		_client.gameId = id;
 
+		// Create a new player and save it to both the server and send to client
 		Player p = new(_client.id) { playerNum = clients.Count };
 
         _client.player = p;
 
         p.deck = _client.ActiveDeck();
 
+		// Send to client (not including the entire deck)
         _client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));
 
         GSP gsp = new()
@@ -87,6 +91,7 @@ public class Game
 
 		byte[] msg = PacketManager.ToJson(gsp);
 
+		// Send the game id to the client
 		_client.tcp.WriteStream(msg);
     }
 
@@ -101,6 +106,7 @@ public class Game
 	{
 		active = false;
 
+		// Remove the disconnected client from the server
 		clients[_clientId].Disconnect();
 		clients.Remove(_clientId);
 		Server.ids.Remove(_clientId);
@@ -115,6 +121,7 @@ public class Game
 			return;
 		}
 
+		// Remove the non-disconnected person from the match
 		Server.KeepConnect(clients.Values.First());
 
 		Server.RemoveGame(id);
@@ -122,6 +129,7 @@ public class Game
 
 	public void Close()
 	{
+		// Close the game and disconnect all clients
 		active = false;
 
 		foreach (var client in clients)
@@ -173,6 +181,7 @@ public class Game
 			}
 		}
 
+		// Add the players to their respective positions
 		public void AddPlayers(List<Player> players)
 		{
 			foreach (var player in players)

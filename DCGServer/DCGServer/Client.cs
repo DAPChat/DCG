@@ -46,6 +46,7 @@ public class Client
 			stream = client.GetStream();
 			buffer = new byte[8196];
 
+			// Temporary function to test getting cards from the database and sending to client
 			if (client != null && !client.Connected)
 				stream.Write(PacketManager.ToJson(Database.GetCard(8)));
 
@@ -119,6 +120,7 @@ public class Client
 
 	public List<string> ActiveDeck()
 	{
+		// Gets a list of card ids
 		return Database.CardIds();
 			
 			// account.decks[account.curDeck].ToList();
@@ -126,6 +128,7 @@ public class Client
 
     public void Disconnect()
 	{
+		// Log out of the account on disconnect
         if (account != null)
             Database.Logout(account);
         tcp.Disconnect();

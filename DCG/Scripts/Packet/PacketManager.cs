@@ -103,7 +103,7 @@ public class PacketManager
 		}
 	}
 
-	// Converts an object to Json
+	// Converts an object to Json with the proper formatting for parsing
     public static byte[] ToJson(object json)
     {
         LoadType loadType = new LoadType();

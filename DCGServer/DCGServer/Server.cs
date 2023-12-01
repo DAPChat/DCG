@@ -42,6 +42,7 @@ class Server
 
         tcpListener.Stop();
 
+		// Disconnects every client and closes every game
         foreach (Game game in games.Values)
 		{
 			game.Close();
@@ -128,8 +129,7 @@ class Server
 
 	public static void Queue(int _id, Client _client)
 	{
-		// Add a client back to a queue if the game closed (called from Game class)
-		// Add more functionality later
+		// Add a client to the queue
 		_client.gameId = 0;
 
 		GSP gsp = new();
@@ -147,6 +147,7 @@ class Server
 
 	public static void KeepConnect(Client _client)
 	{
+		// Keeps a client connected (if they leave queue or leave match)
         _client.gameId = 0;
 
         GSP gsp = new();
@@ -158,6 +159,7 @@ class Server
         Server.clients.Add(_client);
     }
 
+	// Remove a game from the server
     public static void RemoveGame(int _gameId)
 	{
 		games.Remove(_gameId);

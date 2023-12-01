@@ -4,6 +4,7 @@ using System.Text;
 
 public class PacketManager
 {
+	// Parse the incoming data into packets and run the packet-specific data
 	public static void Decode(byte[] _data, Client client)
 	{
 		string[] dataList = Encoding.ASCII.GetString(_data).Split("[Packet]");
@@ -45,6 +46,7 @@ public class PacketManager
 
 		}
 
+	// Convert a class to the properly formatted Json
 	public static byte[] ToJson (object json)
 	{
 		LoadType loadType = new LoadType();
@@ -55,16 +57,19 @@ public class PacketManager
 		return ToBytes("[Packet]" + JsonConvert.SerializeObject(loadType));
 	}
 
+	// Convert an int to bytes
     public static byte[] ToBytes(int i)
     {
         return Encoding.ASCII.GetBytes(i.ToString());
     }
 
+	// Convert a string to bytes
     public static byte[] ToBytes(string i)
     {
         return Encoding.ASCII.GetBytes(i);
     }
 
+	// Class to discern the packet type
     [Serializable]
     class LoadType
     {

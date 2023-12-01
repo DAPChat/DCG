@@ -18,16 +18,20 @@
     {
         if (create)
         {
+            // Run all the checks in order to verify the account availability
             if (Database.CheckAvailableAcc(username))
             {
+                // Add the account if valid
                 PlayerAccount account = Database.AddAcc(this, client);
 
+                // Send confirmation and account data to the client
                 create = true;
                 client.tcp.WriteStream(PacketManager.ToJson(this));
                 client.tcp.WriteStream(PacketManager.ToJson(account));
             }
             else
             {
+                // Send error if unavailable or invalid
                 create = false;
                 error = "Username is already in use";
                 client.tcp.WriteStream(PacketManager.ToJson(this));
@@ -36,16 +40,19 @@
         }
         else
         {
+            // Verify if the account password is correct
             PlayerAccount account = Database.VerifyAcc(this, client);
 
             if (account != null)
             {
+                // Send confirmation and account data to the client
                 create = true;
                 client.tcp.WriteStream(PacketManager.ToJson(this));
                 client.tcp.WriteStream(PacketManager.ToJson(account));
             }
             else
             {
+                // Send error if incorrect information was given
                 create = false;
                 client.tcp.WriteStream(PacketManager.ToJson(this));
                 return;

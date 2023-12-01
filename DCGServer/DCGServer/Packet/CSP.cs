@@ -4,6 +4,7 @@
 
     public override void Run(Client client)
     {
+        // Add the client to the queue if not in-game
         if(client.gameId <= 0)
         {
             Server.clients.Remove(client);

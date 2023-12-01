@@ -9,6 +9,7 @@ public class Database
 
 	static MongoClient client = null;
 
+	// Connect to the database
 	public static void Connect()
 	{
 		if (client == null) 
@@ -21,6 +22,7 @@ public class Database
 		ResetAccounts();
 	}
 
+	// Get a specific card from database
 	public static Card GetCard(int i)
 	{
 		if (client == null) 
@@ -37,6 +39,7 @@ public class Database
 		return card;
 	}
 
+	// Check if the username is available
 	public static bool CheckAvailableAcc(string username)
 	{
 		var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
@@ -53,6 +56,7 @@ public class Database
 		return true;
 	}
 
+	// Adds an account to the database
 	public static PlayerAccount AddAcc(ACP account, Client _client)
 	{
 		string username = account.username;
@@ -60,11 +64,15 @@ public class Database
 
 		SHA256 hash = SHA256.Create();
 
-		password = System.Text.Encoding.UTF8.GetString(hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)));
+		// Hashes the password for security purposes
+		password = Encoding.UTF8.GetString(hash.ComputeHash(Encoding.UTF8.GetBytes(password)));
 
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 
 		PlayerAccount newAccount = new(username, password);
+
+		// Ensures two players cannot be logged into the same account at once
+		newAccount.loggedIn = true;
 
         collection.InsertOne(newAccount);
 
@@ -73,6 +81,7 @@ public class Database
 		return VerifyAcc(account, _client);
     }
 
+	// Verifies if the username and password are correct
 	public static PlayerAccount VerifyAcc(ACP account, Client _client)
 	{
 		string username = account.username;
@@ -105,7 +114,8 @@ public class Database
 				Console.WriteLine("User, {0}, successfully logged in!", username);
 				_client.Login(result.First());
 
-				var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, true);
+                // Ensures two players cannot be logged into the same account at once
+                var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, true);
 				var updateResult = collection.UpdateOne(filter, update);
 
 				return result.First();
@@ -116,6 +126,7 @@ public class Database
 		return null;
     }
 
+	// Opens up the account to be able to log in from another place
 	public static void Logout(PlayerAccount account)
 	{
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
@@ -127,6 +138,7 @@ public class Database
         var updateResult = collection.UpdateOne(filter, update);
     }
 
+	// Returns a list of all card ids
 	public static List<string> CardIds()
 	{
         if (client == null)
@@ -148,6 +160,7 @@ public class Database
 		return cardIds;
     }
 
+	// Effectively sets all accounts to be logged out of (if the server closes while a client is active)
 	private static void ResetAccounts()
 	{
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
