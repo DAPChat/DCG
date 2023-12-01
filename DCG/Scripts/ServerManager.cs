@@ -17,11 +17,13 @@ public partial class ServerManager : Node
 		return;
 	}
 
+	// Defines a print function non-godot classes can use
 	public static void Print(string str)
 	{
 		GD.Print(str);
 	}
 
+	// Disconnect the client on close
 	public override void _ExitTree()
 	{
 		client.Disconnect();

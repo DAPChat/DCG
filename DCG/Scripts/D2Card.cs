@@ -5,6 +5,8 @@ public partial class D2Card : Node2D
 {
     public GameScene.CardObject card;
     public Label description;
+
+    // Works similarly to the Card class
     public void setCard(GameScene.CardObject _card, Vector2 pos) //add added child card
     {
         card = _card;

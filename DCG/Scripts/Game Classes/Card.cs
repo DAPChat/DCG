@@ -16,6 +16,7 @@ public partial class Card : Node3D
 	public bool down = false;
 	public Label3D description;
 
+	// Sets the card object elements to display to the player
 	public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
 	{
 		card = _card;
@@ -24,6 +25,8 @@ public partial class Card : Node3D
 
         GetNode<Label3D>("FrontFace/Name/Name").Text = card.Name.ToString();
 		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
+		
+		// Shortens the string if necessary to prevent overflow
 		description.Text = card.Description.Length > 133 ? card.Description.ToString().Substr(0, 130) + "..." : card.Description.ToString();
 
         string statsText = "";
@@ -71,6 +74,8 @@ public partial class Card : Node3D
    
 	private void getImg(string url)
 	{
+		// Make a request to the online storage of images to load them in
+
 		url = "https://publicfiles.dapchat.repl.co/" + url;
 		HttpRequest request = new HttpRequest();
 		AddChild(request);
@@ -78,6 +83,8 @@ public partial class Card : Node3D
 		request.RequestCompleted += (_result, responsecode, header, body) =>
 		{
 			Error error = img.LoadJpgFromBuffer(body);
+
+			// Creates a material from the image and applies it to the card
 
 			var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
 			var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
@@ -95,6 +102,7 @@ public partial class Card : Node3D
 
 		collision = (Area3D)GetNode("Area3D");
 
+		// Check if the mouse is inside the object
 		collision.MouseEntered += () => { mouse = true; };
 		collision.MouseExited += () => { mouse = false; };
 	}

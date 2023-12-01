@@ -59,12 +59,14 @@ public partial class Main : Node
 		SButton.Pressed += () => Signup();
 		PButton.Pressed += () =>
 		{
+			// Asks the server to queue the player
 			ServerManager.client.WriteStream(PacketManager.ToJson(new CSP()));
 
 			PButton.SetDeferred(Button.PropertyName.Text, "Queued...");
 			PButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 		};
 
+		// Sets the player to the correct screen
 		if (ServerManager.client.account == null)
 		{
 			LoginLayer.Show();
@@ -92,11 +94,13 @@ public partial class Main : Node
 
         LButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 
+		// Sends the packet to the server for verification
         ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
 	}
 
 	public void LSignup()
 	{
+		// Changes the screen to the login screen and sets text
         string username = LUsername.Text.Trim();
         string password = LPassword.Text.Trim();
 
@@ -117,6 +121,7 @@ public partial class Main : Node
 
         SButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 
+		// Tells the server to create an account
         ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
 	}
 

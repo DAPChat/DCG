@@ -47,6 +47,7 @@ public partial class GameScene : Node3D
         int player = 1;
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
+		// Gets which slot to place it in
 		string slot = _action.card.Type.Contains("Spell") ? "Spell" : "Slot";
 
 		if (_action.placerId != ServerManager.client.id)
@@ -65,11 +66,9 @@ public partial class GameScene : Node3D
         c.setCard(_action.card, cardGlobalPosition);
     }
 
+	// Zoom into the card
 	public static void ViewCard(Vector3 cardPos, Card card, Label3D node)
 	{
-		//curCamera.RotationDegrees = new Vector3(-90, 0, 0);
-		//curCamera.GlobalPosition = new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z);
-
 		if (tween != null && tween.IsRunning())
 			tween.Kill();
 
@@ -99,18 +98,18 @@ public partial class GameScene : Node3D
 
         tween.Parallel().TweenProperty(curCamera, "global_position", new Vector3(cardPos.X, cardPos.Y + 2, cardPos.Z), card.RotationDegrees.Y == 180 ? 1 : .5);
 
+		// Set the scrollable description to the full description of the card (not shortened)
         description.ScrollToLine(0);
 		description.Text = card.card.Description;
 	}
 
+	// Return to normal view
 	public static void ReturnView(Card card)
 	{
 		if (tween != null && tween.IsRunning())
 			tween.Kill();
 
         tween = curCamera.CreateTween();
-
-		//tween.Finished += () => ;
 
 		description.Hide();
 
@@ -130,11 +129,13 @@ public partial class GameScene : Node3D
 
     public override void _Input(InputEvent @event)
     {
+		// Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
 			Card c = null;
 			bool skip = false;
 
+			// Check each card to see if there was one that was clicked
 			foreach (Card card in cards) {
 				if (card.mouse && !card.set && (card != zoomed))
 				{
@@ -157,12 +158,14 @@ public partial class GameScene : Node3D
 				}
 			}
 
+			// If none were clicked then return view
 			if (c != null && !skip)
 			{
                 ReturnView(c);
 				zoomed = null;
 			}else if (c == null && !skip)
 			{
+				// Check which slot was clicked
 				if (cardObject == null) return;
 
 				var eventMouseButton = (InputEventMouseButton) @event;
@@ -219,6 +222,7 @@ public partial class GameScene : Node3D
 
         curCamera.MakeCurrent();
 
+		// Move between the two camera angles
 		buttonCamera.ButtonDown += () =>
 		{
 			if (tween != null && tween.IsRunning())

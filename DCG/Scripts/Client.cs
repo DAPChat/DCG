@@ -40,7 +40,6 @@ public class Client
 				client = new TcpClient();
 			}
 			// 127.1.1.0
-			//client.BeginConnect(endPoint.Address, endPoint.Port, ConnectCallback, client);
 			TryConnect();
 		}
 		catch (Exception e)
@@ -56,6 +55,7 @@ public class Client
             client = new TcpClient();
         }
 
+		// Continues to try connection until one is made
         while (!client.Connected)
 		{
 			cts = new CancellationTokenSource();
@@ -78,10 +78,8 @@ public class Client
         stream.BeginWrite(_msg, 0, _msg.Length, null, null);
     }
 
-    private void ConnectCallback() //IAsyncResult result)
+    private void ConnectCallback()
 	{
-		// client.EndConnect(result);
-
 		connected = true;
 
 		stream = client.GetStream();
@@ -96,12 +94,11 @@ public class Client
 		{
 			int _bytesRead = stream.EndRead(result);
 
-			// Check if the server stops
+			// Check if the server stops and retry connection
 			if (_bytesRead <= 0)
 			{
 				connected = false;
-				Disconnect();
-                TryConnect();
+				ServerExit();
                 return;
 			}
 
@@ -119,11 +116,35 @@ public class Client
 		catch (Exception e)
 		{
 			connected = false;
-			Disconnect();
-            TryConnect();
+			ServerExit();
         }
 	}
 
+	// Retries the connection if the server closes
+	private void ServerExit()
+	{
+        stream.Close();
+        client.Close();
+
+        client = null;
+        stream = null;
+
+        account = null;
+
+        if (gameId != 0)
+        {
+            gameId = 0;
+            GameScene.changeScene = true;
+        }
+        else
+        {
+            Main.Reload();
+        }
+
+        TryConnect();
+    }
+
+	// All the disconnection tasks the client must do to prevent errors.
 	public void Disconnect()
 	{
         stream.Close();
@@ -133,15 +154,5 @@ public class Client
 		stream = null;
 
         account = null;
-
-        if (gameId != 0)
-		{
-			gameId = 0;
-			GameScene.changeScene = true;
-		}
-		else
-		{
-			Main.Reload();
-		}
 	}
 }
