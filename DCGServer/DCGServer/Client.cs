@@ -46,7 +46,8 @@ public class Client
 			stream = client.GetStream();
 			buffer = new byte[8196];
 
-			stream.Write(PacketManager.ToJson(Database.GetCard(8)));
+			if (client != null && !client.Connected)
+				stream.Write(PacketManager.ToJson(Database.GetCard(8)));
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}

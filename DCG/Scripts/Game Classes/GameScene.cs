@@ -163,6 +163,8 @@ public partial class GameScene : Node3D
 				zoomed = null;
 			}else if (c == null && !skip)
 			{
+				if (cardObject == null) return;
+
 				var eventMouseButton = (InputEventMouseButton) @event;
 
                 var from = curCamera.ProjectRayOrigin(eventMouseButton.Position);
@@ -188,7 +190,7 @@ public partial class GameScene : Node3D
 
 				try
 				{
-					slot = Int32.Parse(Regex.Match(collider.Name, @"\d+").Value);
+					slot = int.Parse(Regex.Match(collider.Name, @"\d+").Value);
 				}catch (Exception)
 				{
 					return;
@@ -203,9 +205,9 @@ public partial class GameScene : Node3D
 	{
 		Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
         Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-		Button buttonCloseHand = (Button)GetNode("/root/Game/CanvasLayer/Control/PlayerHand/Cancel");
+		Button buttonCloseHand = (Button)GetNode("/root/Game/CanvasLayer/Control/PlayerHandActivation/Cancel");
         description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
-        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHandActivation");
         sceneTree = this;
 
         curCamera = new Camera3D();

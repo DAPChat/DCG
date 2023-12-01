@@ -27,4 +27,36 @@ public class Player
 	{ 
 		id = _id;
 	}
+
+	public Player Clone()
+	{
+        Player p = new(id)
+        {
+            username = username,
+            rank = rank,
+            streak = streak,
+            playerNum = playerNum,
+            cardBack = cardBack,
+            profilePicture = profilePicture,
+            lifePoints = lifePoints,
+            timer = timer,
+            hand = hand,
+            unforgotten = unforgotten,
+            forgotten = forgotten,
+            fieldRowOne = fieldRowOne,
+            fieldRowTwo = fieldRowTwo,
+            deck = deck
+        };
+
+        return p;
+    }
+
+    public Player Client()
+	{
+		Player p = this.Clone();
+
+		p.deck = null;
+
+        return p;
+	}
 }

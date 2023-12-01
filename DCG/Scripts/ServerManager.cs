@@ -24,8 +24,8 @@ public partial class ServerManager : Node
 
 	public override void _ExitTree()
 	{
-		client.client.Close();
-		client.client.Dispose();
+		client.Disconnect();
+
 		base._ExitTree();
 	}
 }

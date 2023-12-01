@@ -101,7 +101,8 @@ public class Client
 			{
 				connected = false;
 				Disconnect();
-				return;
+                TryConnect();
+                return;
 			}
 
 			PacketManager.Decode(buffer, this);
@@ -119,10 +120,11 @@ public class Client
 		{
 			connected = false;
 			Disconnect();
-		}
+            TryConnect();
+        }
 	}
 
-	private void Disconnect()
+	public void Disconnect()
 	{
         stream.Close();
         client.Close();
@@ -141,7 +143,5 @@ public class Client
 		{
 			Main.Reload();
 		}
-
-		TryConnect();
 	}
 }

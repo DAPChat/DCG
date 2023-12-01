@@ -45,9 +45,6 @@ public class PacketManager
 
 						ServerManager.client.player = player;
 
-						ServerManager.Print(player.playerNum.ToString());
-						ServerManager.Print(player.deck.Count.ToString());
-
 						break;
 
 					case "PlayerAccount":

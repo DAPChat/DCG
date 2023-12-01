@@ -75,7 +75,7 @@ public class Game
 
         p.deck = _client.ActiveDeck();
 
-        _client.tcp.WriteStream(PacketManager.ToJson(_client.player));
+        _client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));
 
         GSP gsp = new()
         {
