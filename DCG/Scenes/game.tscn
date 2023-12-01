@@ -506,7 +506,7 @@ offset_top = 454.0
 offset_right = 739.0
 offset_bottom = 606.0
 
-[node name="PlayerHand" type="ColorRect" parent="CanvasLayer/Control"]
+[node name="PlayerHandActivation" type="ColorRect" parent="CanvasLayer/Control"]
 visible = false
 layout_mode = 1
 anchors_preset = 12
@@ -518,7 +518,7 @@ grow_horizontal = 2
 grow_vertical = 0
 color = Color(0, 0, 0, 1)
 
-[node name="Activate" type="Button" parent="CanvasLayer/Control/PlayerHand"]
+[node name="Activate" type="Button" parent="CanvasLayer/Control/PlayerHandActivation"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -536,7 +536,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_u0mv0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
 text = "Activate"
 
-[node name="Cancel" type="Button" parent="CanvasLayer/Control/PlayerHand"]
+[node name="Cancel" type="Button" parent="CanvasLayer/Control/PlayerHandActivation"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -554,4 +554,13 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_u0mv0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
 text = "Cancel"
 
-[node name="Cards" type="Node3D" parent="."]
+[node name="PlayerHand" type="Container" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
