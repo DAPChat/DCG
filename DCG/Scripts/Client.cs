@@ -12,7 +12,7 @@ public class Client
 	public TcpClient client = null;
 	public PlayerAccount account = null;
 
-	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.230.221"), 60606);
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
 
 	private NetworkStream stream = null;
 	private byte[] buffer = new byte[4096];
@@ -23,7 +23,7 @@ public class Client
 	public int id;
 	public int gameId;
 
-	public int playerNum;
+	public Player player;
 
     CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -65,8 +65,8 @@ public class Client
 			{
 				await client.ConnectAsync(endPoint.Address, endPoint.Port, cts.Token);
 			}
-			catch (Exception) { }
-			finally { cts.Dispose(); }
+			catch (Exception e) { }
+			finally { cts.Cancel(); }
 		}
 
 		ConnectCallback();
@@ -130,13 +130,17 @@ public class Client
 		client = null;
 		stream = null;
 
-		if (gameId != 0)
+        account = null;
+
+        if (gameId != 0)
 		{
 			gameId = 0;
 			GameScene.changeScene = true;
 		}
-
-		account = null;
+		else
+		{
+			Main.Reload();
+		}
 
 		TryConnect();
 	}

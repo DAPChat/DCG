@@ -553,3 +553,5 @@ theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_u0mv0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
 text = "Cancel"
+
+[node name="Cards" type="Node3D" parent="."]

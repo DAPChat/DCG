@@ -20,14 +20,16 @@ public class PlayerAccount
 
     public string[] cardBacks;
 
-	public int[] cards;
-	public int[][] decks;
+	public int curDeck;
+
+	public string[] cards;
+	public string[][] decks;
 
     public PlayerAccount(string _username, string _password)
 	{
 		username = _username;
 		password = _password;
 
-		decks = new int[3][];
+		decks = new string[3][];
 	}
 }

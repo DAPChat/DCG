@@ -27,9 +27,13 @@ public partial class Main : Node
 	public static bool inGame = false;
 	static bool lastSetting = false;
 
+	static Main instance;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		instance = this;
+
 		LUsername = (LineEdit)GetNode("Login/UI/Login/Username");
 		LPassword = (LineEdit)GetNode("Login/UI/Login/Password");
 
@@ -140,6 +144,11 @@ public partial class Main : Node
 		LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
 		SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
     }
+
+	public static void Reload()
+	{
+		instance._Ready();
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

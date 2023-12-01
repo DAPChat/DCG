@@ -10,7 +10,7 @@ public class Client
 	public int gameId;
 	public TCP tcp;
 
-	public int playerNum;
+	public Player player;
 
 	private PlayerAccount account;
 
@@ -44,7 +44,7 @@ public class Client
 			
 			// Start reading the stream
 			stream = client.GetStream();
-			buffer = new byte[4098];
+			buffer = new byte[8196];
 
 			stream.Write(PacketManager.ToJson(Database.GetCard(8)));
 
@@ -115,6 +115,13 @@ public class Client
     {
         account = _account;
     }
+
+	public List<string> ActiveDeck()
+	{
+		return Database.CardIds();
+			
+			// account.decks[account.curDeck].ToList();
+	}
 
     public void Disconnect()
 	{

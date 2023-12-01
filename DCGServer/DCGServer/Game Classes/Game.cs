@@ -21,16 +21,9 @@ public class Game
 		id = _id;
 
 		active = true;
+
+		currentBoard = new GameBoard(this);
 	}
-
-	public Game(int _id, List<Client> _clients)
-	{
-		id = _id;
-
-		active = true;
-
-        currentBoard = new GameBoard(this);
-    }
 
 	public void AddClients(List<Client> _clients)
 	{
@@ -54,7 +47,7 @@ public class Game
 		}
 	}
 
-	// Shouldn't be used... just for testing right now and opens for future concepts
+	
 	private void AddClient(Client _client)
 	{
 		if (!active) return;
@@ -71,17 +64,26 @@ public class Game
 
 		clientIds.Add(currentClientId);
 
-		// _client.tcp.WriteStream(Encoding.ASCII.GetBytes(id.ToString()));
-
 		Console.Write(id + ": ");
 		Console.WriteLine("Client Added! With ID {0} on server {1}", currentClientId, id);
 
 		_client.gameId = id;
-		_client.playerNum = clients.Count;
 
-		GSP gsp = new();
-		gsp.gameId = id;
-		gsp.senderId = _client.id;
+		Player p = new(_client.id) { playerNum = clients.Count };
+
+        _client.player = p;
+
+        p.deck = _client.ActiveDeck();
+
+        _client.tcp.WriteStream(PacketManager.ToJson(_client.player));
+
+        GSP gsp = new()
+        {
+            gameId = id,
+            senderId = _client.id
+        };
+
+		currentBoard.AddPlayer(_client.player);
 
 		byte[] msg = PacketManager.ToJson(gsp);
 
@@ -93,14 +95,6 @@ public class Game
 		if (!active) return;
 
 		PacketManager.Decode(data, clients[_clientId]);
-
-		//foreach (int i in clientIds)
-		//{
-		//	if (i != _clientId)
-		//	{
-		//		clients[i].tcp.WriteStream(data);
-		//	}
-		//}
 	}
 
 	public void LeaveGame(int _clientId)
@@ -147,15 +141,15 @@ public class Game
 
 	class GameBoard
 	{
-		static bool gameState;
-		static int turn;
-		static int phase;
-		static int round;
+		bool gameState;
+		int turn;
+		int phase;
+		int round;
 
-		static string image;
+		string image;
 
-		static Player player1;
-		static Player player2;
+		Player player1;
+		Player player2;
 
 		public GameBoard(Game _game)
 		{
@@ -165,9 +159,26 @@ public class Game
 			round = 1;
 
 			image = null;
+		}
 
-			player1 = new Player(_game.clientIds[0]);
-			player2 = new Player(_game.clientIds[1]);
+		public void AddPlayer(Player player)
+		{
+			if (player1 == null)
+			{
+				player1 = player;
+			}
+			else if (player2 == null)
+			{
+				player2 = player;
+			}
+		}
+
+		public void AddPlayers(List<Player> players)
+		{
+			foreach (var player in players)
+			{
+				AddPlayer(player);
+			}
 		}
 	}
 }

@@ -8,19 +8,21 @@ public class Player
 	public int rank;
 	public int streak;
 
+	public int playerNum;
+
 	public string cardBack;
 	public string profilePicture;
 
 	public int lifePoints;
 	public int timer;
 
-	public List<Card> deck;
-	public List<Card> hand;
-	public List<Card> unforgotten;
-	public List<Card> forgotten;
+	public List<string> deck;
+	public List<string> hand;
+	public List<string> unforgotten;
+	public List<string> forgotten;
 
-	public List<Card> fieldRowOne;
-	public List<Card> fieldRowTwo;
+	public List<string> fieldRowOne;
+	public List<string> fieldRowTwo;
 
 	public Player(int _id) 
 	{ 

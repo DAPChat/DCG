@@ -21,7 +21,6 @@ public class Database
 		ResetAccounts();
 	}
 
-
 	public static Card GetCard(int i)
 	{
 		if (client == null) 
@@ -126,6 +125,27 @@ public class Database
         var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.loggedIn, false);
 
         var updateResult = collection.UpdateOne(filter, update);
+    }
+
+	public static List<string> CardIds()
+	{
+        if (client == null)
+            Connect();
+
+        var collection = client.GetDatabase("DCG").GetCollection<Card>("Cards");
+
+        var filter = Builders<Card>.Filter.Empty;
+
+        var result = collection.Find(filter).ToList();
+
+		List<string> cardIds = new();
+
+		foreach (Card card in result)
+		{
+			cardIds.Add(card.Id.ToString());
+		}
+
+		return cardIds;
     }
 
 	private static void ResetAccounts()

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Text;
 
 public class PacketManager
@@ -41,6 +42,11 @@ public class PacketManager
 
 					case "Player":
 						var player = JsonConvert.DeserializeObject<Player>(lt.parameters);
+
+						ServerManager.client.player = player;
+
+						ServerManager.Print(player.playerNum.ToString());
+						ServerManager.Print(player.deck.Count.ToString());
 
 						break;
 
