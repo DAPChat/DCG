@@ -5,12 +5,12 @@
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="2_nbm2v"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_30cw8"]
 
-[node name="2DCard" type="Node2D"]
+[node name="2DCard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_qfx71")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="FrontFace" type="TextureRect" parent="CanvasLayer"]
+[node name="FrontFace" type="TextureRect" parent="."]
 self_modulate = Color(0.976471, 0, 0.596078, 1)
 offset_right = 150.0
 offset_bottom = 150.0
@@ -18,7 +18,7 @@ scale = Vector2(1.5, 2)
 texture = ExtResource("1_3a8fn")
 expand_mode = 1
 
-[node name="TopCard" type="ColorRect" parent="CanvasLayer/FrontFace"]
+[node name="TopCard" type="ColorRect" parent="FrontFace"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 5.0
@@ -26,7 +26,7 @@ offset_right = 140.0
 offset_bottom = 20.0
 color = Color(1, 1, 1, 0.403922)
 
-[node name="Name" type="Label" parent="CanvasLayer/FrontFace/TopCard"]
+[node name="Name" type="Label" parent="FrontFace/TopCard"]
 layout_mode = 0
 offset_left = 5.0
 offset_right = 83.0
@@ -34,7 +34,7 @@ offset_bottom = 25.0
 theme_override_font_sizes/font_size = 10
 text = "Card Name"
 
-[node name="Rank" type="Label" parent="CanvasLayer/FrontFace/TopCard"]
+[node name="Rank" type="Label" parent="FrontFace/TopCard"]
 layout_mode = 0
 offset_left = 115.0
 offset_top = -2.0
@@ -45,7 +45,7 @@ theme_override_fonts/font = ExtResource("2_nbm2v")
 theme_override_font_sizes/font_size = 10
 text = "S"
 
-[node name="MiddleCard" type="TextureRect" parent="CanvasLayer/FrontFace"]
+[node name="MiddleCard" type="TextureRect" parent="FrontFace"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 25.0
@@ -55,7 +55,7 @@ texture = ExtResource("3_30cw8")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="BottomCard" type="ColorRect" parent="CanvasLayer/FrontFace"]
+[node name="BottomCard" type="ColorRect" parent="FrontFace"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 80.0
@@ -63,7 +63,7 @@ offset_right = 140.0
 offset_bottom = 140.0
 color = Color(1, 1, 1, 0.403922)
 
-[node name="Stats" type="Label" parent="CanvasLayer/FrontFace/BottomCard"]
+[node name="Stats" type="Label" parent="FrontFace/BottomCard"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
@@ -72,7 +72,7 @@ offset_bottom = 30.0
 theme_override_font_sizes/font_size = 8
 text = "0000 ATK / 00000 HP"
 
-[node name="Description" type="RichTextLabel" parent="CanvasLayer/FrontFace/BottomCard"]
+[node name="Description" type="RichTextLabel" parent="FrontFace/BottomCard"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 15.0

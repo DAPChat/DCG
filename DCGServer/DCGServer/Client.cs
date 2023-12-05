@@ -47,7 +47,7 @@ public class Client
 			buffer = new byte[8196];
 
 			// Temporary function to test getting cards from the database and sending to client
-			if (client != null && !client.Connected)
+			if (client != null && client.Connected)
 				stream.Write(PacketManager.ToJson(Database.GetCard(8)));
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);

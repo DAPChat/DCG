@@ -42,13 +42,13 @@ public class Client
 			// 127.1.1.0
 			TryConnect();
 		}
-		catch (Exception e)
+		catch (Exception)
 		{
 			Connect();
 		}
 	}
 
-	private async Task TryConnect()
+	private async void TryConnect()
 	{
         if (client == null)
         {
@@ -65,7 +65,7 @@ public class Client
 			{
 				await client.ConnectAsync(endPoint.Address, endPoint.Port, cts.Token);
 			}
-			catch (Exception e) { }
+			catch (Exception) { }
 			finally { cts.Cancel(); }
 		}
 
@@ -113,7 +113,7 @@ public class Client
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}
-		catch (Exception e)
+		catch (Exception)
 		{
 			connected = false;
 			ServerExit();
