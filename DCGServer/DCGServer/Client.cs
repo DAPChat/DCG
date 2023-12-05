@@ -48,7 +48,7 @@ public class Client
 
 			// Temporary function to test getting cards from the database and sending to client
 			if (client != null && client.Connected)
-				stream.Write(PacketManager.ToJson(Database.GetCard(8)));
+				stream.Write(PacketManager.ToJson(Database.GetCard("6553773c3df79a7a3d4c536f")));
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}

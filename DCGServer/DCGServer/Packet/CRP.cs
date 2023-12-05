@@ -4,9 +4,9 @@ public class CRP : Packet
     public Card card;
     public override void Run(Client client)
     {
-        if (cardId)
+        if (cardId != null)
         {
-            Card c = Database.getCard(cardId);
+            Card c = Database.GetCard(cardId);
             client.tcp.WriteStream(PacketManager.ToJson(new CRP { card = c }));
         }
     }
