@@ -22,7 +22,7 @@ public class Client
 
 	public int id;
 	public int gameId;
-
+	public List<GameScene.CardObject> hand = new List<GameScene.CardObject>();
 	public Player player;
 
     CancellationTokenSource cts = new CancellationTokenSource();

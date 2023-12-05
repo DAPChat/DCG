@@ -94,7 +94,13 @@ public class PacketManager
 						}
 
 						break;
-				}
+                    case "CRP":
+                        // Tests placing cards from the database
+                        var crp = JsonConvert.DeserializeObject<CAP>(lt.parameters);
+
+						ServerManager.client.hand.Add(crp.card);
+                        break;
+                }
 			}
 			catch (Exception e)
 			{
