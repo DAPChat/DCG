@@ -66,6 +66,17 @@ public partial class GameScene : Node3D
         c.setCard(_action.card, cardGlobalPosition);
     }
 
+	public static void AddToHand(CardObject card)
+	{
+        var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
+
+        sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer").CallDeferred(Node.MethodName.AddChild, thescene);
+
+        D2Card c = thescene as D2Card;
+
+		c.setCard(card);
+    }
+
 	// Zoom into the card
 	public static void ViewCard(Vector3 cardPos, Card card, Label3D node)
 	{

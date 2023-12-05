@@ -154,6 +154,13 @@ public class Client
         TryConnect();
     }
 
+	public void AddToHand(GameScene.CardObject card)
+	{
+		hand.Add(card);
+
+		GameScene.AddToHand(card);
+	}
+
 	// All the disconnection tasks the client must do to prevent errors.
 	public void Disconnect()
 	{

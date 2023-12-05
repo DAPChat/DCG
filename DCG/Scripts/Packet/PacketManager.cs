@@ -98,7 +98,7 @@ public class PacketManager
                         // Tests placing cards from the database
                         var crp = JsonConvert.DeserializeObject<CAP>(lt.parameters);
 
-						ServerManager.client.hand.Add(crp.card);
+						ServerManager.client.AddToHand(crp.card);
 
                         break;
                 }

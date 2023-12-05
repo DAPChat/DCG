@@ -152,7 +152,7 @@ public partial class Main : Node
 
 	public static void Reload()
 	{
-		instance._Ready();
+		instance.CallDeferred(Node.MethodName._Ready);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

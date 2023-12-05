@@ -7,7 +7,7 @@ public partial class D2Card : Node2D
     public Label description;
 
     // Works similarly to the Card class
-    public void setCard(GameScene.CardObject _card, Vector2 pos) //add added child card
+    public void setCard(GameScene.CardObject _card) //add added child card
     {
         card = _card;
 
@@ -26,9 +26,6 @@ public partial class D2Card : Node2D
         if (card.Mana > 0) statsText += card.Mana.ToString() + " Mana";
 
         GetNode<Label>("CanvasLayer/FrontFace/BottomCard/Stats").Text = statsText;
-
-        Position = pos;
-        Position = new Vector2(Position.X, Position.Y);
     }
 
     private void getImg(string url)
