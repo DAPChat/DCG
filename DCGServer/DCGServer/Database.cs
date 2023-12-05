@@ -23,20 +23,18 @@ public class Database
 	}
 
 	// Get a specific card from database
-	public static Card GetCard(int i)
+	public static Card GetCard(string cardId)
 	{
 		if (client == null) 
 			Connect();
 
 		var collection = client.GetDatabase("DCG").GetCollection<Card>("Cards");
 
-		var filter = Builders<Card>.Filter.Empty;
+        var filter = Builders<Card>.Filter.Eq(Card => Card.Id, ObjectId.Parse(cardId));
 
-		var result = collection.Find(filter).ToList();
+        var result = collection.Find(filter).FirstOrDefault();
 
-		Card card = result[i];
-
-		return card;
+		return result;
 	}
 
 	// Check if the username is available

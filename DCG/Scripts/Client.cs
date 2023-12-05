@@ -120,6 +120,16 @@ public class Client
         }
 	}
 
+	public void setPlayer(Player p)
+	{
+		player = p;
+
+		foreach (string card in p.hand)
+		{
+			WriteStream(PacketManager.ToJson(new CRP(card)));
+		}
+	}
+
 	// Retries the connection if the server closes
 	private void ServerExit()
 	{

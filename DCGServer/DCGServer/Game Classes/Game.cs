@@ -47,7 +47,6 @@ public class Game
 		}
 	}
 
-	
 	private void AddClient(Client _client)
 	{
 		if (!active) return;
