@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=16 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/GameScene.cs" id="1_18285"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
@@ -52,20 +52,6 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_52mn0"]
 texture = ExtResource("4_adb5o")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0mv0"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjqnm"]
-bg_color = Color(1, 1, 1, 0.396078)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_18285")
@@ -506,54 +492,6 @@ offset_left = 414.0
 offset_top = 454.0
 offset_right = 739.0
 offset_bottom = 606.0
-
-[node name="PlayerHandActivation" type="ColorRect" parent="CanvasLayer/Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -322.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0, 0, 0, 1)
-
-[node name="Activate" type="Button" parent="CanvasLayer/Control/PlayerHandActivation"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -243.0
-offset_top = 80.0
-offset_right = -43.0
-offset_bottom = 134.0
-grow_horizontal = 0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_dywko")
-theme_override_styles/normal = SubResource("StyleBoxFlat_u0mv0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
-text = "Activate"
-
-[node name="Cancel" type="Button" parent="CanvasLayer/Control/PlayerHandActivation"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -243.0
-offset_top = 174.0
-offset_right = -43.0
-offset_bottom = 228.0
-grow_horizontal = 0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_dywko")
-theme_override_styles/normal = SubResource("StyleBoxFlat_u0mv0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
-text = "Cancel"
 
 [node name="PlayerHand" type="Container" parent="CanvasLayer/Control"]
 layout_mode = 1
