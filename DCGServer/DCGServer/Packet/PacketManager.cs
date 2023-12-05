@@ -32,7 +32,11 @@ public class PacketManager
 						login.Run(client);
 						
 						break;
-				}
+					case "CRP":
+						var crp = JsonConvert.DeserializeObject<CRP>(lt.parameters);
+						crp.Run(client);
+						break;
+                }
 			}
 			catch (Exception e)
 			{
