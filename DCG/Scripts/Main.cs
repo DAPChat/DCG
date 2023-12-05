@@ -29,6 +29,8 @@ public partial class Main : Node
 
 	static Main instance;
 
+	public static bool reload = false;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -150,11 +152,6 @@ public partial class Main : Node
 		SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
     }
 
-	public static void Reload()
-	{
-		instance.CallDeferred(Node.MethodName._Ready);
-	}
-
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
@@ -169,5 +166,24 @@ public partial class Main : Node
 			{
 				lastSetting = inGame;
 			}
+
+		if (reload)
+		{
+			reload = false;
+
+            if (ServerManager.client.account == null)
+            {
+                LoginLayer.Show();
+                HomeLayer.Hide();
+            }
+            else
+            {
+                HomeLayer.Show();
+                LoginLayer.Hide();
+            }
+
+            SignupLayer.Hide();
+            LError.Hide();
+        }
 	}
 }

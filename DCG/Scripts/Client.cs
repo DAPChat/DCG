@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Client
 {
@@ -120,11 +121,11 @@ public class Client
         }
 	}
 
-	public void setPlayer(Player p)
+	public void SetPlayer(Player p)
 	{
 		player = p;
 
-		foreach (string card in p.hand)
+		foreach (string card in p.hand.ToList())
 		{
 			WriteStream(PacketManager.ToJson(new CRP { cardId = card}));
 		}
@@ -148,7 +149,7 @@ public class Client
         }
         else
         {
-            Main.Reload();
+			Main.reload = true;
         }
 
         TryConnect();

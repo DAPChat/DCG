@@ -46,7 +46,7 @@ public class PacketManager
 						// Updates the player (includes decks and gameboard)
 						var player = JsonConvert.DeserializeObject<Player>(lt.parameters);
 
-						ServerManager.client.setPlayer(player);
+						ServerManager.client.SetPlayer(player);
 
 						break;
 

@@ -1,21 +1,21 @@
 using Godot;
 using System;
 
-public partial class D2Card : Node2D
+public partial class D2Card : Control
 {
     public GameScene.CardObject card;
-    public Label description;
+    public RichTextLabel description;
 
     // Works similarly to the Card class
     public void setCard(GameScene.CardObject _card) //add added child card
     {
         card = _card;
 
-        description = GetNode<Label>("CanvasLayer/FrontFace/BottomCard/Description");
+        description = GetNode<RichTextLabel>("FrontFace/BottomCard/Description");
 
-        GetNode<Label>("CanvasLayer/FrontFace/TopCard/Name").Text = card.Name.ToString();
-        GetNode<Label>("CanvasLayer/FrontFace/TopCard/Rank").Text = card.Rank.ToString();
-        description.Text = card.Description.Length > 133 ? card.Description.ToString().Substr(0, 130) + "..." : card.Description.ToString();
+        GetNode<Label>("FrontFace/TopCard/Name").Text = card.Name.ToString();
+        GetNode<Label>("FrontFace/TopCard/Rank").Text = card.Rank.ToString();
+        description.Text = card.Description.ToString();
 
         string statsText = "";
 
@@ -25,7 +25,7 @@ public partial class D2Card : Node2D
         if (card.Mana > 0) statsText += " / ";
         if (card.Mana > 0) statsText += card.Mana.ToString() + " Mana";
 
-        GetNode<Label>("CanvasLayer/FrontFace/BottomCard/Stats").Text = statsText;
+        GetNode<Label>("FrontFace/BottomCard/Stats").Text = statsText;
     }
 
     private void getImg(string url)
@@ -38,7 +38,7 @@ public partial class D2Card : Node2D
         {
             Error error = img.LoadJpgFromBuffer(body);
 
-            var mesh = GetNode<TextureRect>("CanvasLayer/FrontFace/MiddleCard");
+            var mesh = GetNode<TextureRect>("FrontFace/MiddleCard");
             mesh.Texture = ImageTexture.CreateFromImage(img); //might not work
 
             Show();

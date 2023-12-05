@@ -6,8 +6,7 @@ public class CRP : Packet
     {
         if (cardId != null)
         {
-            Card c = Database.GetCard(cardId);
-            client.tcp.WriteStream(PacketManager.ToJson(new CRP { card = c }));
+            client.tcp.WriteStream(PacketManager.ToJson(new CRP { card = Database.GetCard(cardId) }));
         }
     }
 }

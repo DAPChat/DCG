@@ -76,6 +76,7 @@ public class Game
         _client.player = p;
 
         p.deck = _client.ActiveDeck();
+		p.hand = _client.ActiveDeck();
 
 		// Send to client (not including the entire deck)
         _client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));

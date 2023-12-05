@@ -42,6 +42,8 @@ public partial class GameScene : Node3D
 	public static bool changeScene = false;
 	public static Card zoomed = null;
 
+	static int gridSeparation = 250;
+
 	public static void PlaceCard(CAP _action)
 	{
         int player = 1;
@@ -70,7 +72,16 @@ public partial class GameScene : Node3D
 	{
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
 
-        sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer").CallDeferred(Node.MethodName.AddChild, thescene);
+		var grid = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer");
+
+        grid.CallDeferred(Node.MethodName.AddChild, thescene);
+
+		if ((grid.GetChildCount() * gridSeparation + grid.GetChildCount() * 150) > sceneTree.GetViewport().GetVisibleRect().Size.X)
+		{
+			gridSeparation -= 21;
+		}
+
+        grid.AddThemeConstantOverride(new StringName("h_separation"), gridSeparation);
 
         D2Card c = thescene as D2Card;
 
@@ -146,7 +157,7 @@ public partial class GameScene : Node3D
             if (HandShown)
             {
                 Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-                var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+                var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
                 hand.Hide();
                 HandShown = false;
                 buttonHand.Disabled = false;
@@ -228,7 +239,7 @@ public partial class GameScene : Node3D
 		Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
         Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
         description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
-        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+        var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
         sceneTree = this;
 
         curCamera = new Camera3D();
