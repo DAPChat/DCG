@@ -132,7 +132,15 @@ public partial class GameScene : Node3D
 		// Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
-			Card c = null;
+            if (HandShown)
+            {
+                Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+                var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+                hand.Hide();
+                HandShown = false;
+                buttonHand.Disabled = false;
+            }
+            Card c = null;
 			bool skip = false;
 
 			// Check each card to see if there was one that was clicked
@@ -208,9 +216,8 @@ public partial class GameScene : Node3D
 	{
 		Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
         Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-		Button buttonCloseHand = (Button)GetNode("/root/Game/CanvasLayer/Control/PlayerHandActivation/Cancel");
         description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
-        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHandActivation");
+        var hand = (ColorRect)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
         sceneTree = this;
 
         curCamera = new Camera3D();
@@ -247,17 +254,8 @@ public partial class GameScene : Node3D
 		{
 			hand.Show();
 			HandShown = true;
-			buttonCloseHand.Disabled = false;
 			buttonHand.Disabled = true;
 		};
-		buttonCloseHand.ButtonDown += () =>
-		{
-			hand.Hide();
-			HandShown = false;
-			buttonCloseHand.Disabled = true;
-            buttonHand.Disabled = false;
-        };
-
     }
 
 	public override void _Process(double delta)
