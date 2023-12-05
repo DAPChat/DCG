@@ -99,6 +99,7 @@ public class PacketManager
                         var crp = JsonConvert.DeserializeObject<CAP>(lt.parameters);
 
 						ServerManager.client.hand.Add(crp.card);
+
                         break;
                 }
 			}

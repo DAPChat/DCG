@@ -556,6 +556,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_xjqnm")
 text = "Cancel"
 
 [node name="PlayerHand" type="Container" parent="CanvasLayer/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

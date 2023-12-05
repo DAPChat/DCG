@@ -1,4 +1,3 @@
-using Godot.Collections;
 using Godot;
 using System;
 using System.Net.Sockets;
@@ -6,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public class Client
 {
@@ -22,7 +22,7 @@ public class Client
 
 	public int id;
 	public int gameId;
-	public List<GameScene.CardObject> hand = new List<GameScene.CardObject>();
+	public List<GameScene.CardObject> hand = new();
 	public Player player;
 
     CancellationTokenSource cts = new CancellationTokenSource();
@@ -126,7 +126,7 @@ public class Client
 
 		foreach (string card in p.hand)
 		{
-			WriteStream(PacketManager.ToJson(new CRP(card)));
+			WriteStream(PacketManager.ToJson(new CRP { cardId = card}));
 		}
 	}
 
