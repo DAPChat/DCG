@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Godot;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Text;
@@ -96,7 +97,7 @@ public class PacketManager
 						break;
                     case "CRP":
                         // Tests placing cards from the database
-                        var crp = JsonConvert.DeserializeObject<CAP>(lt.parameters);
+                        var crp = JsonConvert.DeserializeObject<CRP>(lt.parameters);
 
 						ServerManager.client.AddToHand(crp.card);
 

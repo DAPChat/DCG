@@ -12,6 +12,7 @@ script = ExtResource("1_qfx71")
 
 [node name="FrontFace" type="TextureRect" parent="."]
 self_modulate = Color(0.976471, 0, 0.596078, 1)
+layout_mode = 0
 offset_right = 150.0
 offset_bottom = 150.0
 scale = Vector2(1.5, 2)

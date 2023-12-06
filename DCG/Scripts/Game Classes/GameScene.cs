@@ -31,12 +31,13 @@ public partial class GameScene : Node3D
 	static Vector3 cam2Rot = new(-90, 0, 0);
 	static RichTextLabel description;
 
-	static GameScene sceneTree;
+	public static GameScene sceneTree;
 
 	static Vector3 camRot;
 
 	static Tween tween;
 	static List<Card> cards = new List<Card>();
+	public static List<CardObject> hand = new();
 
     public static CardObject cardObject = null;
 	public static bool changeScene = false;
@@ -76,9 +77,9 @@ public partial class GameScene : Node3D
 
         grid.CallDeferred(Node.MethodName.AddChild, thescene);
 
-		if ((grid.GetChildCount() * gridSeparation + grid.GetChildCount() * 150) > sceneTree.GetViewport().GetVisibleRect().Size.X)
+		while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
 		{
-			gridSeparation -= 21;
+			gridSeparation -= 1;
 		}
 
         grid.AddThemeConstantOverride(new StringName("h_separation"), gridSeparation);
@@ -287,6 +288,13 @@ public partial class GameScene : Node3D
             changeScene = false;
             GetTree().ChangeSceneToFile("res://Scenes/Main.tscn");
         }
+
+		while (hand.Count > 0)
+		{
+			var curCard = hand[0];
+			AddToHand(curCard);
+			hand.RemoveAt(0);
+		}
 
 		base._Process(delta);
 	}

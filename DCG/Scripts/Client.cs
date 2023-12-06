@@ -125,7 +125,7 @@ public class Client
 	{
 		player = p;
 
-		foreach (string card in p.hand.ToList())
+        foreach (string card in p.hand.ToList())
 		{
 			WriteStream(PacketManager.ToJson(new CRP { cardId = card}));
 		}
@@ -157,9 +157,11 @@ public class Client
 
 	public void AddToHand(GameScene.CardObject card)
 	{
+		// if (card.Id == "6553773c3df79a7a3d4c536f") return;
+
 		hand.Add(card);
 
-		GameScene.AddToHand(card);
+		GameScene.hand.Add(card);
 	}
 
 	// All the disconnection tasks the client must do to prevent errors.
