@@ -43,6 +43,8 @@ public partial class GameScene : Node3D
 	public static bool changeScene = false;
 	public static Card zoomed = null;
 
+	public static Dictionary<string, ImageTexture> images = new();
+
 	static int gridSeparation = 250;
 
 	public static void PlaceCard(CAP _action)
@@ -162,7 +164,10 @@ public partial class GameScene : Node3D
                 hand.Hide();
                 HandShown = false;
                 buttonHand.Disabled = false;
+
+				return;
             }
+
             Card c = null;
 			bool skip = false;
 

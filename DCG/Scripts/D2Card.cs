@@ -6,6 +6,8 @@ public partial class D2Card : Control
     public GameScene.CardObject card;
     public RichTextLabel description;
 
+    bool hovered = false;
+
     // Works similarly to the Card class
     public void setCard(GameScene.CardObject _card) //add added child card
     {
@@ -26,6 +28,11 @@ public partial class D2Card : Control
         if (card.Mana > 0) statsText += card.Mana.ToString() + " Mana";
 
         GetNode<Label>("FrontFace/BottomCard/Stats").Text = statsText;
+
+        TreeEntered += () =>
+        {
+            getImg(_card.Img.ToString());
+        };
     }
 
     private void getImg(string url)
@@ -38,11 +45,53 @@ public partial class D2Card : Control
         {
             Error error = img.LoadJpgFromBuffer(body);
 
-            var mesh = GetNode<TextureRect>("FrontFace/MiddleCard");
-            mesh.Texture = ImageTexture.CreateFromImage(img); //might not work
+            var mesh = GetNode<TextureRect>("FrontFace/Container/MiddleCard");
+
+            ImageTexture texture = ImageTexture.CreateFromImage(img);
+
+            if (!GameScene.images.ContainsKey(card.Id))
+                GameScene.images.Add(card.Id, texture);
+
+            mesh.Texture = texture; //might not work
 
             Show();
         };
-        Error error = request.Request(url);
+        if (!GameScene.images.ContainsKey(card.Id))
+        {
+            Error error = request.Request(url);
+        }
+        else
+        {
+            var mesh = GetNode<TextureRect>("FrontFace/MiddleCard");
+
+            ImageTexture texture = GameScene.images[card.Id];
+
+            mesh.Texture = texture; //might not work
+        }
+    }
+
+    public override void _Ready()
+    {
+        Vector2 startPos = new Vector2();
+        GetNode<Area2D>("FrontFace/Area2D").MouseEntered += () =>
+        {
+            if (!hovered) startPos = Position;
+
+            hovered = true;
+            ZIndex = 1;
+            Tween tween = CreateTween();
+            tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y - 100, .25);
+        };
+
+        GetNode<Area2D>("FrontFace/Area2D").MouseExited += () =>
+        {
+            ZIndex = 0;
+            Tween tween = CreateTween();
+            tween.Finished += () =>
+            {
+                hovered = false;
+            };
+            tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y, .25);
+        };
     }
 }

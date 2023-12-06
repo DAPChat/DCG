@@ -5,9 +5,9 @@ using System.Linq;
 
 public partial class Card : Node3D
 {
-	//when using this you will do var newcard = new Card(dictionary,cardnum)
+    //when using this you will do var newcard = new Card(dictionary,cardnum)
 
-	public Area3D collision;
+    public Area3D collision;
 	public bool mouse = false;
 
 	public GameScene.CardObject card;
@@ -19,7 +19,9 @@ public partial class Card : Node3D
 	// Sets the card object elements to display to the player
 	public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
 	{
-		card = _card;
+        Hide();
+
+        card = _card;
 
 		description = GetNode<Label3D>("FrontFace/Description/Description");
 
@@ -88,18 +90,36 @@ public partial class Card : Node3D
 
 			var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
 			var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
-			material!.AlbedoTexture = ImageTexture.CreateFromImage(img);
+
+			var imageTexture = ImageTexture.CreateFromImage(img);
+
+			if (!GameScene.images.ContainsKey(card.Id))
+				GameScene.images.Add(card.Id, imageTexture);
+
+			material!.AlbedoTexture = imageTexture;
 
 			mesh.MaterialOverride = material;
 
+			Show();
+		};
+
+		if (!GameScene.images.ContainsKey(card.Id))
+		{
+			Error error = request.Request(url);
+		}
+		else
+		{
             Show();
-        };
-		Error error = request.Request(url);
+            var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
+            var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
+
+            material!.AlbedoTexture = GameScene.images[card.Id];
+
+            mesh.MaterialOverride = material;
+        }
 	}
 	public override void _Ready()
 	{
-		Hide();
-
 		collision = (Area3D)GetNode("Area3D");
 
 		// Check if the mouse is inside the object

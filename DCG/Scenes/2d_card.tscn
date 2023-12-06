@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://ba5kb3cpe4den"]
+[gd_scene load_steps=6 format=3 uid="uid://ba5kb3cpe4den"]
 
 [ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_3a8fn"]
 [ext_resource type="Script" path="res://Scripts/D2Card.cs" id="1_qfx71"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="2_nbm2v"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_30cw8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8ndx"]
+size = Vector2(225, 300)
 
 [node name="2DCard" type="Control"]
 layout_mode = 3
@@ -46,12 +49,21 @@ theme_override_fonts/font = ExtResource("2_nbm2v")
 theme_override_font_sizes/font_size = 10
 text = "S"
 
-[node name="MiddleCard" type="TextureRect" parent="FrontFace"]
+[node name="Container" type="Panel" parent="FrontFace"]
+clip_contents = true
 layout_mode = 0
 offset_left = 10.0
-offset_top = 25.0
+offset_top = 22.0
 offset_right = 140.0
-offset_bottom = 75.0
+offset_bottom = 77.0
+
+[node name="MiddleCard" type="TextureRect" parent="FrontFace/Container"]
+layout_mode = 0
+offset_left = -6.66667
+offset_top = -2.0
+offset_right = 1017.33
+offset_bottom = 1022.0
+scale = Vector2(0.14, 0.084)
 texture = ExtResource("3_30cw8")
 expand_mode = 1
 stretch_mode = 6
@@ -81,3 +93,11 @@ offset_right = 125.0
 offset_bottom = 55.0
 theme_override_font_sizes/normal_font_size = 8
 text = "..."
+
+[node name="Area2D" type="Area2D" parent="FrontFace"]
+scale = Vector2(0.666667, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrontFace/Area2D"]
+position = Vector2(112, 150)
+scale = Vector2(0.5, 1)
+shape = SubResource("RectangleShape2D_t8ndx")
