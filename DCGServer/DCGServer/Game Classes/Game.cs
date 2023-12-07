@@ -168,7 +168,7 @@ public class Game
 
 			image = null;
 		}
-
+		
 		public void AddPlayer(Player player)
 		{
 			if (player1 == null)

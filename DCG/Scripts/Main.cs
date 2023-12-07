@@ -83,8 +83,15 @@ public partial class Main : Node
 		SignupLayer.Hide();
 		LError.Hide();
 	}
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("login"))
+        {
+			Login();
+        }
+    }
 
-	public void Login()
+    public void Login()
 	{
 		string username = LUsername.Text.Trim();
 		string password = LPassword.Text.Trim();
