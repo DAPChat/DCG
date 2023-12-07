@@ -20,12 +20,15 @@ public class Player
 	public List<string> unforgotten;
 	public List<string> forgotten;
 
-	public List<string> fieldRowOne;
-	public List<string> fieldRowTwo;
+	public string[] fieldRowOne;
+	public string[] fieldRowTwo;
 
 	public Player(int _id) 
 	{ 
 		id = _id;
+
+		fieldRowOne = new string[5];
+		fieldRowTwo = new string[5];
 	}
 
 	public Player Clone()

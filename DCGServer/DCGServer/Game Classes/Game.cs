@@ -147,6 +147,24 @@ public class Game
 		Server.RemoveGame(id);
 	}
 
+	public void PlaceCard(CAP action)
+	{
+		if (action.action != "place" || !active) return;
+
+		Player curPlayer = currentBoard.GetPlayer(clients[action.placerId].player.playerNum);
+
+		var field = action.card.Type == "Spell" ? curPlayer.fieldRowTwo : curPlayer.fieldRowOne;
+
+		if (field[action.slot - 1] != null) return;
+
+		field.SetValue(action.card.Id, action.slot-1);
+
+		foreach (var client in clients.Values)
+		{
+			client.tcp.WriteStream(PacketManager.ToJson(action));
+		}
+	}
+
 	class GameBoard
 	{
 		bool gameState;
@@ -188,6 +206,12 @@ public class Game
 			{
 				AddPlayer(player);
 			}
+		}
+
+		public Player GetPlayer(int num)
+		{
+			if (num == 1) return player1;
+			else return player2;
 		}
 	}
 }

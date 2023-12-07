@@ -17,7 +17,7 @@ public partial class Card : Node3D
 	public Label3D description;
 
 	// Sets the card object elements to display to the player
-	public void setCard(GameScene.CardObject _card, Vector3 pos) //add added child card
+	public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum) //add added child card
 	{
         Hide();
 
@@ -49,7 +49,7 @@ public partial class Card : Node3D
 		Position = pos;
 		Position = new Vector3(Position.X, 0.005f, Position.Z);
 
-		RotationDegrees = new Vector3(0, 0, 0);
+		RotationDegrees = new Vector3(0, 180*(playerNum-1), 0);
 
 		//if (card.Type != null)
 		//{
@@ -93,8 +93,8 @@ public partial class Card : Node3D
 
 			var imageTexture = ImageTexture.CreateFromImage(img);
 
-			if (!GameScene.images.ContainsKey(card.Id))
-				GameScene.images.Add(card.Id, imageTexture);
+			if (!GameScene.images.ContainsKey(card.Id.ToString()))
+				GameScene.images.Add(card.Id.ToString(), imageTexture);
 
 			material!.AlbedoTexture = imageTexture;
 
@@ -103,7 +103,7 @@ public partial class Card : Node3D
 			Show();
 		};
 
-		if (!GameScene.images.ContainsKey(card.Id))
+		if (!GameScene.images.ContainsKey(card.Id.ToString()))
 		{
 			Error error = request.Request(url);
 		}
@@ -113,7 +113,7 @@ public partial class Card : Node3D
             var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
             var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
 
-            material!.AlbedoTexture = GameScene.images[card.Id];
+            material!.AlbedoTexture = GameScene.images[card.Id.ToString()];
 
             mesh.MaterialOverride = material;
         }

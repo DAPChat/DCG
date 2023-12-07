@@ -7,9 +7,12 @@ public partial class D2Card : Control
     public GameScene.CardObject card;
     public RichTextLabel description;
 
+    Vector2 startPos = new Vector2();
+
     int gridSize = 225;
 
-    bool hovered = false;
+    public bool hovered = false;
+    public bool keepShown = false;
 
     // Works similarly to the Card class
     public void setCard(GameScene.CardObject _card) //add added child card
@@ -52,14 +55,14 @@ public partial class D2Card : Control
 
             ImageTexture texture = ImageTexture.CreateFromImage(img);
 
-            if (!GameScene.images.ContainsKey(card.Id))
-                GameScene.images.Add(card.Id, texture);
+            if (!GameScene.images.ContainsKey(card.Id.ToString()))
+                GameScene.images.Add(card.Id.ToString(), texture);
 
             mesh.Texture = texture; //might not work
 
             Show();
         };
-        if (!GameScene.images.ContainsKey(card.Id))
+        if (!GameScene.images.ContainsKey(card.Id.ToString()))
         {
             Error error = request.Request(url);
         }
@@ -67,7 +70,7 @@ public partial class D2Card : Control
         {
             var mesh = GetNode<TextureRect>("FrontFace/MiddleCard");
 
-            ImageTexture texture = GameScene.images[card.Id];
+            ImageTexture texture = GameScene.images[card.Id.ToString()];
 
             mesh.Texture = texture; //might not work
         }
@@ -75,10 +78,11 @@ public partial class D2Card : Control
 
     public override void _Ready()
     {
-        Vector2 startPos = new Vector2();
         GetNode<Area2D>("FrontFace/Area2D").MouseEntered += () =>
         {
             if (!hovered) startPos = Position;
+
+            GameScene.selectedHand = this;
 
             hovered = true;
             ZIndex = 1;
@@ -88,14 +92,23 @@ public partial class D2Card : Control
 
         GetNode<Area2D>("FrontFace/Area2D").MouseExited += () =>
         {
-            ZIndex = 0;
-            Tween tween = CreateTween();
-            tween.Finished += () =>
-            {
-                hovered = false;
-            };
-            tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y, .25);
+            if (hovered && GameScene.selectedHand == this) GameScene.selectedHand = null;
+
+            if (keepShown) return;
+
+            ReturnCard();
         };
+    }
+
+    public void ReturnCard()
+    {
+        ZIndex = 0;
+        Tween tween = CreateTween();
+        tween.Finished += () =>
+        {
+            hovered = false;
+        };
+        tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y, .25);
     }
 
     public override void _Process(double delta)
@@ -107,9 +120,9 @@ public partial class D2Card : Control
             CollisionShape2D collider = GetNode<CollisionShape2D>("FrontFace/Area2D/CollisionShape2D");
             RectangleShape2D colliderShape = (RectangleShape2D)collider.Shape;
 
-            colliderShape.Size = new Vector2(gridSize, colliderShape.Size.Y);
+            colliderShape.Size = new Vector2(Math.Clamp(gridSize, 10, 225), colliderShape.Size.Y);
 
-            collider.Position = new Vector2(gridSize/2, collider.Position.Y);
+            collider.Position = new Vector2(Math.Clamp(gridSize, 10, 225)/2, collider.Position.Y);
         }
     }
 }
