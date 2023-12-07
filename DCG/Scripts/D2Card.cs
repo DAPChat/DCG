@@ -1,10 +1,13 @@
 using Godot;
 using System;
+using System.Drawing;
 
 public partial class D2Card : Control
 {
     public GameScene.CardObject card;
     public RichTextLabel description;
+
+    int gridSize = 225;
 
     bool hovered = false;
 
@@ -93,5 +96,20 @@ public partial class D2Card : Control
             };
             tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y, .25);
         };
+    }
+
+    public override void _Process(double delta)
+    {
+        if (gridSize != GameScene.gridSeparation)
+        {
+            gridSize = GameScene.gridSeparation;
+
+            CollisionShape2D collider = GetNode<CollisionShape2D>("FrontFace/Area2D/CollisionShape2D");
+            RectangleShape2D colliderShape = (RectangleShape2D)collider.Shape;
+
+            colliderShape.Size = new Vector2(gridSize, colliderShape.Size.Y);
+
+            collider.Position = new Vector2(gridSize/2, collider.Position.Y);
+        }
     }
 }

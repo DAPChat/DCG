@@ -43,7 +43,7 @@ public partial class Card : Node3D
 
 		TreeEntered += () =>
 		{
-            getImg(card.Img.ToString());
+            GetImg(card.Img.ToString());
         };
 
 		Position = pos;
@@ -74,7 +74,7 @@ public partial class Card : Node3D
 
 	}
    
-	private void getImg(string url)
+	private void GetImg(string url)
 	{
 		// Make a request to the online storage of images to load them in
 

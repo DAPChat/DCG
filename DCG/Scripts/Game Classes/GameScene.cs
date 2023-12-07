@@ -45,7 +45,7 @@ public partial class GameScene : Node3D
 
 	public static Dictionary<string, ImageTexture> images = new();
 
-	static int gridSeparation = 250;
+	public static int gridSeparation = 250;
 
 	public static void PlaceCard(CAP _action)
 	{
