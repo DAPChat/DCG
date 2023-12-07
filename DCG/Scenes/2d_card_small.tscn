@@ -1,0 +1,165 @@
+[gd_scene load_steps=8 format=3 uid="uid://c6a6l7dlk1pvt"]
+
+[ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_0j73g"]
+[ext_resource type="Script" path="res://Scripts/D2CardSmall.cs" id="1_rralw"]
+[ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="2_a1ryx"]
+[ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_wkvuj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gxm1o"]
+size = Vector2(336.5, 600)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6i0yk"]
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46x1u"]
+bg_color = Color(0.933333, 0.211765, 0.286275, 0.654902)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="2DCardSmall" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 226.0
+offset_bottom = 302.0
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_rralw")
+
+[node name="FrontFace" type="TextureRect" parent="Card"]
+self_modulate = Color(0.976471, 0, 0.596078, 1)
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+scale = Vector2(1.5, 2)
+texture = ExtResource("1_0j73g")
+expand_mode = 1
+
+[node name="TopCard" type="ColorRect" parent="Card/FrontFace"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 140.0
+offset_bottom = 20.0
+color = Color(1, 1, 1, 0.403922)
+
+[node name="Name" type="Label" parent="Card/FrontFace/TopCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 83.0
+offset_bottom = 25.0
+theme_override_font_sizes/font_size = 10
+text = "Card Name"
+
+[node name="Rank" type="Label" parent="Card/FrontFace/TopCard"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = -2.0
+offset_right = 126.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 0.917647, 0, 1)
+theme_override_fonts/font = ExtResource("2_a1ryx")
+theme_override_font_sizes/font_size = 10
+text = "S"
+
+[node name="Container" type="Panel" parent="Card/FrontFace"]
+clip_contents = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 22.0
+offset_right = 140.0
+offset_bottom = 77.0
+
+[node name="MiddleCard" type="TextureRect" parent="Card/FrontFace/Container"]
+layout_mode = 0
+offset_left = -6.66667
+offset_top = -2.0
+offset_right = 1017.33
+offset_bottom = 1022.0
+scale = Vector2(0.14, 0.084)
+texture = ExtResource("3_wkvuj")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BottomCard" type="ColorRect" parent="Card/FrontFace"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 140.0
+offset_bottom = 140.0
+color = Color(1, 1, 1, 0.403922)
+
+[node name="Stats" type="Label" parent="Card/FrontFace/BottomCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 87.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 8
+text = "0000 ATK / 00000 HP"
+
+[node name="Description" type="RichTextLabel" parent="Card/FrontFace/BottomCard"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 15.0
+offset_right = 125.0
+offset_bottom = 55.0
+theme_override_font_sizes/normal_font_size = 8
+text = "..."
+
+[node name="Area2D" type="Area2D" parent="Card/FrontFace"]
+scale = Vector2(0.444445, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Card/FrontFace/Area2D"]
+position = Vector2(167.75, 300)
+shape = SubResource("RectangleShape2D_gxm1o")
+
+[node name="Options" type="Control" parent="Card"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Change" type="Button" parent="Card/Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 11.5
+offset_top = 93.0
+offset_right = 174.5
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_a1ryx")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_6i0yk")
+text = "Change"
+
+[node name="Remove" type="Button" parent="Card/Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 11.5
+offset_top = 139.0
+offset_right = 174.5
+offset_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_a1ryx")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_46x1u")
+text = " - Remove "
