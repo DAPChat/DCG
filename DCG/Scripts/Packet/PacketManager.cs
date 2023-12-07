@@ -48,6 +48,7 @@ public class PacketManager
 						var player = JsonConvert.DeserializeObject<Player>(lt.parameters);
 
 						ServerManager.client.SetPlayer(player);
+						ServerManager.client.id = player.id;
 
 						break;
 
@@ -74,8 +75,8 @@ public class PacketManager
 						switch (cap.action)
 						{
 							case "place":
-								GameScene.cardObject = cap.card;
-								// GameScene.PlaceCard(cap);
+								GameScene.placeQueue.Add(cap);
+
 								break;
 						}
 

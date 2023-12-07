@@ -38,6 +38,13 @@ public class PacketManager
 						crp.Run(client);
 
 						break;
+
+					case "CAP":
+						var cap = JsonConvert.DeserializeObject<CAP>(lt.parameters);
+
+						Server.games[client.gameId].PlaceCard(cap);
+
+						break;
                 }
 			}
 			catch (Exception e)

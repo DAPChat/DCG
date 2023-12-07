@@ -46,8 +46,10 @@ mesh = SubResource("PlaneMesh_qosl6")
 surface_material_override/0 = ExtResource("1_olrt8")
 
 [node name="Name" type="Label3D" parent="FrontFace/Name"]
-transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, -0.498367, 0.001, 0.0540943)
+transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, -0.957648, 0.001, 0.0540943)
 outline_modulate = Color(0, 0, 0, 0)
+text = "aaaaaaaaaaaaaaaaaaaaaaaaaa"
+horizontal_alignment = 0
 
 [node name="Rank" type="Label3D" parent="FrontFace/Name"]
 transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, 0.811643, 0.001, 0.0540943)

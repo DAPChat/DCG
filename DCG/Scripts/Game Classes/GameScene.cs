@@ -1,4 +1,5 @@
 using Godot;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -38,10 +39,14 @@ public partial class GameScene : Node3D
 	static Tween tween;
 	static List<Card> cards = new List<Card>();
 	public static List<CardObject> hand = new();
+	public static List<CAP> placeQueue = new();
 
     public static CardObject cardObject = null;
 	public static bool changeScene = false;
 	public static Card zoomed = null;
+
+	public static D2Card selectedHand = null;
+	static D2Card lastSelectedHand = null;
 
 	public static Dictionary<string, ImageTexture> images = new();
 
@@ -68,7 +73,7 @@ public partial class GameScene : Node3D
 
 		cards.Add(c);
 		
-        c.setCard(_action.card, cardGlobalPosition);
+        c.setCard(_action.card, cardGlobalPosition, player);
     }
 
 	public static void AddToHand(CardObject card)
@@ -157,16 +162,63 @@ public partial class GameScene : Node3D
 		// Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
-            if (HandShown)
-            {
-                Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-                var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
-                hand.Hide();
-                HandShown = false;
-                buttonHand.Disabled = false;
+			if (HandShown)
+			{
+				Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+				var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
 
-				return;
-            }
+				if (selectedHand != null)
+				{
+					selectedHand.keepShown = true;
+
+					if (lastSelectedHand == selectedHand)
+					{
+						cardObject = selectedHand.card;
+
+						selectedHand = null;
+						lastSelectedHand.keepShown = false;
+						lastSelectedHand.ReturnCard();
+
+						hand.Hide();
+						HandShown = false;
+						buttonHand.Disabled = false;
+
+						return;
+					}
+
+                    cardObject = null;
+
+                    if (lastSelectedHand != null && lastSelectedHand != selectedHand)
+					{
+						lastSelectedHand.keepShown = false;
+						lastSelectedHand.ReturnCard();
+					}
+
+					lastSelectedHand = selectedHand;
+
+					return;
+				}
+				else
+				{
+					cardObject = null;
+
+					if (lastSelectedHand != null)
+					{
+						lastSelectedHand.keepShown = false;
+						lastSelectedHand.ReturnCard();
+
+						lastSelectedHand = selectedHand;
+
+						return;
+					}
+
+					hand.Hide();
+					HandShown = false;
+					buttonHand.Disabled = false;
+
+					return;
+				}
+			}
 
             Card c = null;
 			bool skip = false;
@@ -235,7 +287,7 @@ public partial class GameScene : Node3D
 					return;
 				}
 
-                PlaceCard(new CAP { placerId = 0, card = cardObject, action = "place", slot = slot });
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", slot = slot }));
             }
         }
     }
@@ -299,6 +351,13 @@ public partial class GameScene : Node3D
 			var curCard = hand[0];
 			AddToHand(curCard);
 			hand.RemoveAt(0);
+		}
+
+		while (placeQueue.Count > 0)
+		{
+			var cap = placeQueue[0];
+			PlaceCard(cap);
+			placeQueue.RemoveAt(0);
 		}
 
 		base._Process(delta);

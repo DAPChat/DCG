@@ -87,6 +87,8 @@ public partial class Main : Node
     {
         if (@event.IsActionPressed("login"))
         {
+			if (ServerManager.client.account != null) return;
+
 			Login();
         }
     }
