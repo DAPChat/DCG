@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=15 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/GameScene.cs" id="1_18285"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="3_dywko"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="4_adb5o"]
-[ext_resource type="Script" path="res://Scenes/PlayerHand.cs" id="5_jy6at"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4cm6"]
 transparency = 1
@@ -503,7 +502,6 @@ anchor_bottom = 1.0
 offset_top = -200.0
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("5_jy6at")
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/PlayerHand"]
 layout_mode = 2
