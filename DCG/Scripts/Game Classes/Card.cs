@@ -86,9 +86,15 @@ public partial class Card : Node3D
 		{
 			Error error = img.LoadJpgFromBuffer(body);
 
-			// Creates a material from the image and applies it to the card
+            if (error != Error.Ok)
+            {
+                Show();
+                return;
+            }
 
-			var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
+            // Creates a material from the image and applies it to the card
+
+            var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
 			var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
 
 			var imageTexture = ImageTexture.CreateFromImage(img);
@@ -110,6 +116,10 @@ public partial class Card : Node3D
 		else
 		{
             Show();
+            if (GameScene.images[card.Id] == null)
+			{
+				return;
+			}
             var mesh = GetNode<MeshInstance3D>("FrontFace/Picture");
             var material = mesh.GetActiveMaterial(0).Duplicate() as StandardMaterial3D;
 

@@ -76,7 +76,15 @@ public class Game
         _client.player = p;
 
         p.deck = _client.ActiveDeck();
-		p.hand = _client.ActiveDeck();
+		p.hand = new();
+		
+		for (int i = 0; i < 6; i++)
+		{
+			string card = p.deck[new Random().Next(0, p.deck.Count - 1)];
+
+			p.hand.Add(card);
+			p.deck.Remove(card);
+		}
 
 		// Send to client (not including the entire deck)
         _client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));

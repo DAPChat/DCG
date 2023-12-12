@@ -51,6 +51,13 @@ public partial class D2Card : Control
         {
             Error error = img.LoadJpgFromBuffer(body);
 
+            if (error != Error.Ok)
+            {
+                GameScene.images.Add(card.Id.ToString(), null);
+                Show();
+                return;
+            }
+
             var mesh = GetNode<TextureRect>("FrontFace/Container/MiddleCard");
 
             ImageTexture texture = ImageTexture.CreateFromImage(img);
