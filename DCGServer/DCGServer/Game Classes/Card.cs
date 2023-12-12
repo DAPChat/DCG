@@ -15,4 +15,23 @@ public class Card
 	public string Img { get; set; }
 	public string Pack {  get; set; }
 	public string CurrentStatus { get; set; }
+
+	public TempCard TempCard()
+	{
+		return new TempCard()
+		{
+			Id = Id.ToString(),
+			Name = Name,
+			Rank = Rank,
+			SacrificialValue = SacrificialValue,
+			Atk = Atk,
+			Hp = Hp,
+			Mana = Mana,
+			Description = Description,
+			Type = Type,
+			Img = Img,
+			Pack = Pack,
+			CurrentStatus = CurrentStatus
+		};
+	}
 }

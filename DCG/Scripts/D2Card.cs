@@ -49,14 +49,18 @@ public partial class D2Card : Control
         Image img = new Image();
         request.RequestCompleted += (_result, responsecode, header, body) =>
         {
-            Error error = img.LoadJpgFromBuffer(body);
-
-            if (error != Error.Ok)
+            try
             {
-                GameScene.images.Add(card.Id.ToString(), null);
-                Show();
-                return;
+                Error error = img.LoadJpgFromBuffer(body);
+
+                if (error != Error.Ok)
+                {
+                    GameScene.images.Add(card.Id.ToString(), null);
+                    Show();
+                    return;
+                }
             }
+            catch (Exception) { Show(); return; }
 
             var mesh = GetNode<TextureRect>("FrontFace/Container/MiddleCard");
 

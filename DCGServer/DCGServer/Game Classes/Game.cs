@@ -172,6 +172,16 @@ public class Game
 
 		field.SetValue(action.card.Id, action.slot-1);
 
+		if (placer.player.deck.Count > 0 && placer.player.hand.Count < 10)
+		{
+			string c = placer.player.deck[new Random().Next(0, placer.player.deck.Count - 1)];
+
+			placer.player.deck.Remove(c);
+			placer.player.hand.Add(c);
+
+			placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(c).TempCard(), action = "hadd" });
+		}
+
         currentBoard.UpdatePlayer(placer.player);
 
 		placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove"}));

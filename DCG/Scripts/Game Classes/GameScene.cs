@@ -401,7 +401,7 @@ public partial class GameScene : Node3D
 				case "place":
 					PlaceCard(cap);
 					break;
-				case "hplace":
+				case "hadd":
 					AddToHand(cap.card);
 					break;
 				case "hremove":
