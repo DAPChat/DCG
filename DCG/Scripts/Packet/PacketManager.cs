@@ -72,13 +72,7 @@ public class PacketManager
 						// Tests placing cards from the database
 						var cap = JsonConvert.DeserializeObject<CAP>(lt.parameters);
 
-						switch (cap.action)
-						{
-							case "place":
-								GameScene.placeQueue.Add(cap);
-
-								break;
-						}
+						GameScene.actionQueue.Add(cap);
 
 						break;
 

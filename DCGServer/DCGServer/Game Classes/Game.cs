@@ -122,7 +122,8 @@ public class Game
 		}
 
 		// Remove the non-disconnected person from the match
-		Server.KeepConnect(clients.Values.First());
+		if (clients.Count > 0)
+			Server.KeepConnect(clients.Values.First());
 
 		Server.RemoveGame(id);
 	}
@@ -151,15 +152,23 @@ public class Game
 	{
 		if (action.action != "place" || !active) return;
 
-		Player curPlayer = currentBoard.GetPlayer(clients[action.placerId].player.playerNum);
+		Client placer = clients[action.placerId];
 
-		var field = action.card.Type == "Spell" ? curPlayer.fieldRowTwo : curPlayer.fieldRowOne;
+		if (!placer.player.hand.Contains(action.card.Id)) return;
+
+		placer.player.hand.Remove(action.card.Id);
+
+		var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
 
 		if (field[action.slot - 1] != null) return;
 
 		field.SetValue(action.card.Id, action.slot-1);
 
-		foreach (var client in clients.Values)
+        currentBoard.UpdatePlayer(placer.player);
+
+		placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove"}));
+
+        foreach (var client in clients.Values)
 		{
 			client.tcp.WriteStream(PacketManager.ToJson(action));
 		}
@@ -174,8 +183,7 @@ public class Game
 
 		string image;
 
-		Player player1;
-		Player player2;
+		List<Player> players = new();
 
 		public GameBoard(Game _game)
 		{
@@ -189,29 +197,27 @@ public class Game
 		
 		public void AddPlayer(Player player)
 		{
-			if (player1 == null)
-			{
-				player1 = player;
-			}
-			else if (player2 == null)
-			{
-				player2 = player;
-			}
+			players.Add(player);
 		}
 
 		// Add the players to their respective positions
-		public void AddPlayers(List<Player> players)
+		public void AddPlayers(List<Player> _players)
 		{
-			foreach (var player in players)
+			for (int i = 0; i < players.Count; i++)
 			{
-				AddPlayer(player);
+				AddPlayer(_players[i]);
 			}
 		}
 
-		public Player GetPlayer(int num)
+		public void UpdatePlayer(Player p)
 		{
-			if (num == 1) return player1;
-			else return player2;
+			for (int i = 0; i < players.Count; i++)
+			{
+				if (players[i].id == p.id)
+				{
+					players[i] = p;
+				}
+			}
 		}
 	}
 }

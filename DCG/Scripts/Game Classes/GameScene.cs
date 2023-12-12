@@ -39,7 +39,7 @@ public partial class GameScene : Node3D
 	static Tween tween;
 	static List<Card> cards = new List<Card>();
 	public static List<CardObject> hand = new();
-	public static List<CAP> placeQueue = new();
+	public static List<CAP> actionQueue = new();
 
     public static CardObject cardObject = null;
 	public static bool changeScene = false;
@@ -75,6 +75,45 @@ public partial class GameScene : Node3D
 		
         c.setCard(_action.card, cardGlobalPosition, player);
     }
+
+	public static void RemoveFromHand(CardObject card)
+	{
+		var grid = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer");
+
+		foreach (D2Card c in grid.GetChildren())
+		{
+			if (c.card.Id == card.Id)
+			{
+				if (lastSelectedHand != null && lastSelectedHand.card.Id == c.card.Id)
+				{
+					lastSelectedHand = null;
+				}
+
+				foreach (var _c in ServerManager.client.hand)
+				{
+					if (_c.Id == card.Id)
+					{
+						ServerManager.client.hand.Remove(_c);
+						break;
+					}
+				}
+
+				grid.RemoveChild(c);
+				c.QueueFree();
+
+				gridSeparation = 250;
+
+                while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
+                {
+                    gridSeparation -= 1;
+                }
+
+                grid.AddThemeConstantOverride(new StringName("h_separation"), gridSeparation);
+
+                break;
+			}
+		}
+	}
 
 	public static void AddToHand(CardObject card)
 	{
@@ -353,11 +392,24 @@ public partial class GameScene : Node3D
 			hand.RemoveAt(0);
 		}
 
-		while (placeQueue.Count > 0)
+		while (actionQueue.Count > 0)
 		{
-			var cap = placeQueue[0];
-			PlaceCard(cap);
-			placeQueue.RemoveAt(0);
+			var cap = actionQueue[0];
+
+			switch (cap.action)
+			{
+				case "place":
+					PlaceCard(cap);
+					break;
+				case "hplace":
+					AddToHand(cap.card);
+					break;
+				case "hremove":
+					RemoveFromHand(cap.card);
+					break;
+			}
+
+			actionQueue.RemoveAt(0);
 		}
 
 		base._Process(delta);
