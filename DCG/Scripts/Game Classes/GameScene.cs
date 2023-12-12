@@ -117,11 +117,15 @@ public partial class GameScene : Node3D
 
 	public static void AddToHand(CardObject card)
 	{
+		ServerManager.client.hand.Add(card);
+
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
 
 		var grid = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer");
 
         grid.CallDeferred(Node.MethodName.AddChild, thescene);
+
+		gridSeparation = 250;
 
 		while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
 		{

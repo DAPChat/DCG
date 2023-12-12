@@ -179,7 +179,7 @@ public class Game
 			placer.player.deck.Remove(c);
 			placer.player.hand.Add(c);
 
-			placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(c).TempCard(), action = "hadd" });
+			placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(c).TempCard(), action = "hadd" }));
 		}
 
         currentBoard.UpdatePlayer(placer.player);
@@ -201,7 +201,9 @@ public class Game
 
 		string image;
 
-		List<Player> players = new();
+		//List<Player> players = new();
+
+		Player[] players = new Player[2];
 
 		public GameBoard(Game _game)
 		{
@@ -215,13 +217,21 @@ public class Game
 		
 		public void AddPlayer(Player player)
 		{
-			players.Add(player);
+			//players.Add(player);
+			for (int i = 0; i < players.Length; i++)
+			{
+				if (players[i] == null)
+				{
+					players[i] = player;
+					return;
+				}
+			}
 		}
 
 		// Add the players to their respective positions
 		public void AddPlayers(List<Player> _players)
 		{
-			for (int i = 0; i < players.Count; i++)
+			for (int i = 0; i < _players.Count; i++)
 			{
 				AddPlayer(_players[i]);
 			}
@@ -229,7 +239,7 @@ public class Game
 
 		public void UpdatePlayer(Player p)
 		{
-			for (int i = 0; i < players.Count; i++)
+			for (int i = 0; i < players.Length; i++)
 			{
 				if (players[i].id == p.id)
 				{

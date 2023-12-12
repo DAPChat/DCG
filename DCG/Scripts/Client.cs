@@ -158,8 +158,6 @@ public class Client
 	public void AddToHand(GameScene.CardObject card)
 	{
 		// if (card.Id == "6553773c3df79a7a3d4c536f") return;
-
-		hand.Add(card);
 		GameScene.hand.Add(card);
 	}
 

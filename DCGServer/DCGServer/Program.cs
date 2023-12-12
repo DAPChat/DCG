@@ -5,13 +5,13 @@ class Program
 {
 	public static void Main()
 	{
-		Server.Start();
+        Server.Start();
 
 		Database.Connect();
 
 		while(true) 
 		{
-			if (Console.ReadLine() == "Stop")
+            if (Console.ReadLine() == "Stop")
 			{
 				Server.Stop();
 				break;
