@@ -80,7 +80,7 @@ public class Client
 				buffer = new byte[buffer.Length];
 
 				stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
-			}catch (Exception e)
+			}catch (Exception)
 			{
 				if (instance.gameId == 0)
 					Server.Disconnect(id, instance.gameId, instance);

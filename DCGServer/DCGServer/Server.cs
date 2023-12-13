@@ -67,7 +67,7 @@ class Server
 		try
 		{
 			_client = tcpListener.EndAcceptTcpClient(result);
-		}catch (Exception ex)
+		}catch (Exception)
 		{
 		}
 
