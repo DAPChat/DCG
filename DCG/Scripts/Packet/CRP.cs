@@ -1,5 +1,8 @@
-public class CRP : Packet
+namespace packets
 {
-    public string cardId;
-    public GameScene.CardObject card; 
+    public class CRP : Packet
+    {
+        public string cardId;
+        public GameScene.CardObject card;
+    }
 }

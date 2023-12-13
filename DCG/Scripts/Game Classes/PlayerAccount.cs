@@ -1,30 +1,33 @@
 ﻿using System;
 
-public class PlayerAccount
+namespace player
 {
-	public string id;
-
-	public string username;
-	public string password;
-
-	public int rank;
-	public int streak;
-	public int totalWins;
-	public int totalLosses;
-
-	public string cardBack;
-	public string profilePicture;
-
-    public string[] cardBacks;
-
-	public int[] cards;
-	public int[][] decks;
-
-    public PlayerAccount(string _username, string _password)
+	public class PlayerAccount
 	{
-		username = _username;
-		password = _password;
+		public string id;
 
-		decks = new int[8][];
+		public string username;
+		public string password;
+
+		public int rank;
+		public int streak;
+		public int totalWins;
+		public int totalLosses;
+
+		public string cardBack;
+		public string profilePicture;
+
+		public string[] cardBacks;
+
+		public int[] cards;
+		public int[][] decks;
+
+		public PlayerAccount(string _username, string _password)
+		{
+			username = _username;
+			password = _password;
+
+			decks = new int[8][];
+		}
 	}
 }

@@ -1,12 +1,12 @@
-using Godot;
 using System;
 using System.Net.Sockets;
-using System.Text;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+
+using packets;
+using player;
 
 public class Client
 {

@@ -1,23 +1,26 @@
 using Godot;
 using System;
 
-public partial class Editor : Control
+namespace deck
 {
-	static Button AddCards;
-    static GridContainer TheArea;
-	public override void _Ready()
-	{
-        AddCards = (Button)GetNode("Home/UI/Editor/Add");
-        AddCards.Pressed += () => LoadCardsIn();
-    }
-    public void LoadCardsIn()
+    public partial class Editor : Control
     {
-        ClearGrid();
+        static Button AddCards;
+        static GridContainer TheArea;
+        public override void _Ready()
+        {
+            AddCards = (Button)GetNode("Add");
+            AddCards.Pressed += () => LoadCardsIn();
+        }
+        public void LoadCardsIn()
+        {
+            ClearGrid();
 
-       //TheArea
-    }
-    public void ClearGrid()
-    {
+            //TheArea
+        }
+        public void ClearGrid()
+        {
 
+        }
     }
 }

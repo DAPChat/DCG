@@ -1,8 +1,11 @@
-﻿public class CAP : Packet
+﻿namespace packets
 {
-    public int placerId;
+    public class CAP : Packet
+    {
+        public int placerId;
 
-    public GameScene.CardObject card;
-    public string action;
-    public int slot;
+        public GameScene.CardObject card;
+        public string action;
+        public int slot;
+    }
 }

@@ -1,7 +1,6 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+
+using packets;
 
 public partial class Main : Node
 {
@@ -38,6 +37,7 @@ public partial class Main : Node
 	public static bool reload = false;
 
 	public int TabBar = 1;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -174,13 +174,15 @@ public partial class Main : Node
 	}
 	public void TabChange(int Change)
 	{
-		private int TabChanger = TabBar + Change;
+		
+		int TabChanger = TabBar + Change;
+
         switch(TabChanger) {
 			case -1:
 				TabBar = 1;
 				HomeControl.Show();
 				EditorControl.Hide();
-				break
+				break;
 			case 0:
 				HomeControl.Hide();
 				EditorControl.Show();
@@ -196,7 +198,6 @@ public partial class Main : Node
 				HomeControl.Hide();
 				EditorControl.Show();
 				break;
-			
 		}
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

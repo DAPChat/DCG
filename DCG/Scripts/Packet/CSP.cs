@@ -1,14 +1,17 @@
 ﻿using System;
 
-public class CSP : Packet
+namespace packets
 {
-    public DateTime time;
-
-    public int Run()
+    public class CSP : Packet
     {
-        DateTime _now = DateTime.UtcNow;
-        TimeSpan _ts = _now - time;
+        public DateTime time;
 
-        return (int)Math.Round(_ts.TotalMilliseconds);
+        public int Run()
+        {
+            DateTime _now = DateTime.UtcNow;
+            TimeSpan _ts = _now - time;
+
+            return (int)Math.Round(_ts.TotalMilliseconds);
+        }
     }
 }
