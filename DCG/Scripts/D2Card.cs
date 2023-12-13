@@ -43,7 +43,7 @@ public partial class D2Card : Control
 
     private void getImg(string url)
     {
-        url = "https://publicfiles.dapchat.repl.co/" + url;
+        url = "https://dcgimages.dapchat.repl.co/" + url;
         HttpRequest request = new HttpRequest();
         AddChild(request);
         Image img = new Image();
