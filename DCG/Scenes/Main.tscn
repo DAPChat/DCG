@@ -1,10 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxtatqsh1uegg"]
+[gd_scene load_steps=16 format=3 uid="uid://bxtatqsh1uegg"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_02f83"]
 [ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="1_566v3"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_ie1ch"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="2_6q5yj"]
+[ext_resource type="Script" path="res://Scripts/Editor.cs" id="5_orj77"]
 [ext_resource type="PackedScene" uid="uid://c6a6l7dlk1pvt" path="res://Scenes/2d_card_small.tscn" id="5_ucr7e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhb6e"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ju3iw"]
 bg_color = Color(0.619608, 0.101961, 0.219608, 1)
@@ -67,36 +71,11 @@ script = ExtResource("1_02f83")
 
 [node name="Defualt" type="Control" parent="Home/UI"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ColorRect" type="ColorRect" parent="Home/UI/Defualt"]
-visible = false
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 566.0
-offset_bottom = 608.0
 grow_horizontal = 2
-grow_vertical = 0
-color = Color(0, 0, 0, 1)
-
-[node name="Character" type="TextureRect" parent="Home/UI/Defualt"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 993.0
-offset_top = 20.0
-offset_right = 1093.0
-offset_bottom = 120.0
-grow_horizontal = 0
-tooltip_text = "Character"
-texture = ExtResource("2_6q5yj")
-expand_mode = 1
+grow_vertical = 2
 
 [node name="Bg" type="TextureRect" parent="Home/UI/Defualt"]
 layout_mode = 0
@@ -105,6 +84,48 @@ offset_bottom = 648.0
 texture = ExtResource("1_ie1ch")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="LeftArrow" type="Button" parent="Home/UI/Defualt"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 140.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_lhb6e")
+text = "<"
+
+[node name="RightArrow" type="Button" parent="Home/UI/Defualt"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -141.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_566v3")
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_lhb6e")
+text = ">"
+
+[node name="Character" type="TextureRect" parent="Home/UI/Defualt"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 20.0
+offset_right = -22.0
+offset_bottom = 120.0
+grow_horizontal = 0
+tooltip_text = "Character"
+texture = ExtResource("2_6q5yj")
+expand_mode = 1
 
 [node name="Logo" type="TextureRect" parent="Home/UI/Defualt"]
 layout_mode = 0
@@ -247,6 +268,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1153.0
 offset_bottom = 648.0
+script = ExtResource("5_orj77")
 
 [node name="Add" type="Button" parent="Home/UI/Editor"]
 layout_mode = 1
@@ -271,41 +293,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
 theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_bvcjr")
 text = "Add"
-
-[node name="GridContainer" type="GridContainer" parent="Home/UI/Editor"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 140.0
-offset_top = 120.0
-offset_right = -140.0
-offset_bottom = -80.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/v_separation = 160
-columns = 6
-
-[node name="2DCardSmall" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall2" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall3" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall4" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall5" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall6" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
-
-[node name="2DCardSmall7" parent="Home/UI/Editor/GridContainer" instance=ExtResource("5_ucr7e")]
-layout_mode = 2
 
 [node name="Title" type="Label" parent="Home/UI/Editor"]
 layout_mode = 1
@@ -336,6 +323,42 @@ theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 10
 text = "Click cards to change them to another card."
 horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Home/UI/Editor"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 120.0
+offset_right = 1025.0
+offset_bottom = 564.0
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="Home/UI/Editor/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 160
+columns = 6
+
+[node name="2DCardSmall" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall2" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall3" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall4" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall5" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall6" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
+
+[node name="2DCardSmall7" parent="Home/UI/Editor/ScrollContainer/GridContainer" instance=ExtResource("5_ucr7e")]
+layout_mode = 2
 
 [node name="Login" type="Node2D" parent="."]
 
