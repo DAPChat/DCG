@@ -7,7 +7,6 @@ public partial class Main : Node
 
 	static LineEdit LUsername;
 	static LineEdit LPassword;
-
 	static LineEdit SUsername;
 	static LineEdit SPassword;
 	static LineEdit SCPassword;
@@ -16,29 +15,26 @@ public partial class Main : Node
 	static Button LSButton;
     static Button LeftButton;
     static Button RightButton;
-
     static Button SButton;
-
 	static Button PButton;
 
 	static CanvasLayer LoginLayer;
 	static CanvasLayer SignupLayer;
 	static CanvasLayer HomeLayer;
+
     static Control HomeControl;
     static Control EditorControl;
 
 	static Label LError;
-
-	public static bool inGame = false;
-	static bool lastSetting = false;
-
 	static Main instance;
 
-	public static bool reload = false;
+    static bool lastSetting = false;
+
+    public static bool inGame = false;
+    public static bool reload = false;
 
 	public int TabBar = 1;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		instance = this;
@@ -95,6 +91,7 @@ public partial class Main : Node
 		SignupLayer.Hide();
 		LError.Hide();
 	}
+
 	public override void _Input(InputEvent @event)
 	{
 		if (@event.IsActionPressed("login"))
@@ -200,7 +197,7 @@ public partial class Main : Node
 				break;
 		}
 	}
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	
 	public override void _Process(double delta)
 	{
 		if (lastSetting != inGame)

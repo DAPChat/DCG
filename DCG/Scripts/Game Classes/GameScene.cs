@@ -31,23 +31,26 @@ public partial class GameScene : Node3D
 	static Vector3 cam2Pos = new(0, 10, 0);
 	static Vector3 cam1Rot = new(-45, 0, 0);
 	static Vector3 cam2Rot = new(-90, 0, 0);
-	static RichTextLabel description;
-
-	public static GameScene sceneTree;
-
-	static Vector3 camRot;
+    static Vector3 camRot;
 
 	static Tween tween;
-	static List<Card> cards = new List<Card>();
-	public static List<CardObject> hand = new();
+    static RichTextLabel description;
+    static D2Card lastSelectedHand = null;
+
+    static List<Card> cards = new();
+
+    public static GameScene sceneTree;
+
+    public static List<CardObject> hand = new();
 	public static List<CAP> actionQueue = new();
 
     public static CardObject cardObject = null;
-	public static bool changeScene = false;
 	public static Card zoomed = null;
 
+    public static bool changeScene = false;
+	
+
 	public static D2Card selectedHand = null;
-	static D2Card lastSelectedHand = null;
 
 	public static Dictionary<string, ImageTexture> images = new();
 
