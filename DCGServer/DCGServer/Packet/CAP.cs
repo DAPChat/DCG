@@ -1,21 +1,26 @@
-﻿public class CAP : Packet
+﻿using card;
+
+namespace packets
 {
-    public int placerId;
-
-    public TempCard card;
-    public string action;
-    public int slot;
-
-    public CAP Clone()
+    public class CAP : Packet
     {
-        CAP cap = new()
-        {
-            placerId = placerId,
-            card = card,
-            action = action,
-            slot = slot
-        };
+        public int placerId;
 
-        return cap;
+        public TempCard card;
+        public string action;
+        public int slot;
+
+        public CAP Clone()
+        {
+            CAP cap = new()
+            {
+                placerId = placerId,
+                card = card,
+                action = action,
+                slot = slot
+            };
+
+            return cap;
+        }
     }
 }

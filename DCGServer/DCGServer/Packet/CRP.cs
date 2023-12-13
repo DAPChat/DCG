@@ -1,12 +1,17 @@
-public class CRP : Packet
+using card;
+
+namespace packets
 {
-    public string cardId;
-    public Card card;
-    public override void Run(Client client)
+    public class CRP : Packet
     {
-        if (cardId != null)
+        public string cardId;
+        public Card card;
+        public override void Run(Client client)
         {
-            client.tcp.WriteStream(PacketManager.ToJson(new CRP { card = Database.GetCard(cardId) }));
+            if (cardId != null)
+            {
+                client.tcp.WriteStream(PacketManager.ToJson(new CRP { card = Database.GetCard(cardId) }));
+            }
         }
     }
 }

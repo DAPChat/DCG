@@ -1,22 +1,25 @@
-﻿public class CSP : Packet
+﻿namespace packets
 {
-    public DateTime time;
-
-    public override void Run(Client client)
+    public class CSP : Packet
     {
-        // Add the client to the queue if not in-game
-        if(client.gameId <= 0)
+        public DateTime time;
+
+        public override void Run(Client client)
         {
-            Server.clients.Remove(client);
-            Server.Queue(client.id, client);
+            // Add the client to the queue if not in-game
+            if (client.gameId <= 0)
+            {
+                Server.clients.Remove(client);
+                Server.Queue(client.id, client);
+            }
         }
-    }
 
-    public int Run()
-    {
-        DateTime _now = DateTime.UtcNow;
-        TimeSpan _ts = _now - time;
+        public int Run()
+        {
+            DateTime _now = DateTime.UtcNow;
+            TimeSpan _ts = _now - time;
 
-        return (int)Math.Round(_ts.TotalMilliseconds);
+            return (int)Math.Round(_ts.TotalMilliseconds);
+        }
     }
 }

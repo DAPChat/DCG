@@ -3,6 +3,10 @@ using MongoDB.Driver;
 using System.Security.Cryptography;
 using System.Text;
 
+using player;
+using packets;
+using card;
+
 public class Database
 {
 	private static readonly string connectionUri = "mongodb+srv://thedcg:II7oVRzWUQmjJN5c@cluster0.bcztjvi.mongodb.net/?retryWrites=true&w=majority";

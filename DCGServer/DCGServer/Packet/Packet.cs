@@ -1,11 +1,14 @@
-﻿[Serializable]
-public class Packet
+﻿namespace packets
 {
-    public int senderId;
-    public int targetId;
-
-    public virtual void Run(Client client)
+    [Serializable]
+    public class Packet
     {
+        public int senderId;
+        public int targetId;
 
+        public virtual void Run(Client client)
+        {
+
+        }
     }
 }

@@ -1,65 +1,68 @@
 ﻿using System;
 
-public class Player
+namespace player
 {
-	public int id;
-	public string username;
-	public int rank;
-	public int streak;
-
-	public int playerNum;
-
-	public string cardBack;
-	public string profilePicture;
-
-	public int lifePoints;
-	public int timer;
-
-	public List<string> deck;
-	public List<string> hand;
-	public List<string> unforgotten;
-	public List<string> forgotten;
-
-	public string[] fieldRowOne;
-	public string[] fieldRowTwo;
-
-	public Player(int _id) 
-	{ 
-		id = _id;
-
-		fieldRowOne = new string[5];
-		fieldRowTwo = new string[5];
-	}
-
-	public Player Clone()
+	public class Player
 	{
-        Player p = new(id)
-        {
-            username = username,
-            rank = rank,
-            streak = streak,
-            playerNum = playerNum,
-            cardBack = cardBack,
-            profilePicture = profilePicture,
-            lifePoints = lifePoints,
-            timer = timer,
-            hand = hand,
-            unforgotten = unforgotten,
-            forgotten = forgotten,
-            fieldRowOne = fieldRowOne,
-            fieldRowTwo = fieldRowTwo,
-            deck = deck
-        };
+		public int id;
+		public string username;
+		public int rank;
+		public int streak;
 
-        return p;
-    }
+		public int playerNum;
 
-    public Player Client()
-	{
-		Player p = this.Clone();
+		public string cardBack;
+		public string profilePicture;
 
-		p.deck = null;
+		public int lifePoints;
+		public int timer;
 
-        return p;
+		public List<string> deck;
+		public List<string> hand;
+		public List<string> unforgotten;
+		public List<string> forgotten;
+
+		public string[] fieldRowOne;
+		public string[] fieldRowTwo;
+
+		public Player(int _id)
+		{
+			id = _id;
+
+			fieldRowOne = new string[5];
+			fieldRowTwo = new string[5];
+		}
+
+		public Player Clone()
+		{
+			Player p = new(id)
+			{
+				username = username,
+				rank = rank,
+				streak = streak,
+				playerNum = playerNum,
+				cardBack = cardBack,
+				profilePicture = profilePicture,
+				lifePoints = lifePoints,
+				timer = timer,
+				hand = hand,
+				unforgotten = unforgotten,
+				forgotten = forgotten,
+				fieldRowOne = fieldRowOne,
+				fieldRowTwo = fieldRowTwo,
+				deck = deck
+			};
+
+			return p;
+		}
+
+		public Player Client()
+		{
+			Player p = this.Clone();
+
+			p.deck = null;
+
+			return p;
+		}
 	}
 }

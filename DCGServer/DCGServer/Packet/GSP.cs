@@ -1,6 +1,9 @@
-﻿public class GSP : Packet
+﻿namespace packets
 {
-	public int gameId;
+	public class GSP : Packet
+	{
+		public int gameId;
 
-	public int playerId;
+		public int playerId;
+	}
 }
