@@ -1,11 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public partial class Main : Node
 {
 
 	static LineEdit LUsername;
-    static LineEdit LPassword;
+	static LineEdit LPassword;
 
 	static LineEdit SUsername;
 	static LineEdit SPassword;
@@ -13,14 +15,18 @@ public partial class Main : Node
 
 	static Button LButton;
 	static Button LSButton;
-	
-	static Button SButton;
+    static Button LeftButton;
+    static Button RightButton;
+
+    static Button SButton;
 
 	static Button PButton;
 
 	static CanvasLayer LoginLayer;
 	static CanvasLayer SignupLayer;
 	static CanvasLayer HomeLayer;
+    static Control HomeControl;
+    static Control EditorControl;
 
 	static Label LError;
 
@@ -31,6 +37,7 @@ public partial class Main : Node
 
 	public static bool reload = false;
 
+	public int TabBar = 1;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -45,18 +52,23 @@ public partial class Main : Node
 
 		LButton = (Button)GetNode("Login/UI/Login/Login");
 		LSButton = (Button)GetNode("Login/UI/Login/Signup");
+        LeftButton = (Button)GetNode("Home/UI/Defualt/LeftArrow");
+        RightButton = (Button)GetNode("Home/UI/Defualt/RightArrow");
 
-		SButton = (Button)GetNode("Signup/UI/Signup/Signup");
+        SButton = (Button)GetNode("Signup/UI/Signup/Signup");
 
 		PButton = (Button)GetNode("Home/UI/Home/Play");
 
 		LoginLayer = (CanvasLayer)GetNode("Login/UI");
 		SignupLayer = (CanvasLayer)GetNode("Signup/UI");
 		HomeLayer = (CanvasLayer)GetNode("Home/UI");
+        HomeControl = (Control)GetNode("Home/UI/Home");
+        EditorControl = (Control)GetNode("Home/UI/Editor");
 
-		LError = (Label)GetNode("Login/UI/Login/Error");
-
-		LButton.Pressed += () => Login();
+        LError = (Label)GetNode("Login/UI/Login/Error");
+        LeftButton.Pressed += () => TabChange(-1);
+        RightButton.Pressed += () => TabChange(1);
+        LButton.Pressed += () => Login();
 		LSButton.Pressed += () => LSignup();
 		SButton.Pressed += () => Signup();
 		PButton.Pressed += () =>
@@ -83,17 +95,17 @@ public partial class Main : Node
 		SignupLayer.Hide();
 		LError.Hide();
 	}
-    public override void _Input(InputEvent @event)
-    {
-        if (@event.IsActionPressed("login"))
-        {
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed("login"))
+		{
 			if (ServerManager.client.account != null) return;
 
 			Login();
-        }
-    }
+		}
+	}
 
-    public void Login()
+	public void Login()
 	{
 		string username = LUsername.Text.Trim();
 		string password = LPassword.Text.Trim();
@@ -103,24 +115,24 @@ public partial class Main : Node
 			return;
 		}
 
-        LButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
+		LButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 
 		// Sends the packet to the server for verification
-        ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
+		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(false, username, password)));
 	}
 
 	public void LSignup()
 	{
 		// Changes the screen to the login screen and sets text
-        string username = LUsername.Text.Trim();
-        string password = LPassword.Text.Trim();
+		string username = LUsername.Text.Trim();
+		string password = LPassword.Text.Trim();
 
 		SPassword.Text = password;
 		SUsername.Text = username;
 
 		LoginLayer.Hide();
-        SignupLayer.Show();
-    }
+		SignupLayer.Show();
+	}
 
 	public void Signup()
 	{
@@ -130,10 +142,10 @@ public partial class Main : Node
 
 		if (password != cPassword) return;
 
-        SButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
+		SButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 
 		// Tells the server to create an account
-        ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
+		ServerManager.client.WriteStream(PacketManager.ToJson(new ACP(true, username, password)));
 	}
 
 	public static void Retry(string error)
@@ -145,22 +157,48 @@ public partial class Main : Node
 		LError.CallDeferred(CanvasItem.MethodName.Show);
 		LError.CallDeferred(LineEdit.MethodName.SetText, error);
 
-        SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
-        LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
-    }
+		SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+		LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
+	}
 
-    public static void Success()
+	public static void Success()
 	{
-        SignupLayer.CallDeferred(CanvasLayer.MethodName.Hide);
-        HomeLayer.CallDeferred(CanvasLayer.MethodName.Show);
-        LoginLayer.CallDeferred(CanvasLayer.MethodName.Hide);
+		SignupLayer.CallDeferred(CanvasLayer.MethodName.Hide);
+		HomeLayer.CallDeferred(CanvasLayer.MethodName.Show);
+		LoginLayer.CallDeferred(CanvasLayer.MethodName.Hide);
 
-        LError.CallDeferred(CanvasItem.MethodName.Hide);
+		LError.CallDeferred(CanvasItem.MethodName.Hide);
 
 		LButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
 		SButton.SetDeferred(BaseButton.PropertyName.Disabled, false);
-    }
-
+	}
+	public void TabChange(int Change)
+	{
+		private int TabChanger = TabBar + Change;
+        switch(TabChanger) {
+			case -1:
+				TabBar = 1;
+				HomeControl.Show();
+				EditorControl.Hide();
+				break
+			case 0:
+				HomeControl.Hide();
+				EditorControl.Show();
+				TabBar += Change;
+				break;
+			case 1:
+				HomeControl.Show();
+				EditorControl.Hide();
+				TabBar += Change;
+				break;
+			case 2:
+				TabBar = 0;
+				HomeControl.Hide();
+				EditorControl.Show();
+				break;
+			
+		}
+	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
