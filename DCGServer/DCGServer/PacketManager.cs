@@ -43,7 +43,7 @@ public class PacketManager
 					case "CAP":
 						var cap = JsonConvert.DeserializeObject<CAP>(lt.parameters);
 
-						Server.games[client.gameId].PlaceCard(cap);
+						Server.games[client.gameId].RegisterAction(cap);
 
 						break;
                 }

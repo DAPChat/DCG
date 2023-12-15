@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+﻿using MongoDB.Bson.Serialization;
 using System;
 
 namespace card
@@ -9,6 +9,7 @@ namespace card
 		public string Name { get; set; }
 		public string Rank { get; set; }
 		public double SacrificialValue { get; set; }
+		public string Actions { get; set; }
 		public int Atk { get; set; }
 		public int Hp { get; set; }
 		public int Mana { get; set; }

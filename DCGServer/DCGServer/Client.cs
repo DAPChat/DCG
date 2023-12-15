@@ -9,6 +9,7 @@ public class Client
 	public TCP tcp;
 
 	public Player player;
+	public bool active;
 
 	private PlayerAccount account;
 
@@ -38,6 +39,7 @@ public class Client
 
 		public void Connect(TcpClient _client)
 		{
+			instance.active = true;
 			client = _client;
 			
 			// Start reading the stream
@@ -122,6 +124,7 @@ public class Client
 
     public void Disconnect()
 	{
+		active = false;
 		// Log out of the account on disconnect
         if (account != null)
             Database.Logout(account);

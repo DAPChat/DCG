@@ -129,7 +129,7 @@ namespace game
 			}
 
 			// Remove the non-disconnected person from the match
-			if (clients.Count > 0)
+			if (clients.Count > 0 && clients.Values.First().active)
 				Server.KeepConnect(clients.Values.First());
 
 			Server.RemoveGame(id);
@@ -189,6 +189,16 @@ namespace game
 			{
 				client.tcp.WriteStream(PacketManager.ToJson(action));
 			}
+		}
+
+		public void RegisterAction(CAP action)
+		{
+			if (action == null) return;
+
+			if (action.action == "place")
+				PlaceCard(action);
+			else
+				ActionManager.AddAction(action);
 		}
 
 		class GameBoard
