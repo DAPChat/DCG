@@ -72,7 +72,6 @@ public partial class D2CardSmall : Control
     }
     public override void _Ready()
     {
-        Vector2 startPos = new Vector2();
         GetNode<Area2D>("FrontFace/Area2D").MouseEntered += () =>
         {
             GetNode<Control>("Options").Show();

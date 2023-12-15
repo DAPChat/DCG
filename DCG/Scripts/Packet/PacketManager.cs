@@ -94,8 +94,8 @@ public class PacketManager
                     case "CRP":
                         // Tests placing cards from the database
                         var crp = JsonConvert.DeserializeObject<CRP>(lt.parameters);
-
-						ServerManager.client.AddToHand(crp.card);
+                        //crp.main ? Editor.client.AddToHand(crp.card) : ServerManager.client.AddToHand(crp.card);
+                        ServerManager.client.AddToHand(crp.card);
 
                         break;
                 }

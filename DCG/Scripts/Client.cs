@@ -127,7 +127,7 @@ public class Client
 
         foreach (string card in p.hand.ToList())
 		{
-			WriteStream(PacketManager.ToJson(new CRP { cardId = card}));
+			WriteStream(PacketManager.ToJson(new CRP { cardId = card,  main = false}));
 		}
 	}
 

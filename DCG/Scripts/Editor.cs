@@ -9,18 +9,22 @@ namespace deck
         static GridContainer TheArea;
         public override void _Ready()
         {
+            TheArea = (GridContainer)GetNode("ScrollContainer/GridContainer");
             AddCards = (Button)GetNode("Add");
             AddCards.Pressed += () => LoadCardsIn();
         }
-        public void LoadCardsIn()
+        public static void LoadCardsIn()
         {
             ClearGrid();
+            //foreach (card in CurrentDeck)
+            //ServerManager.client.WriteStream(PacketManager.ToJson(new CRP { cardId = card, main = true }));
 
-            //TheArea
+            
+
         }
-        public void ClearGrid()
+        public static void ClearGrid()
         {
-
+            TheArea.GetChildren().Clear();
         }
     }
 }

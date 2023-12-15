@@ -1,7 +1,7 @@
 using Godot;
 
 using packets;
-
+using deck;
 public partial class Main : Node
 {
 
@@ -182,6 +182,7 @@ public partial class Main : Node
 				break;
 			case 0:
 				HomeControl.Hide();
+				Editor.LoadCardsIn();
 				EditorControl.Show();
 				TabBar += Change;
 				break;
