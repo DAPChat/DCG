@@ -4,5 +4,6 @@ namespace packets
     {
         public string cardId;
         public GameScene.CardObject card;
+        public bool main;
     }
 }
