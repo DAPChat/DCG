@@ -198,7 +198,7 @@ namespace game
 			if (action.action == "place")
 				PlaceCard(action);
 			else
-				ActionManager.AddAction(action);
+				ActionManager.GetClass(action);
 		}
 
 		class GameBoard
