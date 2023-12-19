@@ -1,7 +1,5 @@
-﻿using card;
-using Newtonsoft.Json;
-using packets;
-using System;
+﻿using packets;
+using card;
 
 public class ActionManager
 {
@@ -9,16 +7,26 @@ public class ActionManager
     {
         if (_action.card.Name == null) return;
 
-        Type type = Type.GetType("card." + _action.card.Name);
-
-        object obj = Activator.CreateInstance(type);
+        BaseCard card = null;
 
         try
         {
-            ((BaseCard)obj).GetType().GetMethod(_action.action).Invoke(obj, null);
-        }catch (Exception)
+            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name), new object[] { _action });
+        }
+        catch (Exception)
         {
-            Console.WriteLine("The type, {0}, does not contain the method, {1}", type.Name, _action.action);
+            Console.WriteLine("{0} does not have a class.", _action.card.Name);
+        }
+
+        if (card == null) return;
+
+        try
+        {
+            card.GetType().GetMethod(_action.action).Invoke(card, null);
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
         }
     }
 }
