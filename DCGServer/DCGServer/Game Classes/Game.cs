@@ -12,7 +12,7 @@ namespace game
 		public Dictionary<int, Client> clients = new Dictionary<int, Client>();
 		public List<int> clientIds = new List<int>();
 
-		GameBoard currentBoard = null;
+		public GameBoard currentBoard = null;
 
 		private bool active;
 
@@ -190,11 +190,15 @@ namespace game
 			{
 				client.tcp.WriteStream(PacketManager.ToJson(action));
 			}
+
+			currentBoard.NextTurn();
 		}
 
 		public void RegisterAction(CAP action)
 		{
 			if (action == null) return;
+
+			if (action.placerId != currentBoard.turn) return;
 
 			if (action.action == "place")
 				PlaceCard(action);
@@ -236,16 +240,14 @@ namespace game
 			return 0;
 		}
 
-		class GameBoard
+		public class GameBoard
 		{
-			bool gameState;
-			int turn;
-			int phase;
-			int round;
+			public bool gameState;
+			public int turn; // Stores the player id of who's turn it is
+			public int phase;
+			public int round;
 
 			string image;
-
-			//List<Player> players = new();
 
 			Player[] players = new Player[2];
 
@@ -261,12 +263,12 @@ namespace game
 
 			public void AddPlayer(Player player)
 			{
-				//players.Add(player);
 				for (int i = 0; i < players.Length; i++)
 				{
 					if (players[i] == null)
 					{
 						players[i] = player;
+						turn = player.id;
 						return;
 					}
 				}
@@ -298,6 +300,18 @@ namespace game
 					if (players[i].id == p.id)
 					{
 						players[i] = p;
+					}
+				}
+			}
+
+			public void NextTurn()
+			{
+				foreach (var p in players)
+				{
+					if (p.id != turn)
+					{
+						turn = p.id;
+						break;
 					}
 				}
 			}

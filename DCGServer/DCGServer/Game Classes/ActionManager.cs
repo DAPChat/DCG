@@ -17,9 +17,9 @@ public class ActionManager
         {
             Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not have a class.", _action.card.Name);
-        }
 
-        if (card == null) return;
+            return;
+        }
 
         try
         {
@@ -29,6 +29,10 @@ public class ActionManager
         {
             Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
+
+            return;
         }
+
+        _game.currentBoard.NextTurn();
     }
 }
