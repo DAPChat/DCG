@@ -1,9 +1,9 @@
-﻿using packets;
-using card;
+﻿using card;
+using packets;
 
 public class ActionManager
 {
-    public static void GetClass(CAP _action)
+    public static void GetClass(CAP _action, game.Game _game)
     {
         if (_action.card.Name == null) return;
 
@@ -11,10 +11,11 @@ public class ActionManager
 
         try
         {
-            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name), new object[] { _action });
+            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name), new object[] { _action, _game });
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not have a class.", _action.card.Name);
         }
 
@@ -24,8 +25,9 @@ public class ActionManager
         {
             card.GetType().GetMethod(_action.action).Invoke(card, null);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
         }
     }

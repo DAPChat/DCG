@@ -1,4 +1,5 @@
 ﻿using System;
+using card;
 
 namespace player
 {
@@ -22,15 +23,15 @@ namespace player
 		public List<string> unforgotten;
 		public List<string> forgotten;
 
-		public string[] fieldRowOne;
-		public string[] fieldRowTwo;
+		public TempCard[] fieldRowOne;
+		public TempCard[] fieldRowTwo;
 
 		public Player(int _id)
 		{
 			id = _id;
 
-			fieldRowOne = new string[5];
-			fieldRowTwo = new string[5];
+			fieldRowOne = new TempCard[5];
+			fieldRowTwo = new TempCard[5];
 		}
 
 		public Player Clone()

@@ -1,26 +1,24 @@
 ﻿using packets;
-using System.Security.Cryptography;
+using game;
 
 namespace card
 {
     public class Ryo : BaseCard
     {
-        int i = new Random().Next(1,10);
-
-        public Ryo (CAP action)
+        public Ryo (CAP _action, Game _game)
         {
-            card = action.card;
-            Console.WriteLine(action.card.Name);
-        }
-
-        public override void Run()
-        {
-            Console.WriteLine(i);
+            action = _action;
+            game = _game;
         }
 
         public void Attack()
         {
-            Console.WriteLine("Hello");
+            game.Damage(action);
+        }
+
+        public override void Run()
+        {
+            Console.WriteLine("Hah");
         }
     }
 }

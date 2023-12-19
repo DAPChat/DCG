@@ -48,7 +48,9 @@ public partial class GameScene : Node3D
 	public static Card zoomed = null;
 
     public static bool changeScene = false;
+	public static bool selectMode = false;
 	
+	public static Action choose = null;
 
 	public static D2Card selectedHand = null;
 
@@ -77,8 +79,25 @@ public partial class GameScene : Node3D
 
 		cards.Add(c);
 		
+		c.placerId = _action.placerId;
         c.setCard(_action.card, cardGlobalPosition, player);
     }
+
+	public static void UpdateCard(CAP _action)
+	{
+		foreach (var card in sceneTree.GetChildren())
+		{
+			if (card is not Card) continue;
+
+			Card c = (Card)card;
+
+			if (c.placerId == _action.targetId && c.card.Id == _action.card.Id)
+			{
+				c.setCard(_action.card, c.Position, c.placerId);
+				return;
+			}
+		}
+	}
 
 	public static void RemoveFromHand(CardObject card)
 	{
@@ -146,6 +165,9 @@ public partial class GameScene : Node3D
 	// Zoom into the card
 	public static void ViewCard(Vector3 cardPos, Card card, Label3D node)
 	{
+		VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
+		Button actionButton = (Button)ResourceLoader.Load<PackedScene>("res://Scenes/action.tscn").Instantiate();
+
 		if (tween != null && tween.IsRunning())
 			tween.Kill();
 
@@ -177,13 +199,60 @@ public partial class GameScene : Node3D
 
 		// Set the scrollable description to the full description of the card (not shortened)
         description.ScrollToLine(0);
-		description.Text = card.card.Description;
-	}
+        description.Text = card.card.Description;
+
+		if (zoomed.placerId != ServerManager.client.id) return;
+
+		Type type = null;
+
+        try
+		{
+			type = Type.GetType("card." + card.card.Name);
+		}
+		catch
+		{
+			return;
+		}
+
+		foreach (var t in type.GetNestedTypes())
+		{
+			Action cardClass = (Action)Activator.CreateInstance(t);
+
+			Button action = (Button)actionButton.Duplicate();
+
+			action.Text = cardClass.name;
+
+			action.Pressed += () =>
+			{
+				if (selectMode)
+				{
+					selectMode = false;
+					cardClass.Run(zoomed.card);
+				}
+            };
+
+			vbox.CallDeferred(Node.MethodName.AddChild, action);
+		}
+    }
 
 	// Return to normal view
 	public static void ReturnView(Card card)
 	{
-		if (tween != null && tween.IsRunning())
+		if (card == null) return;
+
+        VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
+
+		foreach (var child in vbox.GetChildren())
+		{
+			child.QueueFree();
+		}
+
+        card.description.Show();
+        card.set = false;
+
+		zoomed = null;
+
+        if (tween != null && tween.IsRunning())
 			tween.Kill();
 
         tween = curCamera.CreateTween();
@@ -202,6 +271,38 @@ public partial class GameScene : Node3D
         }
 
 		camRot.Y = curCamera.Position.Y;
+    }
+
+    public static void QuietReturn()
+    {
+        VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
+
+        foreach (var child in vbox.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        if (tween != null && tween.IsRunning())
+            tween.Kill();
+
+        tween = curCamera.CreateTween();
+
+		zoomed.description.Show();
+
+        description.Hide();
+
+        if (!CameraView)
+        {
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam1Rot, curCamera.RotationDegrees.Y == 180 ? 1 : .5);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam1Pos, curCamera.RotationDegrees.Y == 180 ? 1 : .5);
+        }
+        else
+        {
+            tween.Parallel().TweenProperty(curCamera, "rotation_degrees", cam2Rot, curCamera.RotationDegrees.Y == 180 ? 1 : .5);
+            tween.Parallel().TweenProperty(curCamera, "global_position", cam2Pos, curCamera.RotationDegrees.Y == 180 ? 1 : .5);
+        }
+
+        camRot.Y = curCamera.Position.Y;
     }
 
     public override void _Input(InputEvent @event)
@@ -267,12 +368,60 @@ public partial class GameScene : Node3D
 				}
 			}
 
+			if (choose != null)
+			{
+                var eventMouseButton = (InputEventMouseButton)@event;
+
+                var from = curCamera.ProjectRayOrigin(eventMouseButton.Position);
+                var to = from + curCamera.ProjectRayNormal(eventMouseButton.Position) * 1000;
+
+                var spaceState = sceneTree.GetWorld3D().DirectSpaceState;
+                var query = PhysicsRayQueryParameters3D.Create(from, to);
+                var result = spaceState.IntersectRay(query);
+
+                if (result.Count == 0) return;
+
+                Node3D collider = (Node3D)((Node3D)result["collider"]).GetParent();
+
+                if (collider.GetParent().Name != "Player2") return;
+
+                Card occupied = null;
+
+                foreach (Card curCard in cards)
+                {
+					if (curCard.mouse)
+					{
+						occupied = curCard;
+					}
+                }
+
+				int slot = 0;
+
+				if (occupied != null)
+				{
+					try
+					{
+                        slot = int.Parse(Regex.Match(collider.Name, @"\d+").Value);
+					}
+					catch
+					{
+						return;
+					}
+
+                    choose.Run(zoomed.card, slot-1);
+					choose = null;
+					ReturnView(zoomed);
+                }
+
+                return;
+			}
+
             Card c = null;
 			bool skip = false;
 
 			// Check each card to see if there was one that was clicked
 			foreach (Card card in cards) {
-				if (card.mouse && !card.set && (card != zoomed))
+				if (!selectMode && card.mouse && !card.set && (card != zoomed))
 				{
 					zoomed = card;
 					ViewCard(card.Position, card, card.description);
@@ -280,8 +429,25 @@ public partial class GameScene : Node3D
 					skip = true;
 					continue;
 				}
+				else if (!selectMode && card.mouse && card.set && card == zoomed && card.placerId == ServerManager.client.id)
+				{
+					selectMode = true;
+					skip = true;
+					break;
+				}
+				else if (selectMode && card.set && card == zoomed && card.mouse)
+				{
+					selectMode = false;
+					skip = true;
+					break;
+				}
+				else if (selectMode)
+				{
+					skip = true;
+					break;
+				}
 
-				if (card.set)
+                if (card.set)
 				{
 					if (zoomed == card)
 					{
@@ -297,8 +463,8 @@ public partial class GameScene : Node3D
 			if (c != null && !skip)
 			{
                 ReturnView(c);
-				zoomed = null;
-			}else if (c == null && !skip)
+			}
+			else if (c == null && !skip)
 			{
 				// Check which slot was clicked
 				if (cardObject == null) return;
@@ -324,7 +490,7 @@ public partial class GameScene : Node3D
 				}
 				else if (collider.Name.ToString().Contains("Spell")) { return; }
 
-				int slot = 0;
+				int slot;
 
 				try
 				{
@@ -335,7 +501,6 @@ public partial class GameScene : Node3D
 				}
 
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", slot = slot }));
-                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "Attack", slot = slot }));
             }
         }
     }
@@ -360,6 +525,16 @@ public partial class GameScene : Node3D
 		// Move between the two camera angles
 		buttonCamera.ButtonDown += () =>
 		{
+			if (selectMode)
+			{
+				selectMode = false;
+
+				if (zoomed != null)
+				{
+                    ReturnView(zoomed);
+				}
+			}
+
 			if (tween != null && tween.IsRunning())
 				tween.Kill();
 
@@ -380,6 +555,16 @@ public partial class GameScene : Node3D
 		};	
 		buttonHand.ButtonDown += () =>
 		{
+			if (selectMode)
+			{
+				selectMode = false;
+
+				if (zoomed != null)
+				{
+                    ReturnView(zoomed);
+				}
+			}
+
 			hand.Show();
 			HandShown = true;
 			buttonHand.Disabled = true;
@@ -409,6 +594,12 @@ public partial class GameScene : Node3D
 			{
 				case "place":
 					PlaceCard(cap);
+					break;
+				case "update":
+					UpdateCard(cap);
+					break;
+				case "remove":
+					// RemoveCard(cap);
 					break;
 				case "hadd":
 					AddToHand(cap.card);

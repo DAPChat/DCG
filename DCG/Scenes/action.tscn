@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://fceh1w4kqhse"]
+
+[ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="1_7ay1v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nap47"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21e7g"]
+bg_color = Color(0, 0, 0, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Action" type="Button"]
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_7ay1v")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+text = "Action"

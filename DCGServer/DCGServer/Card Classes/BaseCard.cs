@@ -1,8 +1,12 @@
-﻿namespace card
+﻿using packets;
+using game;
+
+namespace card
 {
     public abstract class BaseCard
     {
-        public TempCard card;
+        public CAP action;
+        public Game game;
 
         public abstract void Run();
     }

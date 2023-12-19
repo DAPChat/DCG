@@ -1,5 +1,6 @@
 ﻿using player;
 using packets;
+using card;
 
 namespace game
 {
@@ -169,7 +170,7 @@ namespace game
 
 			if (field[action.slot - 1] != null) return;
 
-			field.SetValue(action.card.Id, action.slot - 1);
+			field.SetValue(action.card, action.slot - 1);
 
 			if (placer.player.deck.Count > 0 && placer.player.hand.Count < 10)
 			{
@@ -198,7 +199,36 @@ namespace game
 			if (action.action == "place")
 				PlaceCard(action);
 			else
-				ActionManager.GetClass(action);
+				ActionManager.GetClass(action, this);
+		}
+
+		public void Damage(CAP action)
+		{
+			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
+
+			p.fieldRowOne[action.slot].Hp -= action.card.Atk;
+
+			currentBoard.UpdatePlayer(p);
+
+			CAP _action = action.Clone();
+			_action.targetId = OpponentId(action.placerId);
+			_action.card = p.fieldRowOne[_action.slot];
+			_action.action = "update";
+
+			foreach (var client in clients.Values)
+			{
+				client.tcp.WriteStream(PacketManager.ToJson(_action));
+			}
+		}
+
+		public int OpponentId(int id)
+		{
+			foreach (int i in clientIds)
+			{
+				if (i != id) return i;
+			}
+
+			return 0;
 		}
 
 		class GameBoard
@@ -244,6 +274,16 @@ namespace game
 				{
 					AddPlayer(_players[i]);
 				}
+			}
+
+			public Player GetPlayer(int id)
+			{
+				foreach (Player player in players)
+				{
+					if (player.id == id)
+						return player;
+				}
+				return null;
 			}
 
 			public void UpdatePlayer(Player p)

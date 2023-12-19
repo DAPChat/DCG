@@ -1,7 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public partial class Card : Node3D
 {
@@ -9,6 +6,7 @@ public partial class Card : Node3D
 
     public Area3D collision;
 	public bool mouse = false;
+	public int placerId;
 
 	public GameScene.CardObject card;
 	public bool set = false;
@@ -41,10 +39,13 @@ public partial class Card : Node3D
 
 		GetNode<Label3D>("FrontFace/Description/Stats").Text = statsText;
 
-		TreeEntered += () =>
-		{
-            GetImg(card.Img.ToString());
-        };
+		if (!IsInsideTree())
+			TreeEntered += () =>
+			{
+				GetImg(card.Img.ToString());
+			};
+		else
+			Show();
 
 		Position = pos;
 		Position = new Vector3(Position.X, 0.005f, Position.Z);
