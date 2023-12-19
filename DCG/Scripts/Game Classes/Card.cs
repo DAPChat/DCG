@@ -51,28 +51,6 @@ public partial class Card : Node3D
 		Position = new Vector3(Position.X, 0.005f, Position.Z);
 
 		RotationDegrees = new Vector3(0, 180*(playerNum-1), 0);
-
-		//if (card.Type != null)
-		//{
-		//    string imageBg;
-		//    switch (card.Type)
-		//    {
-		//        case "Spell":
-		//            imageBg = "";
-		//            break;
-		//        case "Fighter":
-		//            imageBg = "";
-		//            break;
-		//        default:
-		//            imageBg = "";
-		//            break;
-		//    }
-		//    var newImageBg = ImageTexture.CreateFromImage(getImg(imageBg));
-		//    var meshBg = GetNode<MeshInstance3D>("FrontFace");
-		//    var materialBg = meshBg.GetActiveMaterial(0) as StandardMaterial3D;
-		//    materialBg!.AlbedoTexture = newImageBg;
-		//}
-
 	}
    
 	private void GetImg(string url)

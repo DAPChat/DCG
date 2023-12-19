@@ -79,11 +79,11 @@ public partial class D2Card : Control
         }
         else
         {
-            var mesh = GetNode<TextureRect>("FrontFace/MiddleCard");
+            var mesh = GetNode<TextureRect>("FrontFace/Container/MiddleCard");
 
             ImageTexture texture = GameScene.images[card.Id.ToString()];
 
-            mesh.Texture = texture; //might not work
+            mesh.Texture = texture;
         }
     }
 

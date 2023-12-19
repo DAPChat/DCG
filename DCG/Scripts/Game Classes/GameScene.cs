@@ -93,7 +93,7 @@ public partial class GameScene : Node3D
 
 			if (c.placerId == _action.targetId && c.card.Id == _action.card.Id)
 			{
-				c.setCard(_action.card, c.Position, c.placerId);
+				c.setCard(_action.card, c.Position, c.placerId == ServerManager.client.id ? 1 : 2);
 				return;
 			}
 		}
@@ -201,7 +201,12 @@ public partial class GameScene : Node3D
         description.ScrollToLine(0);
         description.Text = card.card.Description;
 
-		if (zoomed.placerId != ServerManager.client.id) return;
+        foreach (var child in vbox.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        if (zoomed.placerId != ServerManager.client.id) return;
 
 		Type type = null;
 
