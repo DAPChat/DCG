@@ -163,7 +163,7 @@ public class Database
     }
 
 	// Effectively sets all accounts to be logged out of (if the server closes while a client is active)
-	private static void ResetAccounts()
+	public static void ResetAccounts()
 	{
         var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
 

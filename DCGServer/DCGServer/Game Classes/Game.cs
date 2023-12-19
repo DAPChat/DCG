@@ -213,13 +213,18 @@ namespace game
 			CAP _action = action.Clone();
 			_action.targetId = OpponentId(action.placerId);
 			_action.card = p.fieldRowOne[_action.slot];
-			_action.action = "update";
+			_action.action = p.fieldRowOne[_action.slot].Hp > 0 ? "update" : "remove";
 
-			foreach (var client in clients.Values)
-			{
-				client.tcp.WriteStream(PacketManager.ToJson(_action));
-			}
+			SendAll(PacketManager.ToJson(_action));
 		}
+
+		public void SendAll(byte[] msg)
+		{
+            foreach (var client in clients.Values)
+            {
+                client.tcp.WriteStream(msg);
+            }
+        }
 
 		public int OpponentId(int id)
 		{

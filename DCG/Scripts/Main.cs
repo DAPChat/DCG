@@ -80,6 +80,7 @@ public partial class Main : Node
 		if (ServerManager.client.account == null)
 		{
 			LoginLayer.Show();
+			LUsername.GrabFocus();
 			HomeLayer.Hide();
 		}
 		else
@@ -96,9 +97,17 @@ public partial class Main : Node
 	{
 		if (@event.IsActionPressed("login"))
 		{
-			if (ServerManager.client.account != null) return;
+			if (ServerManager.client.account != null)
+			{
+				ServerManager.client.WriteStream(PacketManager.ToJson(new CSP()));
 
-			Login();
+				PButton.SetDeferred(Button.PropertyName.Text, "Queued...");
+				PButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
+			}
+			else
+			{
+				Login();
+			}
 		}
 	}
 

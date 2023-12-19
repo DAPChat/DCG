@@ -11,10 +11,19 @@ class Program
 
         while (true) 
 		{
-            if (Console.ReadLine() == "Stop")
+			string input = Console.ReadLine();
+
+			if (input == null) continue;
+
+            if (input.ToLower() == "stop")
 			{
 				Server.Stop();
 				break;
+			}
+			
+			if (input.ToLower() == "reset")
+			{
+				Database.ResetAccounts();
 			}
 		}
 	}

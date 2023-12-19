@@ -99,6 +99,23 @@ public partial class GameScene : Node3D
 		}
 	}
 
+	public static void RemoveCard(CAP _action)
+	{
+        foreach (var card in sceneTree.GetChildren())
+        {
+            if (card is not Card) continue;
+
+            Card c = (Card)card;
+
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id)
+            {
+				cards.Remove(c);
+				c.QueueFree();
+                return;
+            }
+        }
+    }
+
 	public static void RemoveFromHand(CardObject card)
 	{
 		var grid = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/PlayerHand/GridContainer");
@@ -400,10 +417,12 @@ public partial class GameScene : Node3D
 					}
                 }
 
-				int slot = 0;
-
 				if (occupied != null)
 				{
+					if (occupied.card.Type.Contains("Spell")) return;
+
+                    int slot;
+                    
 					try
 					{
                         slot = int.Parse(Regex.Match(collider.Name, @"\d+").Value);
@@ -604,7 +623,7 @@ public partial class GameScene : Node3D
 					UpdateCard(cap);
 					break;
 				case "remove":
-					// RemoveCard(cap);
+					RemoveCard(cap);
 					break;
 				case "hadd":
 					AddToHand(cap.card);

@@ -16,9 +16,14 @@ namespace card
             game.Damage(action);
         }
 
+        public void Remembrance()
+        {
+
+        }
+
         public override void Run()
         {
-            Console.WriteLine("Hah");
+            
         }
     }
 }
