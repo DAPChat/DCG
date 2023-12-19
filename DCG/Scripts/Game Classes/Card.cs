@@ -7,6 +7,7 @@ public partial class Card : Node3D
     public Area3D collision;
 	public bool mouse = false;
 	public int placerId;
+	public int slot;
 
 	public GameScene.CardObject card;
 	public bool set = false;
@@ -15,10 +16,11 @@ public partial class Card : Node3D
 	public Label3D description;
 
 	// Sets the card object elements to display to the player
-	public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum) //add added child card
+	public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum, int _slot) //add added child card
 	{
         Hide();
 
+		slot = _slot;
         card = _card;
 
 		description = GetNode<Label3D>("FrontFace/Description/Description");

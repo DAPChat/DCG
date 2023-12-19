@@ -21,6 +21,11 @@ namespace card
 
         }
 
+        public void Solitude()
+        {
+
+        }
+
         public override void Run()
         {
             
