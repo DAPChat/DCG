@@ -526,7 +526,6 @@ public partial class GameScene : Node3D
 
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", slot = slot }));
             }
-            else GD.Print(currentPhase + ":" + currentTurn + " : " + (c==null));
         }
     }
 

@@ -168,8 +168,6 @@ namespace game
 
 			if (!placer.player.hand.Contains(action.card.Id)) return;
 
-			Console.WriteLine("here");
-
 			var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
 
 			if (field[action.slot - 1] != null) return;
