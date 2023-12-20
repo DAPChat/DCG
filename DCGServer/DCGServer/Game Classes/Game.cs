@@ -166,20 +166,17 @@ namespace game
 
 			Client placer = clients[action.placerId];
 
-			Console.WriteLine("--------" + action.card.Id);
-			foreach (var p in placer.player.hand) Console.WriteLine(p);
-
 			if (!placer.player.hand.Contains(action.card.Id)) return;
 
 			Console.WriteLine("here");
-
-            placer.player.hand.Remove(action.card.Id);
 
 			var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
 
 			if (field[action.slot - 1] != null) return;
 
-			field.SetValue(action.card, action.slot - 1);
+            placer.player.hand.Remove(action.card.Id);
+
+            field.SetValue(action.card, action.slot - 1);
 
 			currentBoard.UpdatePlayer(placer.player);
 
@@ -217,6 +214,8 @@ namespace game
 			_action.targetId = OpponentId(action.placerId);
 			_action.card = p.fieldRowOne[_action.slot];
 			_action.action = p.fieldRowOne[_action.slot].Hp > 0 ? "update" : "remove";
+
+			if (p.fieldRowOne[action.slot].Hp <= 0) p.fieldRowOne.SetValue(null, action.slot);
 
 			SendAll(PacketManager.ToJson(_action));
 		}
@@ -305,6 +304,7 @@ namespace game
 					if (players[i].id == p.id)
 					{
 						players[i] = p;
+						game.clients[players[i].id].player = p;
 					}
 				}
 			}
@@ -349,8 +349,6 @@ namespace game
 				if (phase < 2 && round != 1) phase++;
 				else if (round == 1 && phase < 1) phase++;
 				else NextTurn();
-
-				Console.WriteLine(round + ": " + phase + " : " + turn);
 
                 game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
 

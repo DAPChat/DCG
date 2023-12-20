@@ -341,8 +341,6 @@ public partial class GameScene : Node3D
         // Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
-            GD.Print(ServerManager.client.id + ": " + currentPhase + " : " + currentTurn);
-
             if (HandShown)
             {
                 Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
