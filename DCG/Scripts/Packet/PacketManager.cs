@@ -40,7 +40,12 @@ public class PacketManager
 							{
 								GameScene.changeScene = true;
 							}
+
+							break;
                         }
+
+						GameScene.currentTurn = gsp.turn;
+						GameScene.currentPhase = gsp.phase;
 
 						break;
 

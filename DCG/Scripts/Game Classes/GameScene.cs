@@ -64,6 +64,9 @@ public partial class GameScene : Node3D
 
     public static int gridSeparation = 250;
 
+    public static int currentTurn = 0;
+    public static int currentPhase = 0;
+
     public static void PlaceCard(CAP _action)
     {
         int player = 1;
@@ -229,7 +232,7 @@ public partial class GameScene : Node3D
             child.QueueFree();
         }
 
-        if (zoomed.placerId != ServerManager.client.id) return;
+        if (zoomed.placerId != ServerManager.client.id || (currentPhase != 2 && currentTurn == ServerManager.client.id)) return;
 
         Type type = null;
 
@@ -252,7 +255,7 @@ public partial class GameScene : Node3D
 
             action.Pressed += () =>
             {
-                if (selectMode)
+                if (selectMode && currentPhase == 2)
                 {
                     selectMode = false;
                     cardClass.Run(zoomed.card);
@@ -338,6 +341,8 @@ public partial class GameScene : Node3D
         // Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
+            GD.Print(ServerManager.client.id + ": " + currentPhase + " : " + currentTurn);
+
             if (HandShown)
             {
                 Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
@@ -484,7 +489,7 @@ public partial class GameScene : Node3D
             {
                 ReturnView(c);
             }
-            else if (c == null && !skip)
+            else if (c == null && !skip && currentTurn == ServerManager.client.id && currentPhase == 1)
             {
                 // Check which slot was clicked
                 if (cardObject == null) return;
@@ -523,6 +528,7 @@ public partial class GameScene : Node3D
 
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", slot = slot }));
             }
+            else GD.Print(currentPhase + ":" + currentTurn + " : " + (c==null));
         }
     }
 

@@ -3,7 +3,7 @@
 	public class GSP : Packet
 	{
 		public int gameId;
-
-		public int playerId;
+		public int turn;
+		public int phase;
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using player;
 using packets;
 using card;
+using System.Numerics;
+using System.Text;
 
 namespace game
 {
@@ -45,6 +47,8 @@ namespace game
 			{
 				AddClient(_client);
 			}
+
+			currentBoard.NextTurn();
 		}
 
 		private void AddClient(Client _client)
@@ -162,25 +166,20 @@ namespace game
 
 			Client placer = clients[action.placerId];
 
+			Console.WriteLine("--------" + action.card.Id);
+			foreach (var p in placer.player.hand) Console.WriteLine(p);
+
 			if (!placer.player.hand.Contains(action.card.Id)) return;
 
-			placer.player.hand.Remove(action.card.Id);
+			Console.WriteLine("here");
+
+            placer.player.hand.Remove(action.card.Id);
 
 			var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
 
 			if (field[action.slot - 1] != null) return;
 
 			field.SetValue(action.card, action.slot - 1);
-
-			if (placer.player.deck.Count > 0 && placer.player.hand.Count < 10)
-			{
-				string c = placer.player.deck[new Random().Next(0, placer.player.deck.Count - 1)];
-
-				placer.player.deck.Remove(c);
-				placer.player.hand.Add(c);
-
-				placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(c).TempCard(), action = "hadd" }));
-			}
 
 			currentBoard.UpdatePlayer(placer.player);
 
@@ -191,18 +190,18 @@ namespace game
 				client.tcp.WriteStream(PacketManager.ToJson(action));
 			}
 
-			currentBoard.NextTurn();
+			currentBoard.NextPhase();
 		}
 
 		public void RegisterAction(CAP action)
 		{
 			if (action == null) return;
 
-			if (action.placerId != currentBoard.turn) return;
+            if (action.placerId != currentBoard.turn) return;
 
-			if (action.action == "place")
+			if (action.action == "place" && currentBoard.phase == 1)
 				PlaceCard(action);
-			else
+			else if (currentBoard.phase == 2)
 				ActionManager.GetClass(action, this);
 		}
 
@@ -242,6 +241,8 @@ namespace game
 
 		public class GameBoard
 		{
+			Game game;
+
 			public bool gameState;
 			public int turn; // Stores the player id of who's turn it is
 			public int phase;
@@ -256,9 +257,11 @@ namespace game
 				gameState = true;
 				turn = 0;
 				phase = 0;
-				round = 1;
+				round = 0;
 
-				image = null;
+				image = "";
+
+				game = _game;
 			}
 
 			public void AddPlayer(Player player)
@@ -281,7 +284,9 @@ namespace game
 				{
 					AddPlayer(_players[i]);
 				}
-			}
+
+                game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
+            }
 
 			public Player GetPlayer(int id)
 			{
@@ -304,16 +309,52 @@ namespace game
 				}
 			}
 
-			public void NextTurn()
+			public int NextTurn()
 			{
 				foreach (var p in players)
 				{
 					if (p.id != turn)
 					{
-						turn = p.id;
-						break;
+						phase = 0;
+                        turn = p.id;
+
+						Client placer = game.clients[turn];
+
+                        if (p.deck.Count > 0 && p.hand.Count < 10)
+                        {
+                            string c = p.deck[new Random().Next(0, p.deck.Count - 1)];
+
+                            p.deck.Remove(c);
+                            p.hand.Add(c);
+
+							placer.player = p.Clone();
+                            placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = Database.GetCard(c).TempCard(), action = "hadd" }));
+                        }
+
+						round++;
+
+						NextPhase();
+
+                        break;
 					}
 				}
+
+				//game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
+
+                return turn;
+			}
+
+			public int NextPhase()
+			{
+				if (phase < 2 && round != 1) phase++;
+				else if (round == 1 && phase < 1) phase++;
+				else NextTurn();
+
+				Console.WriteLine(round + ": " + phase + " : " + turn);
+
+                game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
+
+                return phase;
 			}
 		}
 	}

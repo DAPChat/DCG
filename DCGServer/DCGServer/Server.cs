@@ -131,11 +131,13 @@ class Server
 		// Add a client to the queue
 		_client.gameId = 0;
 
-		GSP gsp = new();
-		gsp.gameId = 0;
-		gsp.senderId = _id;
+        GSP gsp = new()
+        {
+            gameId = 0,
+            senderId = _id
+        };
 
-		_client.tcp.WriteStream(PacketManager.ToJson(gsp));
+        _client.tcp.WriteStream(PacketManager.ToJson(gsp));
 
 		queue.Add(_id, _client);
 
@@ -149,9 +151,11 @@ class Server
 		// Keeps a client connected (if they leave queue or leave match)
         _client.gameId = 0;
 
-        GSP gsp = new();
-        gsp.gameId = 0;
-        gsp.senderId = _client.id;
+        GSP gsp = new()
+        {
+            gameId = 0,
+            senderId = _client.id
+        };
 
         _client.tcp.WriteStream(PacketManager.ToJson(gsp));
 

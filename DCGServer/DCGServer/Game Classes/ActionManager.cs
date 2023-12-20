@@ -33,6 +33,6 @@ public class ActionManager
             return;
         }
 
-        _game.currentBoard.NextTurn();
+        _game.currentBoard.NextPhase();
     }
 }
