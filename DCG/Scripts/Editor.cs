@@ -11,7 +11,7 @@ namespace deck
         {
             TheArea = (GridContainer)GetNode("ScrollContainer/GridContainer");
             AddCards = (Button)GetNode("Add");
-            AddCards.Pressed += () => LoadCardsIn();
+            AddCards.Pressed += () => { LoadCardsIn();AddCards.Hide(); };
         }
         public static void LoadCardsIn()
         {
