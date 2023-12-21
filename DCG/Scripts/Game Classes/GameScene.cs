@@ -232,13 +232,13 @@ public partial class GameScene : Node3D
             child.QueueFree();
         }
 
-        if (zoomed.placerId != ServerManager.client.id || (currentPhase != 2 && currentTurn == ServerManager.client.id)) return;
+        if (zoomed.placerId != ServerManager.client.id || (currentPhase != 2 && currentTurn != ServerManager.client.id)) return;
 
         Type type = null;
 
         try
         {
-            type = Type.GetType("card." + card.card.Name);
+            type = Type.GetType("card." + card.card.Name.Replace(' ', '_'));
         }
         catch
         {

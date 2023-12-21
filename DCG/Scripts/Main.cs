@@ -104,7 +104,7 @@ public partial class Main : Node
 				PButton.SetDeferred(Button.PropertyName.Text, "Queued...");
 				PButton.SetDeferred(BaseButton.PropertyName.Disabled, true);
 			}
-			else
+			else if (!LButton.Disabled == true)
 			{
 				Login();
 			}
