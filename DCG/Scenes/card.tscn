@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://df4fy3rrrwxnq"]
+[gd_scene load_steps=13 format=3 uid="uid://df4fy3rrrwxnq"]
 
 [ext_resource type="Material" uid="uid://ca7bs17ifycq6" path="res://Materials/Basic Card/TransparentCardFaceBox.tres" id="1_olrt8"]
 [ext_resource type="Script" path="res://Scripts/Game Classes/Card.cs" id="1_pe65v"]
 [ext_resource type="Texture2D" uid="uid://cc46x3oj2g1yc" path="res://Materials/Basic Card/testcard/CardBG (1).png" id="1_v18lx"]
 [ext_resource type="Material" uid="uid://cjpdibwq8y4pu" path="res://Materials/Basic Card/CardBackBasic.tres" id="2_8734q"]
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="4_jwpql"]
+[ext_resource type="FontFile" uid="uid://bjfmtq8hfeyob" path="res://Materials/fonts/architect-s-daughter/ArchitectsDaughter.ttf" id="4_rarsn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8plr"]
 albedo_color = Color(1, 0.298039, 0.619608, 1)
@@ -49,6 +50,7 @@ surface_material_override/0 = ExtResource("1_olrt8")
 transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, -0.957648, 0.001, 0.0540943)
 outline_modulate = Color(0, 0, 0, 0)
 text = "aaaaaaaaaaaaaaaaaaaaaaaaaa"
+font = ExtResource("4_rarsn")
 horizontal_alignment = 0
 
 [node name="Rank" type="Label3D" parent="FrontFace/Name"]

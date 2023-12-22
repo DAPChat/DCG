@@ -81,8 +81,6 @@ namespace game
 
 			p.deck = _client.ActiveDeck();
 
-			Console.WriteLine(p.deck.Count);
-
 			p.hand = new();
 
 			for (int i = 0; i < 6; i++)
@@ -217,6 +215,8 @@ namespace game
 			_action.targetId = OpponentId(action.placerId);
 			_action.card = p.fieldRowOne[_action.slot];
 			_action.action = p.fieldRowOne[_action.slot].Hp > 0 ? "update" : "remove";
+
+			Console.WriteLine(_action.action + _action.slot);
 
 			if (p.fieldRowOne[action.slot].Hp <= 0) p.fieldRowOne.SetValue(null, action.slot);
 

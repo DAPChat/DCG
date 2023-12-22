@@ -34,6 +34,7 @@ layout_mode = 0
 offset_left = 7.5
 offset_right = 116.5
 offset_bottom = 31.0
+theme_override_fonts/font = ExtResource("2_nbm2v")
 theme_override_font_sizes/font_size = 15
 text = "Card Name"
 vertical_alignment = 1
@@ -106,6 +107,5 @@ text = "..."
 scale = Vector2(0.666667, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrontFace/Area2D"]
-visible = false
 position = Vector2(168, 300)
 shape = SubResource("RectangleShape2D_t8ndx")

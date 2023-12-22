@@ -15,7 +15,7 @@ public class ActionManager
         }
         catch (Exception e)
         {
-            //Console.WriteLine(e.ToString());
+            Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not have a class.", _action.card.Name);
 
             return;
@@ -27,7 +27,7 @@ public class ActionManager
         }
         catch (Exception e)
         {
-            //Console.WriteLine(e.ToString());
+            Console.WriteLine(e.ToString());
             Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
 
             return;

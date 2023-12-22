@@ -100,7 +100,7 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
 
-            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id)
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == (c.slot - 1))
             {
                 c.setCard(_action.card, c.Position, c.placerId == ServerManager.client.id ? 1 : 2, c.slot);
                 return;
@@ -116,7 +116,7 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
 
-            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == c.slot)
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == (c.slot-1))
             {
                 cards.Remove(c);
                 c.QueueFree();
