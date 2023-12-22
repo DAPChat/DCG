@@ -3,22 +3,12 @@ using game;
 
 namespace card
 {
-    public class Ryo : BaseCard
+    public class Zeno : BaseCard
     {
-        public Ryo (CAP _action, Game _game)
+        public Zeno(CAP _action, Game _game)
         {
             action = _action;
             game = _game;
-        }
-
-        public void Remembrance()
-        {
-
-        }
-
-        public void Solitude()
-        {
-
         }
 
         public override void Run()

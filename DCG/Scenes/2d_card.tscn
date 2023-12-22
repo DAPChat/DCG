@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_30cw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t8ndx"]
-size = Vector2(225, 300)
+size = Vector2(337.5, 600)
 
 [node name="2DCard" type="Control"]
 layout_mode = 3
@@ -16,87 +16,96 @@ script = ExtResource("1_qfx71")
 [node name="FrontFace" type="TextureRect" parent="."]
 self_modulate = Color(0.976471, 0, 0.596078, 1)
 layout_mode = 0
-offset_right = 150.0
-offset_bottom = 150.0
-scale = Vector2(1.5, 2)
+offset_right = 225.0
+offset_bottom = 300.0
 texture = ExtResource("1_3a8fn")
 expand_mode = 1
 
 [node name="TopCard" type="ColorRect" parent="FrontFace"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 5.0
-offset_right = 140.0
-offset_bottom = 20.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 40.0
 color = Color(1, 1, 1, 0.403922)
 
 [node name="Name" type="Label" parent="FrontFace/TopCard"]
 layout_mode = 0
-offset_left = 5.0
-offset_right = 83.0
-offset_bottom = 25.0
-theme_override_font_sizes/font_size = 10
+offset_left = 7.5
+offset_right = 116.5
+offset_bottom = 31.0
+theme_override_font_sizes/font_size = 15
 text = "Card Name"
+vertical_alignment = 1
 
 [node name="Rank" type="Label" parent="FrontFace/TopCard"]
-layout_mode = 0
-offset_left = 115.0
-offset_top = -2.0
-offset_right = 126.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -25.0
+offset_right = -4.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.917647, 0, 1)
 theme_override_fonts/font = ExtResource("2_nbm2v")
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 20
 text = "S"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Container" type="Panel" parent="FrontFace"]
 clip_contents = true
 layout_mode = 0
-offset_left = 10.0
-offset_top = 22.0
-offset_right = 140.0
-offset_bottom = 77.0
+offset_left = 15.0
+offset_top = 44.0
+offset_right = 210.0
+offset_bottom = 154.0
 
 [node name="MiddleCard" type="TextureRect" parent="FrontFace/Container"]
 layout_mode = 0
-offset_left = -6.66667
+offset_left = -3.0
 offset_top = -2.0
-offset_right = 1017.33
+offset_right = 1021.0
 offset_bottom = 1022.0
-scale = Vector2(0.14, 0.084)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_30cw8")
-expand_mode = 1
 stretch_mode = 6
 
 [node name="BottomCard" type="ColorRect" parent="FrontFace"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 80.0
-offset_right = 140.0
-offset_bottom = 140.0
+offset_left = 15.0
+offset_top = 160.0
+offset_right = 210.0
+offset_bottom = 280.0
 color = Color(1, 1, 1, 0.403922)
 
 [node name="Stats" type="Label" parent="FrontFace/BottomCard"]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 87.0
-offset_bottom = 30.0
-theme_override_font_sizes/font_size = 8
+offset_left = 7.5
+offset_top = 10.0
+offset_right = 130.5
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 12
 text = "0000 ATK / 00000 HP"
 
 [node name="Description" type="RichTextLabel" parent="FrontFace/BottomCard"]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 15.0
-offset_right = 125.0
-offset_bottom = 55.0
-theme_override_font_sizes/normal_font_size = 8
+offset_left = 7.5
+offset_top = 30.0
+offset_right = 187.5
+offset_bottom = 110.0
+theme_override_font_sizes/normal_font_size = 12
 text = "..."
 
 [node name="Area2D" type="Area2D" parent="FrontFace"]
 scale = Vector2(0.666667, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrontFace/Area2D"]
-position = Vector2(112, 150)
+visible = false
+position = Vector2(168, 300)
 shape = SubResource("RectangleShape2D_t8ndx")

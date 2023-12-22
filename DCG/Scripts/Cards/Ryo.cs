@@ -29,7 +29,7 @@ namespace card
 
             public override void Run(GameScene.CardObject card, int slot)
             {
-				ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card, action = GetType().Name, slot = slot }));
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card, action = GetType().Name, slot = slot }));
             }
         }
 

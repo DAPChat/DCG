@@ -11,7 +11,7 @@ public class ActionManager
 
         try
         {
-            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name), new object[] { _action, _game });
+            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name.Replace(' ', '_')), new object[] { _action, _game });
         }
         catch (Exception e)
         {

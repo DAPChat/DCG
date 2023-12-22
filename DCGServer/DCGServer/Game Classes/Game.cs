@@ -80,6 +80,9 @@ namespace game
 			_client.player = p;
 
 			p.deck = _client.ActiveDeck();
+
+			Console.WriteLine(p.deck.Count);
+
 			p.hand = new();
 
 			for (int i = 0; i < 6; i++)
@@ -116,6 +119,8 @@ namespace game
 
 		public void LeaveGame(int _clientId)
 		{
+			if (!active && !clients[_clientId].active) return;
+
 			active = false;
 
 			// Remove the disconnected client from the server
@@ -320,9 +325,9 @@ namespace game
 
                         if (p.deck.Count > 0 && p.hand.Count < 10)
                         {
-                            string c = p.deck[new Random().Next(0, p.deck.Count - 1)];
+                            string c = p.deck[new Random().Next(0, p.deck.Count)];
 
-                            p.deck.Remove(c);
+                            //p.deck.Remove(c);
                             p.hand.Add(c);
 
 							placer.player = p.Clone();

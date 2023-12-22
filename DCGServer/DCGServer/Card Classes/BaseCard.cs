@@ -9,5 +9,10 @@ namespace card
         public Game game;
 
         public abstract void Run();
+
+        public void Attack()
+        {
+            game.Damage(action);
+        }
     }
 }

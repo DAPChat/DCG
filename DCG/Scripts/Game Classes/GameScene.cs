@@ -116,7 +116,7 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
 
-            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id)
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == c.slot)
             {
                 cards.Remove(c);
                 c.QueueFree();
