@@ -9,6 +9,8 @@ public class ActionManager
 
         BaseCard card = null;
 
+        if (_game.currentBoard.GetPlayer(_action.placerId).fieldRowOne[_action.slot].StatusName.Contains(_action.action)) return;
+
         try
         {
             card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name.Replace(' ', '_')), new object[] { _action, _game });
