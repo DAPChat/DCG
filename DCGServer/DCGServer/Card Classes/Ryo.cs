@@ -13,7 +13,8 @@ namespace card
 
         public void Remembrance()
         {
-
+            game.AddEffect(this, "Attack", 1);
+            game.AddEffect(this, action.action, -1);
         }
 
         public void Solitude()
@@ -21,7 +22,7 @@ namespace card
 
         }
 
-        public override void Run()
+        public override void Death(Game game, CAP action)
         {
             
         }

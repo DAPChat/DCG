@@ -24,7 +24,6 @@ public class Client
 	public int id;
 	public int gameId;
 	public List<GameScene.CardObject> hand = new();
-	public Player player;
 
     CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -123,8 +122,6 @@ public class Client
 
 	public void SetPlayer(Player p)
 	{
-		player = p;
-
         foreach (string card in p.hand.ToList())
 		{
 			WriteStream(PacketManager.ToJson(new CRP { cardId = card,  main = false}));

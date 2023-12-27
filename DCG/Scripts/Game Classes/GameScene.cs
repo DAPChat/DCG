@@ -20,7 +20,8 @@ public partial class GameScene : Node3D
         public string Type { get; set; }
         public string Img { get; set; }
         public string Pack { get; set; }
-        public string CurrentStatus { get; set; }
+        public List<string> StatusName { get; set; }
+        public List<int> StatusLength { get; set; }
     }
 
     static bool CameraView = false;
@@ -48,6 +49,9 @@ public partial class GameScene : Node3D
     public static GameScene sceneTree;
 
     public static List<CardObject> hand = new();
+    public static List<CardObject> forgotten = new();
+    public static List<CardObject> unforgotten = new();
+
     public static List<CAP> actionQueue = new();
 
     public static CardObject cardObject = null;
@@ -245,9 +249,11 @@ public partial class GameScene : Node3D
             return;
         }
 
-        foreach (var t in type.GetNestedTypes())
+        foreach (var t in GetAllTypes(type))
         {
             Action cardClass = (Action)Activator.CreateInstance(t);
+
+            if (zoomed.effects.ContainsKey(cardClass.name)) return;
 
             Button action = (Button)actionButton.Duplicate();
 
@@ -258,12 +264,22 @@ public partial class GameScene : Node3D
                 if (selectMode && currentPhase == 2)
                 {
                     selectMode = false;
-                    cardClass.Run(zoomed.card);
+                    cardClass.Run(card);
                 }
             };
 
             vbox.CallDeferred(Node.MethodName.AddChild, action);
         }
+    }
+
+    public static List<Type> GetAllTypes(Type type)
+    {
+        List<Type> types = new();
+
+        types.AddRange(type.GetNestedTypes());
+        types.AddRange(type.BaseType.GetNestedTypes());
+
+        return types;
     }
 
     // Return to normal view
@@ -304,7 +320,7 @@ public partial class GameScene : Node3D
         camRot.Y = curCamera.Position.Y;
     }
 
-    public static void QuietReturn()
+    public static void ChooseView()
     {
         VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
 
@@ -334,6 +350,24 @@ public partial class GameScene : Node3D
         }
 
         camRot.Y = curCamera.Position.Y;
+    }
+
+    public static void UpdateEffects()
+    {
+        foreach (var card in sceneTree.GetChildren())
+        {
+            if (card is not Card) continue;
+
+            Card c = (Card)card;
+            
+            foreach (var effect in c.effects.Keys)
+            {
+                if (c.effects[effect] == -1) continue;
+
+                c.effects[effect] -= 1;
+                if (c.effects[effect] <= 0) c.effects.Remove(effect);
+            }
+        }
     }
 
     public override void _Input(InputEvent @event)
@@ -430,7 +464,7 @@ public partial class GameScene : Node3D
                 {
                     if (occupied.card.Type.Contains("Spell")) return;
 
-                    choose.Run(zoomed.card, occupied.slot - 1);
+                    choose.Run(zoomed, occupied.slot - 1);
                     choose = null;
                     ReturnView(zoomed);
                 }
@@ -630,6 +664,9 @@ public partial class GameScene : Node3D
                     break;
                 case "hremove":
                     RemoveFromHand(cap.card);
+                    break;
+                case "fadd":
+                    forgotten.Add(cap.card);
                     break;
             }
 

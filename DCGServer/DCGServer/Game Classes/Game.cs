@@ -183,10 +183,7 @@ namespace game
 
 			placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
 
-			foreach (var client in clients.Values)
-			{
-				client.tcp.WriteStream(PacketManager.ToJson(action));
-			}
+			SendAll(PacketManager.ToJson(action));
 
 			currentBoard.NextPhase();
 		}
@@ -200,25 +197,29 @@ namespace game
 			if (action.action == "place" && currentBoard.phase == 1)
 				PlaceCard(action);
 			else if (currentBoard.phase == 2)
-				ActionManager.GetClass(action, this);
+				ActionManager.Register(action, this);
 		}
 
-		public void Damage(CAP action)
+		public void Damage(CAP action, object o)
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
 			p.fieldRowOne[action.slot].Hp -= action.card.Atk;
 
-			currentBoard.UpdatePlayer(p);
-
 			CAP _action = action.Clone();
-			_action.targetId = OpponentId(action.placerId);
-			_action.card = p.fieldRowOne[_action.slot];
-			_action.action = p.fieldRowOne[_action.slot].Hp > 0 ? "update" : "remove";
+			_action.targetId = p.id;
+			_action.card = p.fieldRowOne[_action.slot].MakeReady();
+			_action.action = "update";
 
-			if (p.fieldRowOne[action.slot].Hp <= 0) p.fieldRowOne.SetValue(null, action.slot);
+			if (p.fieldRowOne[action.slot].Hp <= 0)
+			{
+				((BaseCard)o).Death(this, _action);
+				_action.action = "remove";
+			}
 
-			SendAll(PacketManager.ToJson(_action));
+            currentBoard.UpdatePlayer(p);
+
+            SendAll(PacketManager.ToJson(_action));
 		}
 
 		public void SendAll(byte[] msg)
@@ -237,6 +238,23 @@ namespace game
 			}
 
 			return 0;
+		}
+
+		public void AddEffect(BaseCard card, string name, int length)
+		{
+			TempCard curCard = currentBoard.GetPlayer(card.action.senderId).fieldRowOne[card.action.targetId];
+
+			if (curCard == null) return;
+
+			if (curCard.StatusName.Contains(name))
+			{
+				curCard.StatusLength[curCard.StatusName.IndexOf(name)] += length;
+			}
+			else
+			{
+				curCard.StatusName.Add(name);
+				curCard.StatusLength.Add(length);
+			}
 		}
 
 		public class GameBoard
@@ -319,13 +337,27 @@ namespace game
 						phase = 0;
                         turn = p.id;
 
+						for (int i = 0; i < p.fieldRowOne.Length; i++)
+						{
+							for (int e = 0; e < p.fieldRowOne.Length; e++)
+							{
+								p.fieldRowOne[i].StatusLength[e] -= 1;
+
+								if (p.fieldRowOne[i].StatusLength[e] < 0)
+								{
+									p.fieldRowOne[i].StatusLength.RemoveAt(e);
+									p.fieldRowOne[i].StatusName.RemoveAt(e);
+								}
+							}
+						}
+
 						Client placer = game.clients[turn];
 
                         if (p.deck.Count > 0 && p.hand.Count < 10)
                         {
                             string c = p.deck[new Random().Next(0, p.deck.Count)];
 
-                            //p.deck.Remove(c);
+                            p.deck.Remove(c);
                             p.hand.Add(c);
 
 							placer.player = p.Clone();
@@ -339,9 +371,6 @@ namespace game
                         break;
 					}
 				}
-
-				//game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
-
                 return turn;
 			}
 

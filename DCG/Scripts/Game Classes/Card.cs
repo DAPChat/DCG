@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 public partial class Card : Node3D
 {
@@ -14,6 +15,8 @@ public partial class Card : Node3D
 
 	public bool down = false;
 	public Label3D description;
+
+	public Dictionary<string, int> effects = new();
 
 	// Sets the card object elements to display to the player
 	public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum, int _slot) //add added child card
@@ -109,6 +112,14 @@ public partial class Card : Node3D
             mesh.MaterialOverride = material;
         }
 	}
+
+	public void AddEffect(string name, int length)
+	{
+        if (effects.ContainsKey(name))
+            effects[name] += length;
+        else effects.Add(name, length);
+    }
+
 	public override void _Ready()
 	{
 		collision = (Area3D)GetNode("Area3D");

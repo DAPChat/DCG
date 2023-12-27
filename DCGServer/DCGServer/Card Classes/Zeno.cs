@@ -11,7 +11,7 @@ namespace card
             game = _game;
         }
 
-        public override void Run()
+        public override void Death(Game game, CAP action)
         {
             
         }

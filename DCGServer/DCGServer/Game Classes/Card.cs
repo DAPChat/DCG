@@ -17,7 +17,6 @@ namespace card
 		public string Type { get; set; }
 		public string Img { get; set; }
 		public string Pack { get; set; }
-		public string CurrentStatus { get; set; }
 
 		public TempCard TempCard()
 		{
@@ -34,7 +33,6 @@ namespace card
 				Type = Type,
 				Img = Img,
 				Pack = Pack,
-				CurrentStatus = CurrentStatus
 			};
 		}
 	}

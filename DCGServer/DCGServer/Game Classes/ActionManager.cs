@@ -3,7 +3,7 @@ using packets;
 
 public class ActionManager
 {
-    public static void GetClass(CAP _action, game.Game _game)
+    public static void Register(CAP _action, game.Game _game)
     {
         if (_action.card.Name == null) return;
 

@@ -16,6 +16,29 @@ namespace card
 		public string Type { get; set; }
 		public string Img { get; set; }
 		public string Pack { get; set; }
-		public string CurrentStatus { get; set; }
+		public List<string> StatusName { get; set; }
+		public List<int> StatusLength { get; set; }
+
+		public TempCard MakeReady()
+		{
+			TempCard temp = new()
+			{
+				Id = Id,
+				Name = Name,
+				Rank = Rank,
+				SacrificialValue = SacrificialValue,
+				Atk = Atk,
+				Hp = Hp,
+				Mana = Mana,
+				Description = Description,
+				Type = Type,
+				Img = Img,
+				Pack = Pack,
+				StatusName = null,
+				StatusLength = null
+			};
+
+			return temp;
+		}
 	}
 }
