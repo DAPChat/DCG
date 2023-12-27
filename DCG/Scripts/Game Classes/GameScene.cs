@@ -176,7 +176,7 @@ public partial class GameScene : Node3D
 
         gridSeparation = 300;
 
-        while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
+        while ((ServerManager.client.hand.Count * gridSeparation + ((225) - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
         {
             gridSeparation -= 1;
         }

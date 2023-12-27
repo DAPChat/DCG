@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://o74vmuupnvj" path="res://Materials/Basic Card/_5f2380dc-5f7e-4182-b188-8366ba660d71.jpg" id="3_30cw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t8ndx"]
-size = Vector2(337.5, 600)
+size = Vector2(225, 300)
 
 [node name="2DCard" type="Control"]
 layout_mode = 3
@@ -104,8 +104,7 @@ theme_override_font_sizes/normal_font_size = 12
 text = "..."
 
 [node name="Area2D" type="Area2D" parent="FrontFace"]
-scale = Vector2(0.666667, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrontFace/Area2D"]
-position = Vector2(168, 300)
+position = Vector2(112, 150)
 shape = SubResource("RectangleShape2D_t8ndx")
