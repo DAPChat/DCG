@@ -44,7 +44,7 @@ public class PacketManager
 							break;
                         }
 
-						if (GameScene.currentTurn == gsp.turn) GameScene.UpdateEffects();
+						if (GameScene.currentTurn == gsp.turn) GameScene.actionQueue.Add(new CAP { action = "ueffects" });
 
 						GameScene.currentTurn = gsp.turn;
 						GameScene.currentPhase = gsp.phase;

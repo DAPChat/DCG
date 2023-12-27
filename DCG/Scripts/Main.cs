@@ -99,6 +99,7 @@ public partial class Main : Node
 		{
 			if (ServerManager.client.account != null)
 			{
+				if (PButton.Disabled == true) return;
 				ServerManager.client.WriteStream(PacketManager.ToJson(new CSP()));
 
 				PButton.SetDeferred(Button.PropertyName.Text, "Queued...");

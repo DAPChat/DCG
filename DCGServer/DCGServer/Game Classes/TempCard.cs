@@ -19,6 +19,12 @@ namespace card
 		public List<string> StatusName { get; set; }
 		public List<int> StatusLength { get; set; }
 
+		public TempCard()
+		{
+			StatusName = new();
+			StatusLength = new();
+		}
+
 		public TempCard MakeReady()
 		{
 			TempCard temp = new()

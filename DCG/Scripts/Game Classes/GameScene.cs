@@ -253,7 +253,7 @@ public partial class GameScene : Node3D
         {
             Action cardClass = (Action)Activator.CreateInstance(t);
 
-            if (zoomed.effects.ContainsKey(cardClass.name)) return;
+            if (zoomed.effects.ContainsKey(cardClass.name)) continue;
 
             Button action = (Button)actionButton.Duplicate();
 
@@ -365,7 +365,7 @@ public partial class GameScene : Node3D
                 if (c.effects[effect] == -1) continue;
 
                 c.effects[effect] -= 1;
-                if (c.effects[effect] <= 0) c.effects.Remove(effect);
+                if (c.effects[effect] <= -1) c.effects.Remove(effect);
             }
         }
     }
@@ -667,6 +667,9 @@ public partial class GameScene : Node3D
                     break;
                 case "fadd":
                     forgotten.Add(cap.card);
+                    break;
+                case "ueffects":
+                    UpdateEffects();
                     break;
             }
 

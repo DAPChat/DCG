@@ -339,11 +339,15 @@ namespace game
 
 						for (int i = 0; i < p.fieldRowOne.Length; i++)
 						{
-							for (int e = 0; e < p.fieldRowOne.Length; e++)
+							if (p.fieldRowOne[i] == null) continue;
+							if (p.fieldRowOne[i].StatusLength == null) continue;
+							for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
 							{
+								if (p.fieldRowOne[i].StatusLength[e] == -1) continue;
+
 								p.fieldRowOne[i].StatusLength[e] -= 1;
 
-								if (p.fieldRowOne[i].StatusLength[e] < 0)
+								if (p.fieldRowOne[i].StatusLength[e] <= -1)
 								{
 									p.fieldRowOne[i].StatusLength.RemoveAt(e);
 									p.fieldRowOne[i].StatusName.RemoveAt(e);

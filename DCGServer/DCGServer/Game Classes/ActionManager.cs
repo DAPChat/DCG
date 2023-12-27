@@ -9,7 +9,7 @@ public class ActionManager
 
         BaseCard card = null;
 
-        if (_game.currentBoard.GetPlayer(_action.placerId).fieldRowOne[_action.slot].StatusName.Contains(_action.action)) return;
+        if (_game.currentBoard.GetPlayer(_action.placerId).fieldRowOne[_action.targetId].StatusName.Contains(_action.action)) return;
 
         try
         {
