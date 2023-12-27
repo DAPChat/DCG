@@ -8,7 +8,7 @@ public class PacketManager
 	// Parse the incoming data into packets and run the packet-specific data
 	public static void Decode(byte[] _data, Client client)
 	{
-		string[] dataList = Encoding.ASCII.GetString(_data).Split("[Packet]");
+		string[] dataList = Encoding.UTF8.GetString(_data).Split("[Packet]");
 
 		for (int i = 1; i < dataList.Length; i++)
 		{
@@ -74,13 +74,13 @@ public class PacketManager
 	// Convert an int to bytes
     public static byte[] ToBytes(int i)
     {
-        return Encoding.ASCII.GetBytes(i.ToString());
+        return Encoding.UTF8.GetBytes(i.ToString());
     }
 
 	// Convert a string to bytes
     public static byte[] ToBytes(string i)
     {
-        return Encoding.ASCII.GetBytes(i);
+        return Encoding.UTF8.GetBytes(i);
     }
 
 	// Class to discern the packet type

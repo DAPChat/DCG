@@ -216,8 +216,6 @@ namespace game
 			_action.card = p.fieldRowOne[_action.slot];
 			_action.action = p.fieldRowOne[_action.slot].Hp > 0 ? "update" : "remove";
 
-			Console.WriteLine(_action.action + _action.slot);
-
 			if (p.fieldRowOne[action.slot].Hp <= 0) p.fieldRowOne.SetValue(null, action.slot);
 
 			SendAll(PacketManager.ToJson(_action));

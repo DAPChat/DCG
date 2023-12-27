@@ -31,11 +31,11 @@ color = Color(1, 1, 1, 0.403922)
 
 [node name="Name" type="Label" parent="FrontFace/TopCard"]
 layout_mode = 0
-offset_left = 7.5
-offset_right = 116.5
+offset_left = 8.0
+offset_right = 166.0
 offset_bottom = 31.0
 theme_override_fonts/font = ExtResource("2_nbm2v")
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 12
 text = "Card Name"
 vertical_alignment = 1
 

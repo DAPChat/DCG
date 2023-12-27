@@ -62,7 +62,7 @@ public partial class GameScene : Node3D
 
     public static Dictionary<string, ImageTexture> images = new();
 
-    public static int gridSeparation = 250;
+    public static int gridSeparation = 300;
 
     public static int currentTurn = 0;
     public static int currentPhase = 0;
@@ -174,7 +174,7 @@ public partial class GameScene : Node3D
 
         grid.CallDeferred(Node.MethodName.AddChild, thescene);
 
-        gridSeparation = 250;
+        gridSeparation = 300;
 
         while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
         {

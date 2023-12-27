@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Drawing;
 
 public partial class D2Card : Control
 {
@@ -131,9 +130,9 @@ public partial class D2Card : Control
             CollisionShape2D collider = GetNode<CollisionShape2D>("FrontFace/Area2D/CollisionShape2D");
             RectangleShape2D colliderShape = (RectangleShape2D)collider.Shape;
 
-            colliderShape.Size = new Vector2((float)Math.Clamp(gridSize, 10, 225*1.5), colliderShape.Size.Y);
+            colliderShape.Size = new Vector2((float)Math.Clamp(gridSize, 10, 225), colliderShape.Size.Y);
 
-            collider.Position = new Vector2((float)(Math.Clamp(gridSize, 10, 225*1.5)/2), collider.Position.Y);
+            collider.Position = new Vector2((float)(Math.Clamp(gridSize, 10, 225)/2), collider.Position.Y);
         }
     }
 }

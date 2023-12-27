@@ -10,7 +10,7 @@ public class PacketManager
 	// Parses the incoming packets from the stream and runs functions depending on the packet type
 	public static void Decode(byte[] _data, Client client)
 	{
-		string[] dataList = Encoding.ASCII.GetString(_data).Split("[Packet]");
+		string[] dataList = Encoding.UTF8.GetString(_data).Split("[Packet]");
 
 		for (int i = 1; i < dataList.Length; i++)
 		{
@@ -126,13 +126,13 @@ public class PacketManager
 	// Converts an int to bytes
     public static byte[] ToBytes(int i)
 	{
-		return Encoding.ASCII.GetBytes(i.ToString());
+		return Encoding.UTF8.GetBytes(i.ToString());
 	}
 
 	// Converts a string to bytes
 	public static byte[] ToBytes(string i)
 	{
-		return Encoding.ASCII.GetBytes(i);
+		return Encoding.UTF8.GetBytes(i);
 	}
 
 	// Small class to load packets in order to differentiate type
