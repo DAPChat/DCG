@@ -22,9 +22,9 @@ namespace card
 
         }
 
-        public override void Death(Game game, CAP action)
+        public override void Death()
         {
-            
+            base.Death();
         }
     }
 }

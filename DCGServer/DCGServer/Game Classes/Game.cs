@@ -167,23 +167,23 @@ namespace game
 		{
 			if (action.action != "place" || !active) return;
 
-			Client placer = clients[action.placerId];
+			Player player = currentBoard.GetPlayer(action.placerId);
 
-			if (!placer.player.hand.Contains(action.card.Id)) return;
+			if (!player.hand.Contains(action.card.Id)) return;
 
-			var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
+			var field = action.card.Type == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
 
-			if (field[action.targetSlot] != null) return;
+            if (field[action.targetSlot] != null) return;
 
-            placer.player.hand.Remove(action.card.Id);
+            player.hand.Remove(action.card.Id);
 
 			action.card.Instantiate();
 
             field.SetValue(action.card, action.targetSlot);
 
-			currentBoard.UpdatePlayer(placer.player);
+			currentBoard.UpdatePlayer(player);
 
-			placer.tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
+            clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
 
 			SendAll(PacketManager.ToJson(action));
 
@@ -213,13 +213,13 @@ namespace game
 			_action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
 			_action.action = "update";
 
-			if (p.fieldRowOne[action.targetSlot].Hp <= 0)
+            currentBoard.UpdatePlayer(p);
+
+            if (p.fieldRowOne[action.targetSlot].Hp <= 0)
 			{
-				((BaseCard)o).Death(this, _action);
+				((BaseCard)o).Death();
 				_action.action = "remove";
 			}
-
-            currentBoard.UpdatePlayer(p);
 
             SendAll(PacketManager.ToJson(_action));
 		}
@@ -244,7 +244,7 @@ namespace game
 
 		public void AddEffect(BaseCard card, string name, int length)
 		{
-			TempCard curCard = currentBoard.GetPlayer(card.action.senderId).fieldRowOne[card.action.senderSlot];
+			TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
 
 			if (curCard == null) return;
 
@@ -345,7 +345,7 @@ namespace game
 							if (p.fieldRowOne[i].StatusLength == null) continue;
 							for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
 							{
-								if (p.fieldRowOne[i].StatusLength[e] == -1) continue;
+								if (p.fieldRowOne[i].StatusLength[e] == -2) continue;
 
 								p.fieldRowOne[i].StatusLength[e] -= 1;
 

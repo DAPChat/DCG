@@ -10,10 +10,5 @@ namespace card
             action = _action;
             game = _game;
         }
-
-        public override void Death(Game game, CAP action)
-        {
-            
-        }
     }
 }

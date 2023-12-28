@@ -9,7 +9,9 @@ public class ActionManager
 
         BaseCard card = null;
 
-        if (_game.currentBoard.GetPlayer(_action.placerId).fieldRowOne[_action.senderSlot].StatusName.Contains(_action.action)) return;
+        player.Player p = _game.currentBoard.GetPlayer(_action.placerId);
+
+        if (p.fieldRowOne[_action.senderSlot].StatusName.Contains(_action.action)) return;
 
         try
         {
@@ -17,7 +19,7 @@ public class ActionManager
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            Console.WriteLine(e);
             Console.WriteLine("{0} does not have a class.", _action.card.Name);
 
             return;
@@ -29,7 +31,7 @@ public class ActionManager
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            Console.WriteLine(e);
             Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
 
             return;

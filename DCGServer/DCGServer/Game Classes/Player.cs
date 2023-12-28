@@ -32,6 +32,9 @@ namespace player
 
 			fieldRowOne = new TempCard[5];
 			fieldRowTwo = new TempCard[5];
+
+			unforgotten = new();
+			forgotten = new();
 		}
 
 		public Player Clone()

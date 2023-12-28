@@ -1,5 +1,6 @@
 ﻿using packets;
 using game;
+using player;
 
 namespace card
 {
@@ -8,15 +9,19 @@ namespace card
         public CAP action;
         public Game game;
 
-        public virtual void Summon(Game game)
+        public virtual void Summon()
         {
 
         }
 
-        public virtual void Death(Game game, CAP action)
+        public virtual void Death()
         {
-            game.currentBoard.GetPlayer(action.senderSlot).forgotten.Add(action.card.Id);
-            game.currentBoard.GetPlayer(action.senderSlot).fieldRowOne.SetValue(null, action.targetSlot);
+            Player p = game.currentBoard.GetPlayer(game.OpponentId(action.placerId));
+
+            p.forgotten.Add(action.card.Id);
+            p.fieldRowOne.SetValue(null, action.targetSlot);
+
+            game.currentBoard.UpdatePlayer(p);
 
             CAP uCAP = new()
             {
@@ -24,11 +29,16 @@ namespace card
                 card = action.card
             };
 
-            game.clients[action.senderSlot].tcp.WriteStream(PacketManager.ToJson(uCAP));
+            game.clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(uCAP));
         }
 
         public void Attack()
         {
+            Player p = game.currentBoard.GetPlayer(action.targetId);
+            // var card = Activator.CreateInstance(Type.GetType("card." + p.fieldRowOne[action.targetSlot].Name.Replace(' ', '_')), new object[] { action, game });
+            // uncomment when we get classes for each card
+
+
             game.Damage(action, this);
         }
     }
