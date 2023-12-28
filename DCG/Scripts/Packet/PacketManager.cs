@@ -109,7 +109,7 @@ public class PacketManager
 			}
 			catch (Exception e)
 			{
-				ServerManager.Print($"{e.Message}");
+				ServerManager.Print($"{e}");
 			}
 		}
 	}

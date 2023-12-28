@@ -176,7 +176,9 @@ namespace game
 
             if (field[action.targetSlot] != null) return;
 
-            player.hand.Remove(action.card.Id);
+			if (action.action == "place")
+				player.hand.Remove(action.card.Id);
+			else player.forgotten.Remove(action.card.Id);
 
 			action.card.Instantiate();
 

@@ -22,7 +22,19 @@ namespace card
             public override void Run(Card card, int slot)
             {
                 targetPlace = null;
-                ServerManager.Print("Here");
+
+                CardObject rCard = null;
+
+                foreach (var c in forgotten)
+                {
+                    if (c.Id == cardObject.Id)
+                    {
+                        rCard = c;
+                        break;
+                    }
+                }
+
+                if (rCard != null) forgotten.Remove(rCard);
 
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "summon", targetSlot = slot }));
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, action = GetType().Name }));

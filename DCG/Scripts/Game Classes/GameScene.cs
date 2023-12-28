@@ -563,13 +563,10 @@ public partial class GameScene : Node3D
             // If none were clicked then return view
             if (c != null && !skip)
             {
-                GD.Print("No");
                 ReturnView(c);
             }
             else if (c == null && !skip && currentTurn == ServerManager.client.id)
             {
-                GD.Print("This");
-
                 // Check which slot was clicked
                 if (cardObject == null) return;
 

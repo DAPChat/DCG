@@ -34,10 +34,13 @@ public partial class D2Card : Control
 
         GetNode<Label>("FrontFace/BottomCard/Stats").Text = statsText;
 
-        TreeEntered += () =>
-        {
+        if (IsInsideTree())
             getImg(_card.Img.ToString());
-        };
+        else
+            TreeEntered += () =>
+            {
+                getImg(_card.Img.ToString());
+            };
     }
 
     private void getImg(string url)
