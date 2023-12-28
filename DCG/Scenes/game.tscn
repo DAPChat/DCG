@@ -518,3 +518,21 @@ offset_top = -163.0
 offset_right = 207.0
 offset_bottom = 163.0
 grow_vertical = 2
+
+[node name="SelectionHands" type="ScrollContainer" parent="CanvasLayer/Control"]
+visible = false
+clip_contents = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/SelectionHands"]
+layout_mode = 2
+theme_override_constants/h_separation = 240
+theme_override_constants/v_separation = 10
+columns = 40

@@ -60,7 +60,8 @@ public partial class GameScene : Node3D
     public static bool changeScene = false;
     public static bool selectMode = false;
 
-    public static Action choose = null;
+    public static Action chooseTarget = null;
+    public static Action targetPlace = null;
 
     public static D2Card selectedHand = null;
 
@@ -190,6 +191,31 @@ public partial class GameScene : Node3D
         D2Card c = thescene as D2Card;
 
         c.setCard(card);
+    }
+
+    public static void ShowForgotten()
+    {
+        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
+        GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
+
+        foreach (var child in container.GetChildren())
+        {
+            container.RemoveChild(child);
+            child.QueueFree();
+        }
+
+        foreach (var dead in forgotten)
+        {
+            var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
+
+            container.AddChild(thescene);
+
+            D2Card c = thescene as D2Card;
+
+            c.setCard(dead);
+        }
+
+        HandShown = true;
     }
 
     // Zoom into the card
@@ -392,9 +418,17 @@ public partial class GameScene : Node3D
                         lastSelectedHand.keepShown = false;
                         lastSelectedHand.ReturnCard();
 
-                        hand.Hide();
+                        if (targetPlace == null)
+                        {
+                            hand.Hide();
+                            buttonHand.Disabled = false;
+                        }
+                        else
+                        {
+                            ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+                        }
+
                         HandShown = false;
-                        buttonHand.Disabled = false;
 
                         return;
                     }
@@ -425,15 +459,23 @@ public partial class GameScene : Node3D
                         return;
                     }
 
-                    hand.Hide();
+                    if (targetPlace == null)
+                    {
+                        hand.Hide();
+                        buttonHand.Disabled = false;
+                    }
+                    else
+                    {
+                        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+                    }
+
                     HandShown = false;
-                    buttonHand.Disabled = false;
 
                     return;
                 }
             }
 
-            if (choose != null)
+            if (chooseTarget != null)
             {
                 var eventMouseButton = (InputEventMouseButton)@event;
 
@@ -464,8 +506,8 @@ public partial class GameScene : Node3D
                 {
                     if (occupied.card.Type.Contains("Spell")) return;
 
-                    choose.Run(zoomed, occupied.slot);
-                    choose = null;
+                    chooseTarget.Run(zoomed, occupied.slot);
+                    chooseTarget = null;
                     ReturnView(zoomed);
                 }
 
@@ -478,6 +520,8 @@ public partial class GameScene : Node3D
             // Check each card to see if there was one that was clicked
             foreach (Card card in cards)
             {
+                if (targetPlace != null) break;
+
                 if (!selectMode && card.mouse && !card.set && (card != zoomed))
                 {
                     zoomed = card;
@@ -519,10 +563,13 @@ public partial class GameScene : Node3D
             // If none were clicked then return view
             if (c != null && !skip)
             {
+                GD.Print("No");
                 ReturnView(c);
             }
-            else if (c == null && !skip && currentTurn == ServerManager.client.id && currentPhase == 1)
+            else if (c == null && !skip && currentTurn == ServerManager.client.id)
             {
+                GD.Print("This");
+
                 // Check which slot was clicked
                 if (cardObject == null) return;
 
@@ -558,7 +605,12 @@ public partial class GameScene : Node3D
                     return;
                 }
 
-                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", targetSlot = slot }));
+                if (targetPlace == null)
+                    ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", targetSlot = slot }));
+                else
+                {
+                    targetPlace.Run(zoomed, slot);
+                }
             }
         }
     }

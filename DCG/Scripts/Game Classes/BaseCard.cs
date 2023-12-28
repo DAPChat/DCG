@@ -10,7 +10,7 @@ namespace card
             public override void Run(Card card)
             {
                 GameScene.ChooseView();
-                GameScene.choose = this;
+                GameScene.chooseTarget = this;
             }
 
             public override void Run(Card card, int slot)

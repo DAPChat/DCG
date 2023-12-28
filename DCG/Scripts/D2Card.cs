@@ -114,10 +114,9 @@ public partial class D2Card : Control
     {
         ZIndex = 0;
         Tween tween = CreateTween();
-        tween.Finished += () =>
-        {
-            hovered = false;
-        };
+
+        hovered = false;
+
         tween.TweenProperty(GetNode<TextureRect>("FrontFace"), "position:y", startPos.Y, .25);
     }
 

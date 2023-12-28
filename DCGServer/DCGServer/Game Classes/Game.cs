@@ -165,13 +165,14 @@ namespace game
 
 		public void PlaceCard(CAP action)
 		{
-			if (action.action != "place" || !active) return;
+			if (!active) return;
 
 			Player player = currentBoard.GetPlayer(action.placerId);
 
-			if (!player.hand.Contains(action.card.Id)) return;
+			if (action.action == "place" && !player.hand.Contains(action.card.Id)) return;
+			else if (action.action == "summon" && !player.forgotten.Contains(action.card.Id)) return;
 
-			var field = action.card.Type == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
+            var field = action.card.Type == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
 
             if (field[action.targetSlot] != null) return;
 
@@ -185,9 +186,12 @@ namespace game
 
             clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
 
-			SendAll(PacketManager.ToJson(action));
+			if (action.action == "place")
+				currentBoard.NextPhase();
 
-			currentBoard.NextPhase();
+            action.action = "place";
+
+			SendAll(PacketManager.ToJson(action));
 		}
 
 		public void RegisterAction(CAP action)
@@ -196,7 +200,7 @@ namespace game
 
             if (action.placerId != currentBoard.turn) return;
 
-			if (action.action == "place" && currentBoard.phase == 1)
+			if ((action.action == "place" && currentBoard.phase == 1) || action.action == "summon")
 				PlaceCard(action);
 			else if (currentBoard.phase == 2)
 				ActionManager.Register(action, this);

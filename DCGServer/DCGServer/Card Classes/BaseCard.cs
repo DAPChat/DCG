@@ -18,18 +18,18 @@ namespace card
         {
             Player p = game.currentBoard.GetPlayer(game.OpponentId(action.placerId));
 
-            p.forgotten.Add(action.card.Id);
-            p.fieldRowOne.SetValue(null, action.targetSlot);
-
-            game.currentBoard.UpdatePlayer(p);
-
             CAP uCAP = new()
             {
                 action = "fadd",
-                card = action.card
+                card = p.fieldRowOne[action.targetSlot].MakeReady()
             };
 
-            game.clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(uCAP));
+            game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
+
+            p.forgotten.Add(p.fieldRowOne[action.targetSlot].Id);
+            p.fieldRowOne.SetValue(null, action.targetSlot);
+
+            game.currentBoard.UpdatePlayer(p);
         }
 
         public void Attack()
