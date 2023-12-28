@@ -19,7 +19,7 @@ namespace card
 		public List<string> StatusName { get; set; }
 		public List<int> StatusLength { get; set; }
 
-		public TempCard()
+		public void Instantiate()
 		{
 			StatusName = new();
 			StatusLength = new();

@@ -173,11 +173,13 @@ namespace game
 
 			var field = action.card.Type == "Spell" ? placer.player.fieldRowTwo : placer.player.fieldRowOne;
 
-			if (field[action.slot - 1] != null) return;
+			if (field[action.targetSlot] != null) return;
 
             placer.player.hand.Remove(action.card.Id);
 
-            field.SetValue(action.card, action.slot - 1);
+			action.card.Instantiate();
+
+            field.SetValue(action.card, action.targetSlot);
 
 			currentBoard.UpdatePlayer(placer.player);
 
@@ -204,14 +206,14 @@ namespace game
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
-			p.fieldRowOne[action.slot].Hp -= action.card.Atk;
+			p.fieldRowOne[action.targetSlot].Hp -= action.card.Atk;
 
 			CAP _action = action.Clone();
 			_action.targetId = p.id;
-			_action.card = p.fieldRowOne[_action.slot].MakeReady();
+			_action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
 			_action.action = "update";
 
-			if (p.fieldRowOne[action.slot].Hp <= 0)
+			if (p.fieldRowOne[action.targetSlot].Hp <= 0)
 			{
 				((BaseCard)o).Death(this, _action);
 				_action.action = "remove";
@@ -242,7 +244,7 @@ namespace game
 
 		public void AddEffect(BaseCard card, string name, int length)
 		{
-			TempCard curCard = currentBoard.GetPlayer(card.action.senderId).fieldRowOne[card.action.targetId];
+			TempCard curCard = currentBoard.GetPlayer(card.action.senderId).fieldRowOne[card.action.senderSlot];
 
 			if (curCard == null) return;
 

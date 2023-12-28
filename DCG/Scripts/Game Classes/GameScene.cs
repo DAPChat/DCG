@@ -84,7 +84,7 @@ public partial class GameScene : Node3D
             player = 2;
         }
 
-        var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player" + player + "/" + slot + _action.slot.ToString()).GlobalPosition;
+        var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player" + player + "/" + slot + (_action.targetSlot+1).ToString()).GlobalPosition;
 
         sceneTree.CallDeferred(Node.MethodName.AddChild, thescene);
 
@@ -93,7 +93,7 @@ public partial class GameScene : Node3D
         cards.Add(c);
 
         c.placerId = _action.placerId;
-        c.setCard(_action.card, cardGlobalPosition, player, _action.slot);
+        c.setCard(_action.card, cardGlobalPosition, player, _action.targetSlot);
     }
 
     public static void UpdateCard(CAP _action)
@@ -104,7 +104,7 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
 
-            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == (c.slot - 1))
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.targetSlot == (c.slot))
             {
                 c.setCard(_action.card, c.Position, c.placerId == ServerManager.client.id ? 1 : 2, c.slot);
                 return;
@@ -120,7 +120,7 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
 
-            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.slot == (c.slot-1))
+            if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.targetSlot == (c.slot))
             {
                 cards.Remove(c);
                 c.QueueFree();
@@ -464,7 +464,7 @@ public partial class GameScene : Node3D
                 {
                     if (occupied.card.Type.Contains("Spell")) return;
 
-                    choose.Run(zoomed, occupied.slot - 1);
+                    choose.Run(zoomed, occupied.slot);
                     choose = null;
                     ReturnView(zoomed);
                 }
@@ -551,14 +551,14 @@ public partial class GameScene : Node3D
 
                 try
                 {
-                    slot = int.Parse(Regex.Match(collider.Name, @"\d+").Value);
+                    slot = int.Parse(Regex.Match(collider.Name, @"\d+").Value)-1;
                 }
                 catch (Exception)
                 {
                     return;
                 }
 
-                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", slot = slot }));
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", targetSlot = slot }));
             }
         }
     }

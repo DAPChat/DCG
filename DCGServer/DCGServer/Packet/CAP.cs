@@ -8,7 +8,8 @@ namespace packets
 
         public TempCard card;
         public string action;
-        public int slot;
+        public int targetSlot;
+        public int senderSlot;
 
         public CAP Clone()
         {
@@ -17,7 +18,7 @@ namespace packets
                 placerId = placerId,
                 card = card,
                 action = action,
-                slot = slot
+                targetSlot = targetSlot
             };
 
             return cap;

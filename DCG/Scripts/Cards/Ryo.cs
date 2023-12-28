@@ -11,6 +11,8 @@ namespace card
             {
                 card.AddEffect("Attack", 1);
                 card.AddEffect(name, -1);
+
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, action = GetType().Name }));
             }
 
             public override void Run(Card card, int slot)

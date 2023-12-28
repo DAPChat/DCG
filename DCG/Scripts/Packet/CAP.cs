@@ -6,6 +6,7 @@
 
         public GameScene.CardObject card;
         public string action;
-        public int slot;
+        public int targetSlot;
+        public int senderSlot;
     }
 }

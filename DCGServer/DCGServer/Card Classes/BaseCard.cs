@@ -15,8 +15,8 @@ namespace card
 
         public virtual void Death(Game game, CAP action)
         {
-            game.currentBoard.GetPlayer(action.targetId).forgotten.Add(action.card.Id);
-            game.currentBoard.GetPlayer(action.targetId).fieldRowOne.SetValue(null, action.slot);
+            game.currentBoard.GetPlayer(action.senderSlot).forgotten.Add(action.card.Id);
+            game.currentBoard.GetPlayer(action.senderSlot).fieldRowOne.SetValue(null, action.targetSlot);
 
             CAP uCAP = new()
             {
@@ -24,7 +24,7 @@ namespace card
                 card = action.card
             };
 
-            game.clients[action.targetId].tcp.WriteStream(PacketManager.ToJson(uCAP));
+            game.clients[action.senderSlot].tcp.WriteStream(PacketManager.ToJson(uCAP));
         }
 
         public void Attack()
