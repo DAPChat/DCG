@@ -49,13 +49,16 @@ surface_material_override/0 = ExtResource("1_olrt8")
 [node name="Name" type="Label3D" parent="FrontFace/Name"]
 transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, -0.957648, 0.001, 0.0540943)
 outline_modulate = Color(0, 0, 0, 0)
-text = "aaaaaaaaaaaaaaaaaaaaaaaaaa"
+text = "Name"
 font = ExtResource("4_rarsn")
 horizontal_alignment = 0
+autowrap_mode = 1
+width = 325.0
 
 [node name="Rank" type="Label3D" parent="FrontFace/Name"]
 transform = Transform3D(1, 0, 0, 0, -2.18557e-07, 1, 0, -5, -4.37114e-08, 0.811643, 0.001, 0.0540943)
 modulate = Color(0.639216, 0.635294, 0, 1)
+text = "A"
 
 [node name="Picture" type="MeshInstance3D" parent="FrontFace"]
 transform = Transform3D(0.892992, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0.001, -0.323)

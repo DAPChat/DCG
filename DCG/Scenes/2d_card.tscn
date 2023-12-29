@@ -35,9 +35,10 @@ offset_left = 8.0
 offset_right = 166.0
 offset_bottom = 31.0
 theme_override_fonts/font = ExtResource("2_nbm2v")
-theme_override_font_sizes/font_size = 12
-text = "Card Name"
+theme_override_font_sizes/font_size = 15
+text = "Le Soldad de Francais"
 vertical_alignment = 1
+clip_text = true
 
 [node name="Rank" type="Label" parent="FrontFace/TopCard"]
 layout_mode = 1

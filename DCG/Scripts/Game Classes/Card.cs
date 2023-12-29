@@ -28,6 +28,15 @@ public partial class Card : Node3D
 
 		description = GetNode<Label3D>("FrontFace/Description/Description");
 
+        Label3D name = GetNode<Label3D>("FrontFace/Name/Name");
+
+		name.Text = card.Name.ToString();
+
+        while (name.Font.GetStringSize(name.Text, name.HorizontalAlignment, -1, name.FontSize).X > name.Width)
+        {
+			name.FontSize -= 1;
+        }
+
         GetNode<Label3D>("FrontFace/Name/Name").Text = card.Name.ToString();
 		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
 		

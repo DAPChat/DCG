@@ -20,7 +20,23 @@ public partial class D2Card : Control
 
         description = GetNode<RichTextLabel>("FrontFace/BottomCard/Description");
 
-        GetNode<Label>("FrontFace/TopCard/Name").Text = card.Name.ToString();
+        Label name = GetNode<Label>("FrontFace/TopCard/Name");
+
+        Font font = (Font)name.GetThemeFont("font").Duplicate();
+
+        name.AddThemeFontOverride("font", font);
+
+        var size = 15;
+
+        while (font.GetStringSize(name.Text, name.HorizontalAlignment, -1, size).X > 158)
+        {
+            size -= 1;
+        }
+
+        name.AddThemeFontSizeOverride("font_size", size);
+
+        name.Text = card.Name.ToString();
+
         GetNode<Label>("FrontFace/TopCard/Rank").Text = card.Rank.ToString();
         description.Text = card.Description.ToString();
 
