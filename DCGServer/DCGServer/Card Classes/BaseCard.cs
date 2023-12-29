@@ -21,7 +21,7 @@ namespace card
             CAP uCAP = new()
             {
                 action = "fadd",
-                card = p.fieldRowOne[action.targetSlot].MakeReady()
+                card = Database.GetCard(p.fieldRowOne[action.targetSlot].Id).TempCard()
             };
 
             game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
