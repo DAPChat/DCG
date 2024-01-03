@@ -220,13 +220,17 @@ namespace game
 			_action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
 			_action.action = "update";
 
-            currentBoard.UpdatePlayer(p);
-
             if (p.fieldRowOne[action.targetSlot].Hp <= 0)
 			{
-				((BaseCard)o).Death();
+                p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
+
+				// Console.WriteLine(p.id + ": " + p.lifePoints);
+
+                ((BaseCard)o).Death();
 				_action.action = "remove";
 			}
+
+            currentBoard.UpdatePlayer(p);
 
             SendAll(PacketManager.ToJson(_action));
 		}
@@ -303,17 +307,6 @@ namespace game
 					}
 				}
 			}
-
-			// Add the players to their respective positions
-			public void AddPlayers(List<Player> _players)
-			{
-				for (int i = 0; i < _players.Count; i++)
-				{
-					AddPlayer(_players[i]);
-				}
-
-                game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
-            }
 
 			public Player GetPlayer(int id)
 			{

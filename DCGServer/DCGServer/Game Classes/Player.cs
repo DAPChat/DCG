@@ -30,6 +30,8 @@ namespace player
 		{
 			id = _id;
 
+			lifePoints = 10000;
+
 			fieldRowOne = new TempCard[5];
 			fieldRowTwo = new TempCard[5];
 
