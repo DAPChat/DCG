@@ -14,6 +14,7 @@ namespace card
 		public int Hp { get; set; }
 		public int Mana { get; set; }
 		public string Description { get; set; }
+		public string Class { get; set; }
 		public string Type { get; set; }
 		public string Img { get; set; }
 		public string Pack { get; set; }
@@ -30,6 +31,7 @@ namespace card
 				Hp = Hp,
 				Mana = Mana,
 				Description = Description,
+				Class = Class,
 				Type = Type,
 				Img = Img,
 				Pack = Pack,

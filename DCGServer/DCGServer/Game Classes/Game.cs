@@ -172,7 +172,7 @@ namespace game
 			if (action.action == "place" && !player.hand.Contains(action.card.Id)) return;
 			else if (action.action == "summon" && !player.forgotten.Contains(action.card.Id)) return;
 
-            var field = action.card.Type == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
+            var field = action.card.Class == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
 
             if (field[action.targetSlot] != null) return;
 
@@ -351,7 +351,7 @@ namespace game
 							if (p.fieldRowOne[i].StatusLength == null) continue;
 							for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
 							{
-								if (p.fieldRowOne[i].StatusLength[e] == -2) continue;
+								if (p.fieldRowOne[i].StatusLength[e] == -1) continue;
 
 								p.fieldRowOne[i].StatusLength[e] -= 1;
 

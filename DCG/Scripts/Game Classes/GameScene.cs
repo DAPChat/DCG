@@ -17,6 +17,7 @@ public partial class GameScene : Node3D
         public int Hp { get; set; }
         public int Mana { get; set; }
         public string Description { get; set; }
+        public string Class { get; set; }
         public string Type { get; set; }
         public string Img { get; set; }
         public string Pack { get; set; }
@@ -78,7 +79,7 @@ public partial class GameScene : Node3D
         var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
         // Gets which slot to place it in
-        string slot = _action.card.Type.Contains("Spell") ? "Spell" : "Slot";
+        string slot = _action.card.Class.Contains("Spell") ? "Spell" : "Slot";
 
         if (_action.placerId != ServerManager.client.id)
         {
@@ -504,7 +505,7 @@ public partial class GameScene : Node3D
 
                 if (occupied != null)
                 {
-                    if (occupied.card.Type.Contains("Spell")) return;
+                    if (occupied.card.Class.Contains("Spell")) return;
 
                     chooseTarget.Run(zoomed, occupied.slot);
                     chooseTarget = null;
@@ -585,9 +586,9 @@ public partial class GameScene : Node3D
 
                 if (collider.GetParent().Name == "Player2") return;
 
-                if (cardObject.Type == "Spell")
+                if (cardObject.Class == "Spell")
                 {
-                    if (!collider.Name.ToString().Contains(cardObject.Type.ToString())) { return; }
+                    if (!collider.Name.ToString().Contains(cardObject.Class.ToString())) { return; }
                 }
                 else if (collider.Name.ToString().Contains("Spell")) { return; }
 

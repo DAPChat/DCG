@@ -14,7 +14,7 @@ namespace card
         public void Remembrance()
         {
             game.AddEffect(this, "Attack", 1);
-            game.AddEffect(this, action.action, -2);
+            game.AddEffect(this, action.action, -1);
         }
 
         public void Solitude()
