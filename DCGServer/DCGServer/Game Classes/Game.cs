@@ -193,6 +193,7 @@ namespace game
 
             action.action = "place";
 
+			Console.WriteLine(action.card);
 			SendAll(PacketManager.ToJson(action));
 		}
 
