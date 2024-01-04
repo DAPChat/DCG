@@ -4,6 +4,7 @@ using System.Text;
 
 using packets;
 using player;
+using Godot;
 
 public class PacketManager
 {
@@ -48,6 +49,8 @@ public class PacketManager
 
 						GameScene.currentTurn = gsp.turn;
 						GameScene.currentPhase = gsp.phase;
+
+						if (gsp.turn == -1) GameScene.changeScene = true;
 
 						break;
 

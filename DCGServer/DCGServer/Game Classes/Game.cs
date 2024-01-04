@@ -225,10 +225,17 @@ namespace game
 			{
                 p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
 
-				// Console.WriteLine(p.id + ": " + p.lifePoints);
+				Console.WriteLine(p.id + ": " + p.lifePoints);
 
                 ((BaseCard)o).Death();
 				_action.action = "remove";
+
+				if (p.lifePoints <= 0)
+				{
+					Console.WriteLine(clients[action.placerId].Username() + " has wont the battle!");
+					SendAll(PacketManager.ToJson(new GSP { gameId = 0, phase = -1, turn = -1, senderId = action.placerId}));
+					return;
+				}
 			}
 
             currentBoard.UpdatePlayer(p);
