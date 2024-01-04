@@ -39,6 +39,11 @@ namespace player
 			forgotten = new();
 		}
 
+		public Player()
+		{
+
+		}
+
 		public Player Clone()
 		{
 			Player p = new(id)
@@ -67,6 +72,11 @@ namespace player
 			Player p = this.Clone();
 
 			p.deck = null;
+			p.fieldRowOne = null;
+			p.fieldRowTwo = null;
+			p.forgotten = null;
+			p.unforgotten = null;
+			p.hand = null;
 
 			return p;
 		}

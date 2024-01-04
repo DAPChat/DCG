@@ -129,7 +129,7 @@ public class Client
 	}
 
 	// Retries the connection if the server closes
-	private void ServerExit()
+	public void ServerExit()
 	{
         stream.Close();
         client.Close();

@@ -83,6 +83,8 @@ namespace game
 
 			p.hand = new();
 
+			p.username = _client.Username();
+
 			for (int i = 0; i < 6; i++)
 			{
 				string card = p.deck[new Random().Next(0, p.deck.Count - 1)];
@@ -92,7 +94,7 @@ namespace game
 			}
 
 			// Send to client (not including the entire deck)
-			_client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));
+			_client.tcp.WriteStream(PacketManager.ToJson(new Player { username = p.username, id = p.id, hand = p.hand }));
 
 			GSP gsp = new()
 			{
@@ -152,9 +154,7 @@ namespace game
 			{
 				client.Value.gameId = 0;
 
-				Server.ids.Remove(client.Key);
-
-				client.Value.Disconnect();
+				Server.KeepConnect(client.Value);
 			}
 
 			clients.Clear();
@@ -225,15 +225,15 @@ namespace game
 			{
                 p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
 
-				Console.WriteLine(p.id + ": " + p.lifePoints);
+				SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
 
                 ((BaseCard)o).Death();
 				_action.action = "remove";
 
 				if (p.lifePoints <= 0)
 				{
-					Console.WriteLine(clients[action.placerId].Username() + " has wont the battle!");
-					SendAll(PacketManager.ToJson(new GSP { gameId = 0, phase = -1, turn = -1, senderId = action.placerId}));
+					Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
+					Close();
 					return;
 				}
 			}
@@ -245,6 +245,7 @@ namespace game
 
 		public void SendAll(byte[] msg)
 		{
+			if (!active) return;
             foreach (var client in clients.Values)
             {
                 client.tcp.WriteStream(msg);
