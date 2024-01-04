@@ -186,10 +186,11 @@ namespace game
 
 			currentBoard.UpdatePlayer(player);
 
-            clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
-
 			if (action.action == "place")
-				currentBoard.NextPhase();
+			{
+                clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
+                currentBoard.NextPhase();
+			}
 
             action.action = "place";
 

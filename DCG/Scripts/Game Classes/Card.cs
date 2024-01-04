@@ -71,7 +71,7 @@ public partial class Card : Node3D
 	{
 		// Make a request to the online storage of images to load them in
 
-		url = "https://dcgimages.dapchat.repl.co/" + url;
+		url = "https://dapchat.github.io/DCGimages/" + url;
 		HttpRequest request = new HttpRequest();
 		AddChild(request);
         Image img = new Image();
