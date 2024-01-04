@@ -125,7 +125,7 @@ public partial class GameScene : Node3D
             if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.targetSlot == (c.slot))
             {
                 cards.Remove(c);
-                c.QueueFree();
+                c.QueueFree(); // change this to moving it to stack ontop of forggoten or unforgotten piles
                 return;
             }
         }
