@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dektufe3c6aw"]
+[gd_scene load_steps=14 format=3 uid="uid://dektufe3c6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Game Classes/GameScene.cs" id="1_18285"]
 [ext_resource type="Texture2D" uid="uid://b43gf1ng0l3q6" path="res://Materials/Basic Card/CardBack Images/_e1dd49d3-586c-4b89-96fe-16d06c2fe8f7.jpg" id="1_s1ttv"]
@@ -48,9 +48,6 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_52mn0"]
-texture = ExtResource("4_adb5o")
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_18285")
@@ -461,7 +458,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_27wk7")
 disabled = true
 text = "End Turn"
 
-[node name="Player1Pic" type="PanelContainer" parent="CanvasLayer/Control"]
+[node name="Player1Pic" type="TextureRect" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -474,15 +471,50 @@ offset_right = -20.5
 offset_bottom = -17.5
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
+texture = ExtResource("4_adb5o")
+expand_mode = 3
+stretch_mode = 5
 
-[node name="Player2Pic" type="PanelContainer" parent="CanvasLayer/Control"]
+[node name="HP" type="Label" parent="CanvasLayer/Control/Player1Pic"]
 layout_mode = 1
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 140.5
-offset_bottom = 140.5
-theme_override_styles/panel = SubResource("StyleBoxTexture_52mn0")
+offset_top = -26.0
+offset_right = 120.5
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "10000 Resolve"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player2Pic" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1131.0
+offset_top = -628.0
+offset_right = -1010.5
+offset_bottom = -507.5
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("4_adb5o")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="HP" type="Label" parent="CanvasLayer/Control/Player2Pic"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_right = 120.5
+offset_bottom = 26.0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "10000 Resolve"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Desc" type="RichTextLabel" parent="CanvasLayer/Control"]
 visible = false
@@ -514,9 +546,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 20.0
-offset_top = -163.0
+offset_top = -103.0
 offset_right = 207.0
-offset_bottom = 163.0
+offset_bottom = 223.0
 grow_vertical = 2
 
 [node name="SelectionHands" type="ScrollContainer" parent="CanvasLayer/Control"]

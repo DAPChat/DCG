@@ -54,6 +54,7 @@ public partial class GameScene : Node3D
     public static List<CardObject> unforgotten = new();
 
     public static List<CAP> actionQueue = new();
+    public static List<PUP> playerQueue = new();
 
     public static CardObject cardObject = null;
     public static Card zoomed = null;
@@ -397,6 +398,14 @@ public partial class GameScene : Node3D
         }
     }
 
+    public static void UpdatePlayer(PUP pup)
+    {
+        int playerNum = pup.player.id != ServerManager.client.id ? 2 : 1;
+
+        Label hpLabel = sceneTree.GetNode<Label>("CanvasLayer/Control/Player" + playerNum + "Pic/HP");
+        hpLabel.Text = pup.player.lifePoints + " Resolve";
+    }
+
     public override void _Input(InputEvent @event)
     {
         // Check if the player clicked
@@ -684,6 +693,7 @@ public partial class GameScene : Node3D
         if (changeScene)
         {
             changeScene = false;
+            Main.inGame = false;
             GetTree().ChangeSceneToFile("res://Scenes/Main.tscn");
         }
 
@@ -724,6 +734,15 @@ public partial class GameScene : Node3D
             }
 
             actionQueue.RemoveAt(0);
+        }
+
+        while (playerQueue.Count > 0)
+        {
+            var pup = playerQueue[0];
+
+            UpdatePlayer(pup);
+
+            playerQueue.RemoveAt(0);
         }
 
         base._Process(delta);

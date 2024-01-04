@@ -221,6 +221,7 @@ public partial class Main : Node
 			else
 			{
 				lastSetting = inGame;
+				reload = true;
 			}
 
 		if (reload)

@@ -83,6 +83,8 @@ namespace game
 
 			p.hand = new();
 
+			p.username = _client.Username();
+
 			for (int i = 0; i < 6; i++)
 			{
 				string card = p.deck[new Random().Next(0, p.deck.Count - 1)];
@@ -92,7 +94,7 @@ namespace game
 			}
 
 			// Send to client (not including the entire deck)
-			_client.tcp.WriteStream(PacketManager.ToJson(_client.player.Client()));
+			_client.tcp.WriteStream(PacketManager.ToJson(new Player { username = p.username, id = p.id, hand = p.hand }));
 
 			GSP gsp = new()
 			{
@@ -152,9 +154,7 @@ namespace game
 			{
 				client.Value.gameId = 0;
 
-				Server.ids.Remove(client.Key);
-
-				client.Value.Disconnect();
+				Server.KeepConnect(client.Value);
 			}
 
 			clients.Clear();
@@ -186,14 +186,15 @@ namespace game
 
 			currentBoard.UpdatePlayer(player);
 
-            clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
-
 			if (action.action == "place")
-				currentBoard.NextPhase();
+			{
+                clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
+                currentBoard.NextPhase();
+			}
 
             action.action = "place";
 
-			Console.WriteLine(action.card);
+			// Console.WriteLine(action.card);
 			SendAll(PacketManager.ToJson(action));
 		}
 
@@ -220,19 +221,31 @@ namespace game
 			_action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
 			_action.action = "update";
 
-            currentBoard.UpdatePlayer(p);
-
             if (p.fieldRowOne[action.targetSlot].Hp <= 0)
 			{
-				((BaseCard)o).Death();
+                p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
+
+				SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
+
+                ((BaseCard)o).Death();
 				_action.action = "remove";
+
+				if (p.lifePoints <= 0)
+				{
+					Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
+					Close();
+					return;
+				}
 			}
+
+            currentBoard.UpdatePlayer(p);
 
             SendAll(PacketManager.ToJson(_action));
 		}
 
 		public void SendAll(byte[] msg)
 		{
+			if (!active) return;
             foreach (var client in clients.Values)
             {
                 client.tcp.WriteStream(msg);
@@ -303,17 +316,6 @@ namespace game
 					}
 				}
 			}
-
-			// Add the players to their respective positions
-			public void AddPlayers(List<Player> _players)
-			{
-				for (int i = 0; i < _players.Count; i++)
-				{
-					AddPlayer(_players[i]);
-				}
-
-                game.SendAll(PacketManager.ToJson(new GSP { gameId = game.id, turn = turn, phase = phase }));
-            }
 
 			public Player GetPlayer(int id)
 			{

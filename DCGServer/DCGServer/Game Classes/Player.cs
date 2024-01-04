@@ -30,11 +30,18 @@ namespace player
 		{
 			id = _id;
 
+			lifePoints = 10000;
+
 			fieldRowOne = new TempCard[5];
 			fieldRowTwo = new TempCard[5];
 
 			unforgotten = new();
 			forgotten = new();
+		}
+
+		public Player()
+		{
+
 		}
 
 		public Player Clone()
@@ -65,6 +72,11 @@ namespace player
 			Player p = this.Clone();
 
 			p.deck = null;
+			p.fieldRowOne = null;
+			p.fieldRowTwo = null;
+			p.forgotten = null;
+			p.unforgotten = null;
+			p.hand = null;
 
 			return p;
 		}

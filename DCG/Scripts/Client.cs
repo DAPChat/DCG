@@ -13,10 +13,10 @@ public class Client
 	public TcpClient client = null;
 	public PlayerAccount account = null;
 
-	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.169.221"), 60606);
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
 
 	private NetworkStream stream = null;
-	private byte[] buffer = new byte[8192];
+	private byte[] buffer = new byte[8196];
 
 	public Dictionary<string, string> values = new Dictionary<string, string>();
 	public bool connected = false;
@@ -129,7 +129,7 @@ public class Client
 	}
 
 	// Retries the connection if the server closes
-	private void ServerExit()
+	public void ServerExit()
 	{
         stream.Close();
         client.Close();

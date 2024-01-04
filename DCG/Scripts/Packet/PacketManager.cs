@@ -4,6 +4,7 @@ using System.Text;
 
 using packets;
 using player;
+using Godot;
 
 public class PacketManager
 {
@@ -48,6 +49,12 @@ public class PacketManager
 
 						GameScene.currentTurn = gsp.turn;
 						GameScene.currentPhase = gsp.phase;
+
+						if (gsp.turn == -1)
+						{
+							ServerManager.client.gameId = 0;
+							GameScene.changeScene = true;
+						}
 
 						break;
 
@@ -105,6 +112,11 @@ public class PacketManager
                         ServerManager.client.AddToHand(crp.card);
 
                         break;
+					case "PUP":
+						var pup = JsonConvert.DeserializeObject<PUP>(lt.parameters);
+
+						GameScene.playerQueue.Add(pup);
+						break;
                 }
 			}
 			catch (Exception e)

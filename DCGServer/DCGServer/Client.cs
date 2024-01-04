@@ -22,6 +22,11 @@ public class Client
         tcp = new TCP(id, this);
 	}
 
+	public string Username()
+	{
+		return account.username;
+	}
+
 	public class TCP
 	{
 		public TcpClient client;
