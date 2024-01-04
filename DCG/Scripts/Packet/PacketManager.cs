@@ -56,6 +56,8 @@ public class PacketManager
 							GameScene.changeScene = true;
 						}
 
+						GameScene.actionQueue.Add(new CAP { action = "uturn" });
+
 						break;
 
 					case "Player":

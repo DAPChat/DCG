@@ -398,6 +398,32 @@ public partial class GameScene : Node3D
         }
     }
 
+    public static void UpdateTurn()
+    {
+        Label label = sceneTree.GetNode<Label>("CanvasLayer/Control/Phase");
+
+        if (currentTurn != ServerManager.client.id)
+        {
+            label.Text = "Opponent's Turn";
+            sceneTree.GetNode<Button>("CanvasLayer/Control/EndTurn").Disabled = true;
+            return;
+        }
+        else sceneTree.GetNode<Button>("CanvasLayer/Control/EndTurn").Disabled = false;
+
+        switch (currentPhase)
+        {
+            case 0:
+                label.Text = "Draw Phase";
+                break;
+            case 1:
+                label.Text = "Placing Phase";
+                break;
+            case 2:
+                label.Text = "Attack Phase";
+                break;
+        }
+    }
+
     public static void UpdatePlayer(PUP pup)
     {
         int playerNum = pup.player.id != ServerManager.client.id ? 2 : 1;
@@ -626,6 +652,7 @@ public partial class GameScene : Node3D
     {
         Button buttonCamera = (Button)GetNode("/root/Game/CanvasLayer/Control/ChangeView");
         Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+        Button buttonTurn = GetNode<Button>("/root/Game/CanvasLayer/Control/EndTurn");
         description = (RichTextLabel)GetNode("/root/Game/CanvasLayer/Control/Desc");
         var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
         sceneTree = this;
@@ -686,6 +713,10 @@ public partial class GameScene : Node3D
             HandShown = true;
             buttonHand.Disabled = true;
         };
+        buttonTurn.ButtonDown += () =>
+        {
+            ServerManager.client.WriteStream(PacketManager.ToJson(new GSP()));
+        };
     }
 
     public override void _Process(double delta)
@@ -730,6 +761,9 @@ public partial class GameScene : Node3D
                     break;
                 case "ueffects":
                     UpdateEffects();
+                    break;
+                case "uturn":
+                    UpdateTurn();
                     break;
             }
 

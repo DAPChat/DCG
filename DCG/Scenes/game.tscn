@@ -401,7 +401,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
 text = "Change View"
 
-[node name="Phase" type="Button" parent="CanvasLayer/Control"]
+[node name="Phase" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -411,13 +411,15 @@ offset_top = 20.0
 offset_right = -10.0
 offset_bottom = 74.0
 grow_horizontal = 0
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
-theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
-text = "Game Phase"
+text = "Opponent's Turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
 
 [node name="Surrender" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -455,8 +457,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
 theme_override_styles/normal = SubResource("StyleBoxFlat_27wk7")
-disabled = true
-text = "End Turn"
+text = "Next Phase"
 
 [node name="Player1Pic" type="TextureRect" parent="CanvasLayer/Control"]
 layout_mode = 1

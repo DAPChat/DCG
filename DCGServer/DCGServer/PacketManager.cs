@@ -46,6 +46,13 @@ public class PacketManager
 						Server.games[client.gameId].RegisterAction(cap);
 
 						break;
+
+					case "GSP":
+						var gsp = JsonConvert.DeserializeObject<GSP>(lt.parameters);
+
+						Server.games[client.gameId].currentBoard.NextPhase();
+						
+						break;
                 }
 			}
 			catch (Exception e)

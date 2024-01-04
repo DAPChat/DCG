@@ -204,8 +204,10 @@ namespace game
 
             if (action.placerId != currentBoard.turn) return;
 
-			if ((action.action == "place" && currentBoard.phase == 1) || action.action == "summon")
-				PlaceCard(action);
+			if (action.action == "place" || action.action == "summon")
+				if (currentBoard.phase == 1 || action.action == "summon")
+					PlaceCard(action);
+				else return;
 			else if (currentBoard.phase == 2)
 				ActionManager.Register(action, this);
 		}
@@ -391,6 +393,8 @@ namespace game
 
 			public int NextPhase()
 			{
+				if (!game.active) return 0;
+
 				if (phase < 2 && round != 1) phase++;
 				else if (round == 1 && phase < 1) phase++;
 				else NextTurn();
