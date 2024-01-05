@@ -37,7 +37,7 @@ public partial class GameScene : Node3D
     static Vector3 cam2Rot = new(-90, 0, 0);
     static Vector3 camRot;
 
-    static double zoomFlip = 1;
+    static double zoomFlip = 1.5;
     static double zoomNorm = .5;
     static double zoomView = 1;
 

@@ -123,12 +123,18 @@ public partial class Card : Node3D
         }
 	}
 
-	public void AddEffect(string name, int length)
+	public void AddStatus(string name, int length)
 	{
         if (status.ContainsKey(name))
             status[name] += length;
         else status.Add(name, length);
     }
+	public void AddEffect(string name, int length)
+	{
+		if (effects.ContainsKey(name))
+			effects[name] += length;
+		else effects.Add(name, length);
+	}
 
 	public override void _Ready()
 	{

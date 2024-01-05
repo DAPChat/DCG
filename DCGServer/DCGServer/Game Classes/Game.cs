@@ -264,7 +264,7 @@ namespace game
 			return 0;
 		}
 
-		public void AddEffect(BaseCard card, string name, int length)
+		public void AddStatus(BaseCard card, string name, int length)
 		{
 			TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
 
@@ -280,6 +280,23 @@ namespace game
 				curCard.StatusLength.Add(length);
 			}
 		}
+
+		public void AddEffect(BaseCard card, string name, int length)
+		{
+            TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
+
+            if (curCard == null) return;
+
+            if (curCard.EffectName.Contains(name))
+            {
+                curCard.EffectLength[curCard.EffectName.IndexOf(name)] += length;
+            }
+            else
+            {
+                curCard.EffectName.Add(name);
+                curCard.EffectLength.Add(length);
+            }
+        }
 
 		public class GameBoard
 		{
@@ -368,7 +385,25 @@ namespace game
 							}
 						}
 
-						Client placer = game.clients[turn];
+                        for (int i = 0; i < p.fieldRowOne.Length; i++)
+                        {
+                            if (p.fieldRowOne[i] == null) continue;
+                            if (p.fieldRowOne[i].EffectLength == null) continue;
+                            for (int e = 0; e < p.fieldRowOne[i].EffectLength.Count; e++)
+                            {
+                                if (p.fieldRowOne[i].EffectLength[e] == -1) continue;
+
+                                p.fieldRowOne[i].EffectLength[e] -= 1;
+
+                                if (p.fieldRowOne[i].EffectLength[e] <= 0)
+                                {
+                                    p.fieldRowOne[i].EffectLength.RemoveAt(e);
+                                    p.fieldRowOne[i].EffectName.RemoveAt(e);
+                                }
+                            }
+                        }
+
+                        Client placer = game.clients[turn];
 
                         if (p.deck.Count > 0 && p.hand.Count < 10)
                         {

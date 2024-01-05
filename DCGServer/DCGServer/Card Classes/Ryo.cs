@@ -13,13 +13,13 @@ namespace card
 
         public void Remembrance()
         {
-            game.AddEffect(this, "Attack", 2);
-            game.AddEffect(this, action.action, -1);
+            game.AddStatus(this, "Attack", 2);
+            game.AddStatus(this, action.action, -1);
         }
 
         public void Solitude()
         {
-
+            
         }
 
         public override void Death()
