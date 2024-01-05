@@ -11,7 +11,9 @@ public class ActionManager
 
         player.Player p = _game.currentBoard.GetPlayer(_action.placerId);
 
-        if (p.fieldRowOne[_action.senderSlot].StatusName.Contains(_action.action)) return;
+        var field = _action.card.Class == "Spell" ? p.fieldRowTwo : p.fieldRowOne;
+
+        if (field[_action.senderSlot].StatusName.Contains(_action.action)) return;
 
         try
         {

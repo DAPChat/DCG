@@ -23,6 +23,8 @@ public partial class GameScene : Node3D
         public string Pack { get; set; }
         public List<string> StatusName { get; set; }
         public List<int> StatusLength { get; set; }
+        public List<string> EffectName { get; set; }
+        public List<int> EffectLength { get; set; }
     }
 
     static bool CameraView = false;
@@ -39,7 +41,7 @@ public partial class GameScene : Node3D
     static double zoomNorm = .5;
     static double zoomView = 1;
 
-    public static double zMultiplier = 0;
+    public static double zMultiplier = 1;
 
     static Tween tween;
     static RichTextLabel description;
@@ -120,11 +122,12 @@ public partial class GameScene : Node3D
         foreach (var card in sceneTree.GetChildren())
         {
             if (card is not Card) continue;
-
             Card c = (Card)card;
 
             if (c.placerId == _action.targetId && c.card.Id == _action.card.Id && _action.targetSlot == (c.slot))
             {
+                if (c == zoomed) ReturnView(c);
+
                 cards.Remove(c);
                 c.QueueFree(); // change this to moving it to stack ontop of forggoten or unforgotten piles
                 return;
@@ -264,7 +267,7 @@ public partial class GameScene : Node3D
             child.QueueFree();
         }
 
-        if (zoomed.placerId != ServerManager.client.id || (currentPhase != 2 && currentTurn != ServerManager.client.id)) return;
+        if (zoomed.placerId != ServerManager.client.id && currentPhase != 2 && currentTurn != ServerManager.client.id) return;
 
         Type type = null;
 
@@ -281,7 +284,7 @@ public partial class GameScene : Node3D
         {
             Action cardClass = (Action)Activator.CreateInstance(t);
 
-            if (zoomed.effects.ContainsKey(cardClass.name)) continue;
+            if (zoomed.status.ContainsKey(cardClass.name)) continue;
 
             Button action = (Button)actionButton.Duplicate();
 
@@ -388,12 +391,20 @@ public partial class GameScene : Node3D
 
             Card c = (Card)card;
             
+            foreach (var effect in c.status.Keys)
+            {
+                if (c.status[effect] == -1) continue;
+
+                c.status[effect] -= 1;
+                if (c.status[effect] <= 0) c.status.Remove(effect);
+            }
+
             foreach (var effect in c.effects.Keys)
             {
                 if (c.effects[effect] == -1) continue;
 
                 c.effects[effect] -= 1;
-                if (c.effects[effect] <= -1) c.effects.Remove(effect);
+                if (c.effects[effect] <= 0) c.effects.Remove(effect);
             }
         }
     }

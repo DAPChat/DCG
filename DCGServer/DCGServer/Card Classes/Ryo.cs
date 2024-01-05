@@ -13,7 +13,7 @@ namespace card
 
         public void Remembrance()
         {
-            game.AddEffect(this, "Attack", 1);
+            game.AddEffect(this, "Attack", 2);
             game.AddEffect(this, action.action, -1);
         }
 

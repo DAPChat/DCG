@@ -18,7 +18,8 @@ namespace packets
                 placerId = placerId,
                 card = card,
                 action = action,
-                targetSlot = targetSlot
+                targetSlot = targetSlot,
+                senderSlot = senderSlot
             };
 
             return cap;

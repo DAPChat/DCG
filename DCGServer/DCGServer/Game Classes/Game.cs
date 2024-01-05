@@ -360,7 +360,7 @@ namespace game
 
 								p.fieldRowOne[i].StatusLength[e] -= 1;
 
-								if (p.fieldRowOne[i].StatusLength[e] <= -1)
+								if (p.fieldRowOne[i].StatusLength[e] <= 0)
 								{
 									p.fieldRowOne[i].StatusLength.RemoveAt(e);
 									p.fieldRowOne[i].StatusName.RemoveAt(e);

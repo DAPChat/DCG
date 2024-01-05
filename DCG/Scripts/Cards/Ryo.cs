@@ -10,7 +10,7 @@ namespace card
             public override string name => "Remembrance";
             public override void Run(Card card)
             {
-                card.AddEffect("Attack", 1);
+                card.AddEffect("Attack", 2);
                 card.AddEffect(name, -1);
 
                 targetPlace = this;

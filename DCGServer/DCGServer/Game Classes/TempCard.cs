@@ -19,6 +19,8 @@ namespace card
 		public string Pack { get; set; }
 		public List<string> StatusName { get; set; }
 		public List<int> StatusLength { get; set; }
+		public List<string> EffectName { get; set; }
+		public List<int> EffectLength { get; set; }
 
 		public void Instantiate()
 		{
@@ -43,7 +45,9 @@ namespace card
 				Img = Img,
 				Pack = Pack,
 				StatusName = null,
-				StatusLength = null
+				StatusLength = null,
+				EffectLength = null,
+				EffectName = null
 			};
 
 			return temp;

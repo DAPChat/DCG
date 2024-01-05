@@ -16,6 +16,7 @@ public partial class Card : Node3D
 	public bool down = false;
 	public Label3D description;
 
+	public Dictionary<string, int> status = new();
 	public Dictionary<string, int> effects = new();
 
 	// Sets the card object elements to display to the player
@@ -124,9 +125,9 @@ public partial class Card : Node3D
 
 	public void AddEffect(string name, int length)
 	{
-        if (effects.ContainsKey(name))
-            effects[name] += length;
-        else effects.Add(name, length);
+        if (status.ContainsKey(name))
+            status[name] += length;
+        else status.Add(name, length);
     }
 
 	public override void _Ready()
