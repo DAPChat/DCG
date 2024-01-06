@@ -20,12 +20,17 @@ namespace card
 		public List<string> StatusName { get; set; }
 		public List<int> StatusLength { get; set; }
 		public List<string> EffectName { get; set; }
-		public List<int> EffectLength { get; set; }
+        public List<int> EffectParam { get; set; }
+        public List<int> EffectLength { get; set; }
 
 		public void Instantiate()
 		{
 			StatusName = new();
 			StatusLength = new();
+
+			EffectName = new();
+			EffectParam = new();
+			EffectLength = new();
 		}
 
 		public TempCard MakeReady()

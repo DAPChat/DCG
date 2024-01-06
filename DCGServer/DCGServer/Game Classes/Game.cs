@@ -279,9 +279,11 @@ namespace game
 				curCard.StatusName.Add(name);
 				curCard.StatusLength.Add(length);
 			}
+
+			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "status", targetId = card.action.placerId, name = name, card = card.action.card.MakeReady(), slot = card.action.senderSlot }));
 		}
 
-		public void AddEffect(BaseCard card, string name, int length)
+		public void AddEffect(BaseCard card, string name, int length, int param)
 		{
             TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
 
@@ -295,10 +297,13 @@ namespace game
             {
                 curCard.EffectName.Add(name);
                 curCard.EffectLength.Add(length);
+                curCard.EffectParam.Add(param);
             }
+            
+			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = card.action.placerId, name = name, param = param, card = card.action.card.MakeReady(), slot = card.action.senderSlot }));
         }
 
-		public class GameBoard
+        public class GameBoard
 		{
 			Game game;
 
@@ -367,40 +372,63 @@ namespace game
 						phase = 0;
                         turn = p.id;
 
+						List<int> remove = new();
+
 						for (int i = 0; i < p.fieldRowOne.Length; i++)
 						{
 							if (p.fieldRowOne[i] == null) continue;
-							if (p.fieldRowOne[i].StatusLength == null) continue;
-							for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
+							if (p.fieldRowOne[i].StatusLength != null)
 							{
-								if (p.fieldRowOne[i].StatusLength[e] == -1) continue;
-
-								p.fieldRowOne[i].StatusLength[e] -= 1;
-
-								if (p.fieldRowOne[i].StatusLength[e] <= 0)
+								for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
 								{
-									p.fieldRowOne[i].StatusLength.RemoveAt(e);
-									p.fieldRowOne[i].StatusName.RemoveAt(e);
+									if (p.fieldRowOne[i].StatusLength[e] != -1)
+										p.fieldRowOne[i].StatusLength[e] -= 1;
+
+									if (p.fieldRowOne[i].StatusLength[e] == 0)
+									{
+										remove.Add(e);
+
+										continue;
+									}
+
+									game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "status", targetId = p.id, name = p.fieldRowOne[i].StatusName[e], card = p.fieldRowOne[i].MakeReady(), slot = i }));
 								}
+
+								foreach (int e in remove)
+								{
+                                    p.fieldRowOne[i].StatusLength.RemoveAt(e);
+                                    p.fieldRowOne[i].StatusName.RemoveAt(e);
+                                }
+
+								remove.Clear();
 							}
-						}
 
-                        for (int i = 0; i < p.fieldRowOne.Length; i++)
-                        {
-                            if (p.fieldRowOne[i] == null) continue;
-                            if (p.fieldRowOne[i].EffectLength == null) continue;
-                            for (int e = 0; e < p.fieldRowOne[i].EffectLength.Count; e++)
-                            {
-                                if (p.fieldRowOne[i].EffectLength[e] == -1) continue;
+							if (p.fieldRowOne[i].EffectLength != null)
+							{
+								for (int e = 0; e < p.fieldRowOne[i].EffectLength.Count; e++)
+								{
+									if (p.fieldRowOne[i].EffectLength[e] != -1)
+										p.fieldRowOne[i].EffectLength[e] -= 1;
 
-                                p.fieldRowOne[i].EffectLength[e] -= 1;
+									if (p.fieldRowOne[i].EffectLength[e] == 0)
+									{
+										remove.Add(e);
 
-                                if (p.fieldRowOne[i].EffectLength[e] <= 0)
-                                {
+										continue;
+									}
+
+									game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = p.id, slot = i, name = p.fieldRowOne[i].EffectName[e], param = p.fieldRowOne[i].EffectParam[e], card = p.fieldRowOne[i].MakeReady() }));
+								}
+
+								foreach (int e in remove)
+								{
                                     p.fieldRowOne[i].EffectLength.RemoveAt(e);
+                                    p.fieldRowOne[i].EffectParam.RemoveAt(e);
                                     p.fieldRowOne[i].EffectName.RemoveAt(e);
                                 }
-                            }
+
+								remove.Clear();
+							}
                         }
 
                         Client placer = game.clients[turn];

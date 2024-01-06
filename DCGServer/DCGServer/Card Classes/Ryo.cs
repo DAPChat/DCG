@@ -19,7 +19,8 @@ namespace card
 
         public void Solitude()
         {
-            
+            game.AddEffect(this, "Immortal", 1, 0);
+            game.AddStatus(this, "Attack", 1);
         }
 
         public override void Death()

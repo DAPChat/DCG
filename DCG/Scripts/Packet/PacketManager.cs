@@ -119,6 +119,12 @@ public class PacketManager
 
 						GameScene.playerQueue.Add(pup);
 						break;
+					case "EUP":
+						var eup = JsonConvert.DeserializeObject<EUP>(lt.parameters);
+
+						GameScene.effectQueue.Add(eup);
+						
+						break;
                 }
 			}
 			catch (Exception e)

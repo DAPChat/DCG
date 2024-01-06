@@ -16,11 +16,14 @@ public partial class Card : Node3D
 	public bool down = false;
 	public Label3D description;
 
-	public Dictionary<string, int> status = new();
+	public List<string> status = new();
 	public Dictionary<string, int> effects = new();
 
-	// Sets the card object elements to display to the player
-	public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum, int _slot) //add added child card
+    public List<string> tempStatus = new();
+    public Dictionary<string, int> tempEffects = new();
+
+    // Sets the card object elements to display to the player
+    public void setCard(GameScene.CardObject _card, Vector3 pos, int playerNum, int _slot) //add added child card
 	{
         Hide();
 
@@ -123,17 +126,17 @@ public partial class Card : Node3D
         }
 	}
 
-	public void AddStatus(string name, int length)
+	public void AddStatus(string name)
 	{
-        if (status.ContainsKey(name))
-            status[name] += length;
-        else status.Add(name, length);
+		if (GameScene.currentTurn != ServerManager.client.id)
+			tempStatus.Add(name);
+		else status.Add(name);
     }
-	public void AddEffect(string name, int length)
+	public void AddEffect(string name, int param)
 	{
-		if (effects.ContainsKey(name))
-			effects[name] += length;
-		else effects.Add(name, length);
+		if (GameScene.currentTurn != ServerManager.client.id)
+			tempEffects.Add(name, param);
+		else effects.Add(name, param);
 	}
 
 	public override void _Ready()
@@ -145,7 +148,3 @@ public partial class Card : Node3D
 		collision.MouseExited += () => { mouse = false; };
 	}
 }
-
-
-
-

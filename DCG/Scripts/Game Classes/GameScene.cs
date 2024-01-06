@@ -24,6 +24,7 @@ public partial class GameScene : Node3D
         public List<string> StatusName { get; set; }
         public List<int> StatusLength { get; set; }
         public List<string> EffectName { get; set; }
+        public List<int> EffectParam { get; set; }
         public List<int> EffectLength { get; set; }
     }
 
@@ -41,7 +42,7 @@ public partial class GameScene : Node3D
     static double zoomNorm = .5;
     static double zoomView = 1;
 
-    public static double zMultiplier = 1;
+    public static double zMultiplier = 0;
 
     static Tween tween;
     static RichTextLabel description;
@@ -57,6 +58,7 @@ public partial class GameScene : Node3D
 
     public static List<CAP> actionQueue = new();
     public static List<PUP> playerQueue = new();
+    public static List<EUP> effectQueue = new();
 
     public static CardObject cardObject = null;
     public static Card zoomed = null;
@@ -286,7 +288,7 @@ public partial class GameScene : Node3D
         {
             Action cardClass = (Action)Activator.CreateInstance(t);
 
-            if (zoomed.status.ContainsKey(cardClass.name)) continue;
+            if (zoomed.status.Contains(cardClass.name)) continue;
 
             Button action = (Button)actionButton.Duplicate();
 
@@ -392,21 +394,42 @@ public partial class GameScene : Node3D
             if (card is not Card) continue;
 
             Card c = (Card)card;
-            
-            foreach (var effect in c.status.Keys)
-            {
-                if (c.status[effect] == -1) continue;
 
-                c.status[effect] -= 1;
-                if (c.status[effect] <= 0) c.status.Remove(effect);
+            c.status.Clear();
+            c.effects.Clear();
+
+            c.status.AddRange(c.tempStatus);
+            c.effects = c.tempEffects;
+
+            c.tempEffects.Clear();
+            c.tempStatus.Clear();
+        }
+    }
+
+    public static void AddEffect(EUP eup)
+    {
+        foreach (var card in sceneTree.GetChildren())
+        {
+            if (card is not Card) continue;
+            Card c = (Card)card;
+            if (c.placerId == eup.targetId && c.card.Id == eup.card.Id && eup.slot == (c.slot))
+            {
+                c.AddEffect(eup.name, eup.param);
+                return;
             }
+        }
+    }
 
-            foreach (var effect in c.effects.Keys)
+    public static void AddStatus(EUP eup)
+    {
+        foreach (var card in sceneTree.GetChildren())
+        {
+            if (card is not Card) continue;
+            Card c = (Card)card;
+            if (c.placerId == eup.targetId && c.card.Id == eup.card.Id && eup.slot == (c.slot))
             {
-                if (c.effects[effect] == -1) continue;
-
-                c.effects[effect] -= 1;
-                if (c.effects[effect] <= 0) c.effects.Remove(effect);
+                c.AddStatus(eup.name);
+                return;
             }
         }
     }
@@ -790,6 +813,23 @@ public partial class GameScene : Node3D
             UpdatePlayer(pup);
 
             playerQueue.RemoveAt(0);
+        }
+
+        while (effectQueue.Count > 0)
+        {
+            var eup = effectQueue[0];
+
+            switch (eup.type)
+            {
+                case "effect":
+                    AddEffect(eup);
+                    break;
+                case "status":
+                    AddStatus(eup);
+                    break;
+            }
+
+            effectQueue.RemoveAt(0);
         }
 
         base._Process(delta);

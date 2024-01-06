@@ -10,9 +10,6 @@ namespace card
             public override string name => "Remembrance";
             public override void Run(Card card)
             {
-                card.AddStatus("Attack", 2);
-                card.AddStatus(name, -1);
-
                 targetPlace = this;
 
                 ShowForgotten();
@@ -48,7 +45,7 @@ namespace card
             public override string name => "Solitude";
             public override void Run(Card card)
             {
-                
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card.card, senderSlot = card.slot, action = GetType().Name}));
             }
 
             public override void Run(Card card, int slot)
@@ -57,6 +54,18 @@ namespace card
             }
         }
 
-        
+        public class HB : Action
+        {
+            public override string name => "Heat of the Battle";
+            public override void Run(Card card)
+            {
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card.card, senderSlot = card.slot, action = GetType().Name }));
+            }
+
+            public override void Run(Card card, int slot)
+            {
+
+            }
+        }
     }
 }
