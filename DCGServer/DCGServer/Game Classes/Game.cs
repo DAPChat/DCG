@@ -3,6 +3,8 @@ using packets;
 using card;
 using System.Numerics;
 using System.Text;
+using System;
+using System.Xml.Linq;
 
 namespace game
 {
@@ -212,11 +214,12 @@ namespace game
 				ActionManager.Register(action, this);
 		}
 
-		public void Damage(CAP action, object o)
+		public void Damage(CAP action, object o, int? dmg = null)
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
-			p.fieldRowOne[action.targetSlot].Hp -= action.card.Atk;
+			if (!p.fieldRowOne[action.targetSlot].EffectName.Contains("Immortal"))
+				p.fieldRowOne[action.targetSlot].Hp -= dmg == null? action.card.Atk : (int)dmg;
 
 			CAP _action = action.Clone();
 			_action.targetId = p.id;
@@ -264,8 +267,22 @@ namespace game
 			return 0;
 		}
 
-		public void AddStatus(BaseCard card, string name, int length)
+		public bool Cost(BaseCard card, string stat, int price)
 		{
+            TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
+
+			int curNum = (int)curCard.GetType().GetProperty(stat).GetValue(curCard);
+
+			if (curNum - price < 0) return false;
+
+			curCard.GetType().GetProperty(stat).SetValue(curCard, curNum - price);
+
+            SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = card.action.placerId, card = curCard.MakeReady(), targetSlot = card.action.senderSlot }));
+
+			return true;
+        }
+        public void AddStatus(BaseCard card, string name, int length)
+        {
 			TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
 
 			if (curCard == null) return;
@@ -298,9 +315,52 @@ namespace game
                 curCard.EffectName.Add(name);
                 curCard.EffectLength.Add(length);
                 curCard.EffectParam.Add(param);
+
+				if (name != "Immortal")
+					curCard.GetType().GetProperty(name).SetValue(curCard, (int)curCard.GetType().GetProperty(name).GetValue(curCard) + param);
             }
-            
-			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = card.action.placerId, name = name, param = param, card = card.action.card.MakeReady(), slot = card.action.senderSlot }));
+
+            SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = card.action.placerId, card = curCard.MakeReady(), targetSlot = card.action.senderSlot }));
+
+			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = card.action.placerId, name = name, param = param, card = curCard.MakeReady(), slot = card.action.senderSlot }));
+        }
+
+		public void RemoveEffect(int slot, int effect, int id)
+		{
+			Player p = currentBoard.GetPlayer(id);
+			TempCard card = p.fieldRowOne[slot];
+
+			if (card.EffectName[effect] == "Immortal") return;
+
+			switch (card.EffectName[effect])
+			{
+				case "Hp":
+					CAP cap = new CAP
+					{
+						targetSlot = slot,
+						card = card,
+						placerId = OpponentId(id)
+					};
+
+                    Damage(cap, ActionManager.CreateCard(cap, this), card.EffectParam[effect]);
+					break;
+				case "Atk":
+					card.Atk -= card.EffectParam[effect];
+					break;
+				case "Mana":
+					card.Mana -= card.EffectParam[effect];
+					break;
+			}
+
+			CAP _action = new CAP
+			{
+				targetId = p.id,
+				targetSlot = slot,
+				card = p.fieldRowOne[slot].MakeReady(),
+				action = "update"
+			};
+
+			SendAll(PacketManager.ToJson(_action));
         }
 
         public class GameBoard
@@ -377,6 +437,9 @@ namespace game
 						for (int i = 0; i < p.fieldRowOne.Length; i++)
 						{
 							if (p.fieldRowOne[i] == null) continue;
+
+							p.fieldRowOne[i].Mana = Database.GetCard(p.fieldRowOne[i].Id).Mana;
+
 							if (p.fieldRowOne[i].StatusLength != null)
 							{
 								for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
@@ -412,6 +475,7 @@ namespace game
 
 									if (p.fieldRowOne[i].EffectLength[e] == 0)
 									{
+										game.RemoveEffect(i, e, p.id);
 										remove.Add(e);
 
 										continue;
@@ -429,6 +493,8 @@ namespace game
 
 								remove.Clear();
 							}
+
+                            game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = p.id, card = p.fieldRowOne[i].MakeReady(), targetSlot = i }));
                         }
 
                         Client placer = game.clients[turn];

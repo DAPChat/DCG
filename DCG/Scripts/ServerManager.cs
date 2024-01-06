@@ -12,11 +12,6 @@ public partial class ServerManager : Node
 		client.Connect();
 	}
 
-	public override void _Process(double delta)
-	{
-		return;
-	}
-
 	// Defines a print function non-godot classes can use
 	public static void Print(string str)
 	{

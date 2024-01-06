@@ -17,7 +17,7 @@ public class ActionManager
 
         try
         {
-            card = (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name.Replace(' ', '_')), new object[] { _action, _game });
+            card = CreateCard(_action, _game);
         }
         catch (Exception e)
         {
@@ -40,5 +40,10 @@ public class ActionManager
         }
 
         _game.currentBoard.NextPhase();
+    }
+
+    public static BaseCard CreateCard(CAP _action, game.Game _game)
+    {
+        return (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name.Replace(' ', '_')), new object[] { _action, _game });
     }
 }

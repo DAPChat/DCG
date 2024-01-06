@@ -52,7 +52,8 @@ namespace card
 				StatusName = null,
 				StatusLength = null,
 				EffectLength = null,
-				EffectName = null
+				EffectName = null,
+				EffectParam = null
 			};
 
 			return temp;
