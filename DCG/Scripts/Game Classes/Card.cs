@@ -130,13 +130,13 @@ public partial class Card : Node3D
 	{
 		if (GameScene.currentTurn != ServerManager.client.id)
 			tempStatus.Add(name);
-		else status.Add(name);
+		else if (!status.Contains(name)) status.Add(name);
     }
 	public void AddEffect(string name, int param)
 	{
 		if (GameScene.currentTurn != ServerManager.client.id)
 			tempEffects.Add(name, param);
-		else effects.Add(name, param);
+		else if (!effects.ContainsKey(name)) effects.Add(name, param);
 	}
 
 	public override void _Ready()
