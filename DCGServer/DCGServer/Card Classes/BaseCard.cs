@@ -32,6 +32,11 @@ namespace card
             game.currentBoard.UpdatePlayer(p);
         }
 
+        public virtual void Update()
+        {
+            // game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = game.OpponentId(action.placerId), card = game.currentBoard.GetPlayer(game.OpponentId(action.placerId)).fieldRowOne[action.targetSlot].MakeReady(), targetSlot = action.targetSlot }));
+        }
+
         public void Attack()
         {
             Player p = game.currentBoard.GetPlayer(action.targetId);

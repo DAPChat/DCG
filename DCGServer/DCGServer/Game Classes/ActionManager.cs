@@ -46,4 +46,18 @@ public class ActionManager
     {
         return (BaseCard)Activator.CreateInstance(Type.GetType("card." + _action.card.Name.Replace(' ', '_')), new object[] { _action, _game });
     }
+
+    public static void UpdateCards(TempCard[] cards, int id, game.Game game)
+    {
+        for (int i = 0; i < cards.Length; i++)
+        {
+            var card = cards[i];
+
+            if (card == null) continue;
+
+            var b = CreateCard(new CAP { targetSlot = i, card = card, placerId = id }, game);
+
+            b.Update();
+        }
+    }
 }
