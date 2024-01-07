@@ -228,9 +228,6 @@ public partial class GameScene : Node3D
     // Zoom into the card
     public static void ViewCard(Vector3 cardPos, Card card, Label3D node)
     {
-        VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
-        Button actionButton = (Button)ResourceLoader.Load<PackedScene>("res://Scenes/action.tscn").Instantiate();
-
         if (tween != null && tween.IsRunning())
             tween.Kill();
 
@@ -264,6 +261,16 @@ public partial class GameScene : Node3D
         description.ScrollToLine(0);
         description.Text = card.card.Description;
 
+        ShowActions(card);
+    }
+
+    public static void ShowActions(Card card)
+    {
+        if (zoomed != card || chooseTarget != null) return;
+
+        VBoxContainer vbox = (VBoxContainer)sceneTree.GetNode("CanvasLayer/Control/Actions");
+        Button actionButton = (Button)ResourceLoader.Load<PackedScene>("res://Scenes/action.tscn").Instantiate();
+
         foreach (var child in vbox.GetChildren())
         {
             child.QueueFree();
@@ -279,8 +286,9 @@ public partial class GameScene : Node3D
         {
             type = Type.GetType("card." + card.card.Name.Replace(' ', '_'));
         }
-        catch
+        catch (Exception e)
         {
+            GD.Print(e);
             return;
         }
 
@@ -300,6 +308,7 @@ public partial class GameScene : Node3D
                 {
                     selectMode = false;
                     cardClass.Run(card);
+                    ShowActions(card);
                 }
             };
 

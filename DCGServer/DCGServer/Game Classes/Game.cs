@@ -314,6 +314,8 @@ namespace game
             if (curCard.EffectName.Contains(name))
             {
                 curCard.EffectLength[curCard.EffectName.IndexOf(name)] += length;
+
+				Console.WriteLine("Here");
             }
             else
             {
@@ -453,8 +455,6 @@ namespace game
 						phase = 0;
                         turn = p.id;
 
-						List<int> remove = new();
-
 						for (int i = 0; i < p.fieldRowOne.Length; i++)
 						{
 							if (p.fieldRowOne[i] == null) continue;
@@ -463,33 +463,26 @@ namespace game
 
                             if (p.fieldRowOne[i].StatusLength != null)
 							{
-								for (int e = 0; e < p.fieldRowOne[i].StatusLength.Count; e++)
+								for (int e = p.fieldRowOne[i].StatusLength.Count - 1; e >= 0; e--)
 								{
 									if (p.fieldRowOne[i].StatusLength[e] != -1)
 										p.fieldRowOne[i].StatusLength[e] -= 1;
 
 									if (p.fieldRowOne[i].StatusLength[e] == 0)
 									{
-										remove.Add(e);
+                                        p.fieldRowOne[i].StatusLength.RemoveAt(e);
+                                        p.fieldRowOne[i].StatusName.RemoveAt(e);
 
-										continue;
+                                        continue;
 									}
 
 									game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "status", targetId = p.id, name = p.fieldRowOne[i].StatusName[e], card = p.fieldRowOne[i].MakeReady(), slot = i }));
 								}
-
-								foreach (int e in remove)
-								{
-                                    p.fieldRowOne[i].StatusLength.RemoveAt(e);
-                                    p.fieldRowOne[i].StatusName.RemoveAt(e);
-                                }
-
-								remove.Clear();
 							}
 
 							if (p.fieldRowOne[i].EffectLength != null)
 							{
-								for (int e = 0; e < p.fieldRowOne[i].EffectLength.Count; e++)
+								for (int e = p.fieldRowOne[i].EffectLength.Count -1; e >= 0; e--)
 								{
 									if (p.fieldRowOne[i].EffectLength[e] != -1)
 										p.fieldRowOne[i].EffectLength[e] -= 1;
@@ -497,22 +490,16 @@ namespace game
 									if (p.fieldRowOne[i].EffectLength[e] == 0)
 									{
 										game.RemoveEffect(i, e, p.id);
-										remove.Add(e);
 
-										continue;
+                                        p.fieldRowOne[i].EffectParam.RemoveAt(e);
+                                        p.fieldRowOne[i].EffectName.RemoveAt(e);
+                                        p.fieldRowOne[i].EffectLength.RemoveAt(e);
+
+                                        continue;
 									}
 
 									game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = p.id, slot = i, name = p.fieldRowOne[i].EffectName[e], param = p.fieldRowOne[i].EffectParam[e], card = p.fieldRowOne[i].MakeReady() }));
 								}
-
-								foreach (int e in remove)
-								{
-                                    p.fieldRowOne[i].EffectLength.RemoveAt(e);
-                                    p.fieldRowOne[i].EffectParam.RemoveAt(e);
-                                    p.fieldRowOne[i].EffectName.RemoveAt(e);
-                                }
-
-								remove.Clear();
 							}
 
                             game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = p.id, card = p.fieldRowOne[i].MakeReady(), targetSlot = i }));

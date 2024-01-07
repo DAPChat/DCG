@@ -10,6 +10,8 @@ namespace card
             public override string name => "Remembrance";
             public override void Run(Card card)
             {
+                if (forgotten.Count == 0) return;
+
                 targetPlace = this;
 
                 ShowForgotten();
