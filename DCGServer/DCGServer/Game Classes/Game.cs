@@ -191,7 +191,6 @@ namespace game
 			if (action.action == "place")
 			{
                 clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
-                currentBoard.NextPhase();
 			}
 
             action.action = "place";

@@ -21,6 +21,7 @@ namespace card
 
             foreach (var card in game.currentBoard.GetPlayer(action.placerId).fieldRowOne)
             {
+                if (card == null) continue;
                 sacrifice += card.SacrificialValue;
             }
 
