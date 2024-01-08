@@ -9,9 +9,49 @@ namespace card
         public CAP action;
         public Game game;
 
-        public virtual void Summon()
+        public virtual void Place()
         {
+            if (action.card.Rank == "F" || action.card.Rank == "E")
+            {
+                game.PlaceCard(action);
+                return;
+            }
 
+            double sacrifice = 0;
+
+            foreach (var card in game.currentBoard.GetPlayer(action.placerId).fieldRowOne)
+            {
+                sacrifice += card.SacrificialValue;
+            }
+
+            int match = 0;
+
+            switch (action.card.Rank)
+            {
+                case "D":
+                    match = 1;
+                    break;
+                case "C":
+                    match = 2;
+                    break;
+                case "B":
+                    match = 3;
+                    break;
+                case "A":
+                    match = 4;
+                    break;
+                case "S":
+                    match = 5;
+                    break;
+            }
+
+            if (sacrifice < match) return;
+            else game.PlaceCard(action);
+        }
+
+        public void Summon()
+        {
+            Place();
         }
 
         public virtual void Death()

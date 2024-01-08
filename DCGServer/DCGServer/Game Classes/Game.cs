@@ -209,7 +209,9 @@ namespace game
 			if (action.action == "place" || action.action == "summon")
 			{
 				if (currentBoard.phase == 1 || action.action == "summon")
-					PlaceCard(action);
+				{
+					ActionManager.Register(action, this);
+				}
 			}
 			else if (currentBoard.phase == 2)
 				ActionManager.Register(action, this);

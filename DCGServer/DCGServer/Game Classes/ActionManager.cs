@@ -13,7 +13,8 @@ public class ActionManager
 
         var field = _action.card.Class == "Spell" ? p.fieldRowTwo : p.fieldRowOne;
 
-        if (field[_action.senderSlot].StatusName.Contains(_action.action)) return;
+        if (_action.action != "place" && _action.action != "summon")
+            if (field[_action.senderSlot].StatusName.Contains(_action.action)) return;
 
         try
         {
@@ -27,14 +28,17 @@ public class ActionManager
             return;
         }
 
+        char[] name = _action.action.ToArray();
+        name[0] = _action.action.ToUpper()[0];
+
         try
         {
-            card.GetType().GetMethod(_action.action).Invoke(card, null);
+            card.GetType().GetMethod(new string(name)).Invoke(card, null);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, _action.action);
+            Console.WriteLine("{0} does not contain the method, {1}", card.GetType().Name, new string(name));
 
             return;
         }
