@@ -12,7 +12,7 @@ namespace card
             game = _game;
         }
 
-        public void Heal()
+        public bool Heal()
         {
             Player p = game.currentBoard.GetPlayer(action.placerId);
 
@@ -30,6 +30,8 @@ namespace card
             game.SendAll(PacketManager.ToJson(_action));
 
             p.fieldRowTwo.SetValue(null, action.senderSlot);
+
+            return false;
         }
     }
 }
