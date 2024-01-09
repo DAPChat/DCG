@@ -7,15 +7,17 @@ using System.Linq;
 
 using packets;
 using player;
+using System.Text;
+using System.Xml.Linq;
 
 public class Client
 {
 	public TcpClient client = null;
 	public PlayerAccount account = null;
 
-	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.1.1.0"), 60606);
+	private IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("71.191.51.200"), 60606);
 
-	private NetworkStream stream = null;
+	public NetworkStream stream = null;
 	private byte[] buffer = new byte[8196];
 
 	public Dictionary<string, string> values = new Dictionary<string, string>();
@@ -102,14 +104,16 @@ public class Client
                 return;
 			}
 
-			PacketManager.Decode(buffer, this);
+			PacketManager.Decode((byte[])buffer.Clone(), this);
 
 			//byte[] b = Encoding.ASCII.GetBytes("[Packet]{\"type\":\"CSP\", \"senderId\":" + id + ", \"parameters\": '{\"time\":\"" + DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss.fff tt") + "\"}'}");
 
 			//if(gameId > 0)
 			//	stream.BeginWrite(b, 0, b.Length, null, null);
 
-			buffer = new byte[buffer.Length];
+			PacketManager.newByes.Concat((byte[])buffer.Clone());
+
+            buffer = new byte[buffer.Length];
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
 		}

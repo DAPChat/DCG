@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-
+using MongoDB.Driver.Core.Bindings;
 using player;
 
 public class Client
@@ -58,9 +58,18 @@ public class Client
         {
             if (!client.Connected) return;
 
+			byte[] byteArr = new byte[8196];
+
+			_msg.CopyTo(byteArr, 0);
+
             // Write the message to the stream to the correct client
-            stream.BeginWrite(_msg, 0, _msg.Length, null, null);
+            stream.BeginWrite(byteArr, 0, byteArr.Length, WriteCallback, stream);
         }
+
+		public void WriteCallback(IAsyncResult result)
+		{
+            stream.Flush();
+		}
 
         private void ReadCallback(IAsyncResult _result)
 		{

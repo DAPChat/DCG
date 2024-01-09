@@ -4,22 +4,27 @@ using System.Text;
 
 using packets;
 using player;
-using Godot;
+using System.Linq;
+using System.Collections.Generic;
 
 public class PacketManager
 {
+	public static List<byte> newByes = new();
+
 	// Parses the incoming packets from the stream and runs functions depending on the packet type
 	public static void Decode(byte[] _data, Client client)
 	{
-		string[] dataList = Encoding.UTF8.GetString(_data).Split("[Packet]");
+		string datapend = Encoding.UTF8.GetString(_data);
 
-		for (int i = 1; i < dataList.Length; i++)
+		string[] dataList = datapend.Split("[Packet]");
+
+        for (int i = 1; i < dataList.Length; i++)
 		{
 			string data = dataList[i];
 
 			try
 			{
-				LoadType lt = JsonConvert.DeserializeObject<LoadType>(data);
+                LoadType lt = JsonConvert.DeserializeObject<LoadType>(data);
 
 				switch (lt.type)
 				{
@@ -129,6 +134,7 @@ public class PacketManager
 			}
 			catch (Exception e)
 			{
+				ServerManager.Print(Encoding.UTF8.GetString(_data));
 				ServerManager.Print($"{e}");
 			}
 		}

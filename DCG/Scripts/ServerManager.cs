@@ -16,7 +16,9 @@ public partial class ServerManager : Node
 	public static void Print(string str)
 	{
 		GD.Print(str);
-	}
+        GD.Print("");
+        GD.Print("");
+    }
 
 	// Disconnect the client on close
 	public override void _ExitTree()
