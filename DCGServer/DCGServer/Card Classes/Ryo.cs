@@ -11,34 +11,40 @@ namespace card
             game = _game;
         }
 
-        public void Remembrance()
+        public bool Remembrance()
         {
-            if (!game.Cost(this, "Mana", 700)) return;
+            if (!game.Cost(this, "Mana", 700)) return false;
 
             game.AddStatus(this, "Attack", 2);
             game.AddStatus(this, action.action, -1);
+
+            return true;
         }
 
-        public void Solitude()
+        public bool Solitude()
         {
-            if(!game.Cost(this, "Mana", 400)) return;
+            if(!game.Cost(this, "Mana", 400)) return false;
 
             game.AddEffect(this, "Immortal", 1, 0);
             game.AddStatus(this, action.action, 2);
             game.AddStatus(this, "Attack", 1);
+
+            return true;
         }
 
-        public void HB()
+        public bool HB()
         {
-            if (!game.Cost(this, "Mana", 300)) return;
+            if (!game.Cost(this, "Mana", 300)) return false;
 
             game.AddEffect(this, "Hp", 2, 750);
             game.AddEffect(this, "Atk", 2, 750);
+
+            return true;
         }
 
-        public override void Death()
+        public override bool Death()
         {
-            base.Death();
+            return base.Death();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace card
             game = _game;
         }
 
-        public override void Update()
+        public override bool Update()
         {
             game.ResetStats(action.placerId, action.targetSlot, new string[] { "Hp", "Mana" });
 
@@ -27,7 +27,7 @@ namespace card
 
             game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = action.placerId, card = action.card, targetSlot = action.targetSlot }));
 
-            base.Update();
+            return base.Update();
         }
     }
 }

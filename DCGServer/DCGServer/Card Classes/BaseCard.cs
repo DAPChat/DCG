@@ -9,12 +9,12 @@ namespace card
         public CAP action;
         public Game game;
 
-        public virtual void Place()
+        public virtual bool Place()
         {
             if (action.card.Rank == "F" || action.card.Rank == "E")
             {
                 game.PlaceCard(action);
-                return;
+                return true;
             }
 
             double sacrifice = 0;
@@ -46,16 +46,18 @@ namespace card
                     break;
             }
 
-            if (sacrifice < match) return;
+            if (sacrifice < match) return false;
             else game.PlaceCard(action);
+
+            return true;
         }
 
-        public void Summon()
+        public bool Summon()
         {
-            Place();
+            return Place();
         }
 
-        public virtual void Death()
+        public virtual bool Death()
         {
             Player p = game.currentBoard.GetPlayer(game.OpponentId(action.placerId));
 
@@ -71,21 +73,21 @@ namespace card
             p.fieldRowOne.SetValue(null, action.targetSlot);
 
             game.currentBoard.UpdatePlayer(p);
+
+            return true;
         }
 
-        public virtual void Update()
+        public virtual bool Update()
         {
+            return true;
             // game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = game.OpponentId(action.placerId), card = game.currentBoard.GetPlayer(game.OpponentId(action.placerId)).fieldRowOne[action.targetSlot].MakeReady(), targetSlot = action.targetSlot }));
         }
 
-        public void Attack()
+        public bool Attack()
         {
-            Player p = game.currentBoard.GetPlayer(action.targetId);
-            // var card = Activator.CreateInstance(Type.GetType("card." + p.fieldRowOne[action.targetSlot].Name.Replace(' ', '_')), new object[] { action, game });
-            // uncomment when we get classes for each card
-
-
             game.Damage(action, this);
+
+            return true;
         }
     }
 }

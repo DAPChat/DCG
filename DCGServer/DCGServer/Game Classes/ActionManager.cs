@@ -31,9 +31,11 @@ public class ActionManager
         char[] name = _action.action.ToArray();
         name[0] = _action.action.ToUpper()[0];
 
+        bool success = false;
+
         try
         {
-            card.GetType().GetMethod(new string(name)).Invoke(card, null);
+            success = (bool)card.GetType().GetMethod(new string(name)).Invoke(card, null);
         }
         catch (Exception e)
         {
@@ -43,7 +45,8 @@ public class ActionManager
             return;
         }
 
-        _game.currentBoard.NextPhase();
+        if (success)
+            _game.currentBoard.NextPhase();
     }
 
     public static BaseCard CreateCard(CAP _action, game.Game _game)
