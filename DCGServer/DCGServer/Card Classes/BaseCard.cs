@@ -82,8 +82,9 @@ namespace card
 
         public virtual bool Update()
         {
+            game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = action.placerId, card = action.card, targetSlot = action.targetSlot }));
+
             return true;
-            // game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = game.OpponentId(action.placerId), card = game.currentBoard.GetPlayer(game.OpponentId(action.placerId)).fieldRowOne[action.targetSlot].MakeReady(), targetSlot = action.targetSlot }));
         }
 
         public bool Attack()
