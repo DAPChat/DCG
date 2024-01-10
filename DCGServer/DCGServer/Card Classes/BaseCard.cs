@@ -47,7 +47,10 @@ namespace card
             }
 
             if (sacrifice < match) return false;
-            else game.PlaceCard(action);
+            else
+            {
+                game.PlaceCard(action);
+            }
 
             return true;
         }

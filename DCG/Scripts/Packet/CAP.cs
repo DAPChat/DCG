@@ -1,4 +1,6 @@
-﻿namespace packets
+﻿using System.Collections.Generic;
+
+namespace packets
 {
     public class CAP : Packet
     {
@@ -8,5 +10,7 @@
         public string action;
         public int targetSlot;
         public int senderSlot;
+
+        public List<int> param;
     }
 }
