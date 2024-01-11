@@ -608,6 +608,29 @@ public partial class GameScene : Node3D
         curCamera.GlobalRotationDegrees = cam1Rot;
 
         curCamera.MakeCurrent();
+        //-----------------------//
+        for (int i = 0; i < 20; i++)
+        {
+            var thescene = (Node3D)ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
+
+
+            var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player1/Deck").GlobalPosition;
+
+            sceneTree.CallDeferred(Node.MethodName.AddChild, thescene);
+
+            thescene.Position = new Vector3(cardGlobalPosition.X, (0.005f*(i*3)), cardGlobalPosition.Z);
+            thescene.RotationDegrees = new Vector3(0, 0, 180);
+            var thescene1 = (Node3D)ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
+
+
+            var cardGlobalPosition1 = sceneTree.GetNode<MeshInstance3D>("Player2/Deck").GlobalPosition;
+
+            sceneTree.CallDeferred(Node.MethodName.AddChild, thescene1);
+
+            thescene1.Position = new Vector3(cardGlobalPosition1.X, (0.005f * (i * 3)), cardGlobalPosition1.Z);
+            thescene1.RotationDegrees = new Vector3(0, 180, 180);
+        }
+        //-----------------------//
 
         // Move between the two camera angles
         buttonCamera.ButtonDown += () =>
