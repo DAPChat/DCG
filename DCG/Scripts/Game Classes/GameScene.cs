@@ -486,114 +486,12 @@ public partial class GameScene : Node3D
         {
             if (HandShown)
             {
-                Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-                var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
-
-                if (selectedHand != null)
-                {
-                    selectedHand.keepShown = true;
-
-                    if (lastSelectedHand == selectedHand)
-                    {
-                        cardObject = selectedHand.card;
-
-                        selectedHand = null;
-                        lastSelectedHand.keepShown = false;
-                        lastSelectedHand.ReturnCard();
-
-                        if (targetPlace == null)
-                        {
-                            hand.Hide();
-                            buttonHand.Disabled = false;
-                        }
-                        else
-                        {
-                            ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
-                        }
-
-                        HandShown = false;
-
-                        return;
-                    }
-
-                    cardObject = null;
-
-                    if (lastSelectedHand != null && lastSelectedHand != selectedHand)
-                    {
-                        lastSelectedHand.keepShown = false;
-                        lastSelectedHand.ReturnCard();
-                    }
-
-                    lastSelectedHand = selectedHand;
-
-                    return;
-                }
-                else
-                {
-                    cardObject = null;
-
-                    if (lastSelectedHand != null)
-                    {
-                        lastSelectedHand.keepShown = false;
-                        lastSelectedHand.ReturnCard();
-
-                        lastSelectedHand = selectedHand;
-
-                        return;
-                    }
-
-                    if (targetPlace == null)
-                    {
-                        hand.Hide();
-                        buttonHand.Disabled = false;
-                    }
-                    else
-                    {
-                        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
-                    }
-
-                    HandShown = false;
-
-                    return;
-                }
+                HandInput(@event);
             }
 
             if (chooseTarget != null)
             {
-                var eventMouseButton = (InputEventMouseButton)@event;
-
-                var from = curCamera.ProjectRayOrigin(eventMouseButton.Position);
-                var to = from + curCamera.ProjectRayNormal(eventMouseButton.Position) * 1000;
-
-                var spaceState = sceneTree.GetWorld3D().DirectSpaceState;
-                var query = PhysicsRayQueryParameters3D.Create(from, to);
-                var result = spaceState.IntersectRay(query);
-
-                if (result.Count == 0) return;
-
-                Node3D collider = (Node3D)((Node3D)result["collider"]).GetParent();
-
-                if (collider.GetParent().Name != "Player2") return;
-
-                Card occupied = null;
-
-                foreach (Card curCard in cards)
-                {
-                    if (curCard.mouse)
-                    {
-                        occupied = curCard;
-                    }
-                }
-
-                if (occupied != null)
-                {
-                    if (occupied.card.Class.Contains("Spell")) return;
-
-                    chooseTarget.Run(zoomed, occupied.slot);
-                    chooseTarget = null;
-                    ReturnView(zoomed);
-                }
-
+                ChooseTargetInput(@event);
                 return;
             }
 
@@ -867,5 +765,119 @@ public partial class GameScene : Node3D
         }
 
         base._Process(delta);
+    }
+
+    public static void HandInput(InputEvent @event)
+    {
+        Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
+        var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+
+        if (selectedHand != null)
+        {
+            selectedHand.keepShown = true;
+
+            if (lastSelectedHand == selectedHand)
+            {
+                cardObject = selectedHand.card;
+
+                selectedHand = null;
+                lastSelectedHand.keepShown = false;
+                lastSelectedHand.ReturnCard();
+
+                if (targetPlace == null)
+                {
+                    hand.Hide();
+                    buttonHand.Disabled = false;
+                }
+                else
+                {
+                    ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+                }
+
+                HandShown = false;
+
+                return;
+            }
+
+            cardObject = null;
+
+            if (lastSelectedHand != null && lastSelectedHand != selectedHand)
+            {
+                lastSelectedHand.keepShown = false;
+                lastSelectedHand.ReturnCard();
+            }
+
+            lastSelectedHand = selectedHand;
+
+            return;
+        }
+        else
+        {
+            cardObject = null;
+
+            if (lastSelectedHand != null)
+            {
+                lastSelectedHand.keepShown = false;
+                lastSelectedHand.ReturnCard();
+
+                lastSelectedHand = selectedHand;
+
+                return;
+            }
+
+            if (targetPlace == null)
+            {
+                hand.Hide();
+                buttonHand.Disabled = false;
+            }
+            else
+            {
+                ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+            }
+
+            HandShown = false;
+
+            return;
+
+        }
+    }
+
+    public static void ChooseTargetInput(InputEvent @event)
+    {
+        var eventMouseButton = (InputEventMouseButton)@event;
+
+        var from = curCamera.ProjectRayOrigin(eventMouseButton.Position);
+        var to = from + curCamera.ProjectRayNormal(eventMouseButton.Position) * 1000;
+
+        var spaceState = sceneTree.GetWorld3D().DirectSpaceState;
+        var query = PhysicsRayQueryParameters3D.Create(from, to);
+        var result = spaceState.IntersectRay(query);
+
+        if (result.Count == 0) return;
+
+        Node3D collider = (Node3D)((Node3D)result["collider"]).GetParent();
+
+        if (collider.GetParent().Name != "Player2") return;
+
+        Card occupied = null;
+
+        foreach (Card curCard in cards)
+        {
+            if (curCard.mouse)
+            {
+                occupied = curCard;
+            }
+        }
+
+        if (occupied != null)
+        {
+            if (occupied.card.Class.Contains("Spell")) return;
+
+            chooseTarget.Run(zoomed, occupied.slot);
+            chooseTarget = null;
+            ReturnView(zoomed);
+        }
+
+        return;
     }
 }

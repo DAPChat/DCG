@@ -1,10 +1,6 @@
 ﻿using player;
 using packets;
 using card;
-using System.Numerics;
-using System.Text;
-using System;
-using System.Xml.Linq;
 
 namespace game
 {
@@ -13,8 +9,8 @@ namespace game
 		public int id;
 
 		// Store the clients in the game with their id
-		public Dictionary<int, Client> clients = new Dictionary<int, Client>();
-		public List<int> clientIds = new List<int>();
+		public Dictionary<int, Client> clients = new();
+		public List<int> clientIds = new();
 
 		public GameBoard currentBoard = null;
 
@@ -226,11 +222,6 @@ namespace game
 			if (!p.fieldRowOne[action.targetSlot].EffectName.Contains("Immortal"))
 				p.fieldRowOne[action.targetSlot].Hp -= dmg == null? action.card.Atk : (int)dmg;
 
-			CAP _action = action.Clone();
-			_action.targetId = p.id;
-			_action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
-			_action.action = "update";
-
             if (p.fieldRowOne[action.targetSlot].Hp <= 0)
 			{
                 p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
@@ -238,7 +229,6 @@ namespace game
 				SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
 
                 ((BaseCard)o).Death();
-				_action.action = "remove";
 
 				if (p.lifePoints <= 0)
 				{
@@ -247,11 +237,32 @@ namespace game
 					return;
 				}
 			}
+			else
+			{
+                CAP _action = action.Clone();
+                _action.targetId = p.id;
+                _action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
+                _action.action = "update";
+                SendAll(PacketManager.ToJson(_action));
+            }
 
             currentBoard.UpdatePlayer(p);
+		}
+
+		public void RemoveCard(CAP action, TempCard[] field, int id, int slot)
+		{
+            Player p = currentBoard.GetPlayer(id);
+
+            CAP _action = action.Clone();
+			_action.targetSlot = slot;
+            _action.targetId = p.id;
+            _action.card = field[slot].MakeReady();
+			_action.action = "remove";
+
+            field.SetValue(null, slot);
 
             SendAll(PacketManager.ToJson(_action));
-		}
+        }
 
 		public void SendAll(byte[] msg)
 		{
