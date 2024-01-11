@@ -769,8 +769,8 @@ public partial class GameScene : Node3D
 
     public static void HandInput(InputEvent @event)
     {
-        Button buttonHand = (Button)GetNode("/root/Game/CanvasLayer/Control/Hand");
-        var hand = (Container)GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
+        Button buttonHand = (Button)sceneTree.GetNode("/root/Game/CanvasLayer/Control/Hand");
+        var hand = (Container)sceneTree.GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
 
         if (selectedHand != null)
         {
