@@ -462,9 +462,11 @@ public partial class GameScene : Node3D
                 break;
             case 1:
                 label.Text = "Placing Phase";
+                sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, 1, 1);
                 break;
             case 2:
                 label.Text = "Attack Phase";
+                sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, (float)0.5, (float)0.5);
                 break;
         }
     }
