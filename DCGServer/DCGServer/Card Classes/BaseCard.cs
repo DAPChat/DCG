@@ -11,7 +11,7 @@ namespace card
 
         public virtual bool Place()
         {
-            if (action.card.Rank == "F" || action.card.Rank == "E")
+            if (action.card.Rank == "F" || action.card.Rank == "E" || action.card.Class == "Spell")
             {
                 game.PlaceCard(action);
                 return true;
@@ -73,7 +73,8 @@ namespace card
             game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
 
             p.forgotten.Add(p.fieldRowOne[action.targetSlot].Id);
-            p.fieldRowOne.SetValue(null, action.targetSlot);
+
+            game.RemoveCard(action, p.fieldRowOne, p.id, action.targetSlot);
 
             game.currentBoard.UpdatePlayer(p);
 

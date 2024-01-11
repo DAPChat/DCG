@@ -20,16 +20,9 @@ namespace card
 
             game.currentBoard.UpdatePlayer(p);
 
-            CAP _action = action.Clone();
-            _action.targetId = p.id;
-            _action.targetSlot = _action.senderSlot;
-            _action.card = p.fieldRowTwo[action.senderSlot].MakeReady();
-            _action.action = "remove";
+            game.RemoveCard(action, p.fieldRowTwo, p.id, action.senderSlot);
 
             game.SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
-            game.SendAll(PacketManager.ToJson(_action));
-
-            p.fieldRowTwo.SetValue(null, action.senderSlot);
 
             return false;
         }
