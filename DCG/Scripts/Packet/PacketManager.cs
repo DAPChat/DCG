@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 public class PacketManager
 {
-	public static List<byte> newByes = new();
-
 	// Parses the incoming packets from the stream and runs functions depending on the packet type
 	public static void Decode(byte[] _data, Client client)
 	{

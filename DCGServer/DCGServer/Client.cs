@@ -64,13 +64,8 @@ public class Client
 			_msg.CopyTo(byteArr, 0);
 
             // Write the message to the stream to the correct client
-            stream.BeginWrite(byteArr, 0, byteArr.Length, WriteCallback, stream);
+            stream.BeginWrite(byteArr, 0, byteArr.Length);
         }
-
-		public void WriteCallback(IAsyncResult result)
-		{
-            stream.Flush();
-		}
 
         private void ReadCallback(IAsyncResult _result)
 		{

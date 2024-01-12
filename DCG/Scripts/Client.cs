@@ -111,11 +111,9 @@ public class Client
 			//if(gameId > 0)
 			//	stream.BeginWrite(b, 0, b.Length, null, null);
 
-			PacketManager.newByes.Concat((byte[])buffer.Clone());
-
             buffer = new byte[buffer.Length];
 
-			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 		}
 		catch (Exception)
 		{
