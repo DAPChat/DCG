@@ -486,7 +486,7 @@ public partial class GameScene : Node3D
         {
             if (HandShown)
             {
-                HandInput(@event);
+                HandInput();
             }
 
             if (chooseTarget != null)
@@ -767,7 +767,7 @@ public partial class GameScene : Node3D
         base._Process(delta);
     }
 
-    public static void HandInput(InputEvent @event)
+    public static void HandInput()
     {
         Button buttonHand = (Button)sceneTree.GetNode("/root/Game/CanvasLayer/Control/Hand");
         var hand = (Container)sceneTree.GetNode("/root/Game/CanvasLayer/Control/PlayerHand");
