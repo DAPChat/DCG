@@ -63,7 +63,8 @@ namespace card
 
         public bool Summon()
         {
-            return Place();
+            Place();
+            return false;
         }
 
         public virtual bool Death()

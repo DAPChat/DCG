@@ -75,7 +75,7 @@ public partial class GameScene : Node3D
     static RichTextLabel description;
     static D2Card lastSelectedHand = null;
 
-    static List<Card> cards = new();
+    public static List<Card> cards = new();
 
     public static GameScene sceneTree;
 

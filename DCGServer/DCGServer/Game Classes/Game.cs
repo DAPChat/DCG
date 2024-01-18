@@ -168,7 +168,7 @@ namespace game
 			Player player = currentBoard.GetPlayer(action.placerId);
 
 			if (action.action == "place" && !player.hand.Contains(action.card.Id)) return;
-			else if (action.action == "summon" && !player.forgotten.Contains(action.card.Id)) return;
+			// else if (action.action == "summon" && !player.forgotten.Contains(action.card.Id)) return;
 
             var field = action.card.Class == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
 
