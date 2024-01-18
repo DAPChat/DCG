@@ -466,7 +466,7 @@ public partial class GameScene : Node3D
                 break;
             case 2:
                 label.Text = "Attack Phase";
-                sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, (float)0.5, (float)0.5);
+                sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, (float)0.8, (float)0.8);
                 break;
         }
     }
@@ -613,15 +613,15 @@ public partial class GameScene : Node3D
         //-----------------------//
         for (int i = 0; i < 20; i++)
         {
-            var thescene = (Node3D)ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
+            var thescene2 = (Node3D)ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
 
-            var cardGlobalPosition = sceneTree.GetNode<MeshInstance3D>("Player1/Deck").GlobalPosition;
+            var cardGlobalPosition2 = sceneTree.GetNode<MeshInstance3D>("Player1/Deck").GlobalPosition;
 
-            sceneTree.CallDeferred(Node.MethodName.AddChild, thescene);
+            sceneTree.CallDeferred(Node.MethodName.AddChild, thescene2);
 
-            thescene.Position = new Vector3(cardGlobalPosition.X, (0.005f*(i*3)), cardGlobalPosition.Z);
-            thescene.RotationDegrees = new Vector3(0, 0, 180);
+            thescene2.Position = new Vector3(cardGlobalPosition2.X, (0.005f*(i*3)), cardGlobalPosition2.Z);
+            thescene2.RotationDegrees = new Vector3(0, 0, 180);
             var thescene1 = (Node3D)ResourceLoader.Load<PackedScene>("res://Scenes/card.tscn").Instantiate().Duplicate();
 
 
