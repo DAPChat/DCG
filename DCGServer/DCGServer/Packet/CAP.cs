@@ -7,6 +7,7 @@ namespace packets
         public int placerId;
 
         public TempCard card;
+        public TempCard paramCard;
         public string action;
         public int targetSlot;
         public int senderSlot;

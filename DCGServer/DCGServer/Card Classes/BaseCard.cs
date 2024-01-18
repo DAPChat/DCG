@@ -61,7 +61,7 @@ namespace card
             return true;
         }
 
-        public bool Summon()
+        public virtual bool Summon()
         {
             Place();
             return false;

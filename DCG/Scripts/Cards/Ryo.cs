@@ -35,8 +35,8 @@ namespace card
 
                 if (rCard != null) forgotten.Remove(rCard);
 
-                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "summon", targetSlot = slot }));
-                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, action = GetType().Name }));
+                //ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "summon", targetSlot = slot }));
+                ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, paramCard = cardObject, targetSlot = slot, action = GetType().Name }));
 
                 ReturnView(card);
             }

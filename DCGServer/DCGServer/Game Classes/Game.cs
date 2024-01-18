@@ -168,26 +168,22 @@ namespace game
 			Player player = currentBoard.GetPlayer(action.placerId);
 
 			if (action.action == "place" && !player.hand.Contains(action.card.Id)) return;
-			// else if (action.action == "summon" && !player.forgotten.Contains(action.card.Id)) return;
 
             var field = action.card.Class == "Spell" ? player.fieldRowTwo : player.fieldRowOne;
 
             if (field[action.targetSlot] != null) return;
 
-			if (action.action == "place")
-				player.hand.Remove(action.card.Id);
-			else player.forgotten.Remove(action.card.Id);
-
 			action.card.Instantiate();
 
             field.SetValue(action.card, action.targetSlot);
 
-			currentBoard.UpdatePlayer(player);
-
 			if (action.action == "place")
 			{
                 clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new CAP { card = action.card, action = "hremove" }));
-			}
+                player.hand.Remove(action.card.Id);
+            }
+
+			currentBoard.UpdatePlayer(player);
 
             action.action = "place";
 

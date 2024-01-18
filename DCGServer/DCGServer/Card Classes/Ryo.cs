@@ -15,6 +15,17 @@ namespace card
         {
             if (!game.Cost(this, "Mana", 700)) return false;
 
+            if (game.currentBoard.GetPlayer(action.placerId).forgotten.Contains(action.paramCard.Id))
+            {
+                CAP ac = action.Clone();
+                ac.card = action.paramCard;
+                ac.paramCard = null;
+
+                game.PlaceCard(ac);
+                game.currentBoard.GetPlayer(action.placerId).forgotten.Remove(action.paramCard.Id);
+            }
+            else return false;
+
             game.AddStatus(this, "Attack", 2);
             game.AddStatus(this, action.action, -1);
 

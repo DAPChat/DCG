@@ -856,7 +856,7 @@ public partial class GameScene : Node3D
                 lastSelectedHand.keepShown = false;
                 lastSelectedHand.ReturnCard();
 
-                if (targetPlace == null || toSummon.Count <= 0)
+                if (targetPlace == null && toSummon.Count <= 0)
                 {
                     hand.Hide();
                     buttonHand.Disabled = false;

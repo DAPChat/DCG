@@ -7,6 +7,7 @@ namespace packets
         public int placerId;
 
         public GameScene.CardObject card;
+        public GameScene.CardObject paramCard;
         public string action;
         public int targetSlot;
         public int senderSlot;
