@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using packets;
+using card;
+using static System.Collections.Specialized.BitVector32;
+using System.Linq;
 
 public partial class GameScene : Node3D
 {
@@ -26,6 +29,30 @@ public partial class GameScene : Node3D
         public List<string> EffectName { get; set; }
         public List<int> EffectParam { get; set; }
         public List<int> EffectLength { get; set; }
+
+        public CardObject Clone()
+        {
+            return new CardObject
+            {
+                Id = Id,
+                Name = Name,
+                Rank = Rank,
+                SacrificialValue = SacrificialValue,
+                Atk = Atk,
+                Hp = Hp,
+                Mana = Mana,
+                Description = Description,
+                Class = Class,
+                Type = Type,
+                Img = Img,
+                Pack = Pack,
+                StatusName = StatusName,
+                StatusLength = StatusLength,
+                EffectName = EffectName,
+                EffectParam = EffectParam,
+                EffectLength = EffectLength
+            };
+        }
     }
 
     static bool CameraView = false;
@@ -77,6 +104,11 @@ public partial class GameScene : Node3D
 
     public static int currentTurn = 0;
     public static int currentPhase = 0;
+
+    public static int matchSacrifice;
+    private static List<int> sacrificed = new();
+    private static double sacrificialAmt;
+    public static Dictionary<CardObject, int> toSummon = new();
 
     public static void PlaceCard(CAP _action)
     {
@@ -450,6 +482,7 @@ public partial class GameScene : Node3D
         if (currentTurn != ServerManager.client.id)
         {
             label.Text = "Opponent's Turn";
+            sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, 1, 1);
             sceneTree.GetNode<Button>("CanvasLayer/Control/EndTurn").Disabled = true;
             return;
         }
@@ -462,7 +495,6 @@ public partial class GameScene : Node3D
                 break;
             case 1:
                 label.Text = "Placing Phase";
-                sceneTree.GetNode<DirectionalLight3D>("DirectionalLight3D").LightColor = new Color(1, 1, 1);
                 break;
             case 2:
                 label.Text = "Attack Phase";
@@ -477,6 +509,43 @@ public partial class GameScene : Node3D
 
         Label hpLabel = sceneTree.GetNode<Label>("CanvasLayer/Control/Player" + playerNum + "Pic/HP");
         hpLabel.Text = pup.player.lifePoints + " Resolve";
+    }
+
+    public static void ChooseSacrifice(CardObject card, int slot)
+    {
+        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
+        GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
+
+        foreach (var child in container.GetChildren())
+        {
+            container.RemoveChild(child);
+            child.QueueFree();
+        }
+
+        if (sacrificialAmt >= matchSacrifice)
+        {
+            ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card, action = "place", targetSlot = slot, param = sacrificed }));
+            toSummon.Clear();
+            ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+            return;
+        }
+
+        foreach (var curCard in cards)
+        {
+            if (curCard.placerId != ServerManager.client.id) continue;
+            if (sacrificed.Contains(curCard.slot)) continue;
+
+            var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
+
+            container.AddChild(thescene);
+
+            D2Card c = thescene as D2Card;
+
+            c.setCard(curCard.card);
+            c.slot = curCard.slot;
+        }
+
+        HandShown = true;
     }
 
     public override void _Input(InputEvent @event)
@@ -584,7 +653,10 @@ public partial class GameScene : Node3D
                 }
 
                 if (targetPlace == null)
-                    ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", targetSlot = slot }));
+                {
+                    BaseCard action = (BaseCard)Activator.CreateInstance(Type.GetType("card." + cardObject.Name.Replace(' ', '_')));
+                    action.Summon(cardObject.Clone(), slot);
+                }
                 else
                 {
                     targetPlace.Run(zoomed, slot);
@@ -784,7 +856,7 @@ public partial class GameScene : Node3D
                 lastSelectedHand.keepShown = false;
                 lastSelectedHand.ReturnCard();
 
-                if (targetPlace == null)
+                if (targetPlace == null || toSummon.Count <= 0)
                 {
                     hand.Hide();
                     buttonHand.Disabled = false;
@@ -795,6 +867,16 @@ public partial class GameScene : Node3D
                 }
 
                 HandShown = false;
+
+                if (toSummon.Count > 0)
+                {
+                    sacrificed.Add(int.Parse(lastSelectedHand.slot.ToString()));
+                    sacrificialAmt += cardObject.SacrificialValue;
+
+                    ChooseSacrifice(toSummon.First().Key, toSummon.First().Value);
+
+                    lastSelectedHand = null;
+                }
 
                 return;
             }

@@ -19,9 +19,33 @@ namespace card
             }
         }
 
-        public virtual void Summon()
+        public virtual void Summon(GameScene.CardObject card, int slot)
         {
+            int match = 0;
 
+            switch (card.Rank)
+            {
+                case "D":
+                    match = 1;
+                    break;
+                case "C":
+                    match = 2;
+                    break;
+                case "B":
+                    match = 3;
+                    break;
+                case "A":
+                    match = 4;
+                    break;
+                case "S":
+                    match = 5;
+                    break;
+            }
+
+            GameScene.matchSacrifice = match;
+
+            GameScene.toSummon.Add(card, slot);
+            GameScene.ChooseSacrifice(card, slot);
         }
     }
 }

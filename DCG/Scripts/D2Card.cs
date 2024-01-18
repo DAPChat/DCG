@@ -13,6 +13,8 @@ public partial class D2Card : Control
     public bool hovered = false;
     public bool keepShown = false;
 
+    public int slot;
+
     // Works similarly to the Card class
     public void setCard(GameScene.CardObject _card) //add added child card
     {

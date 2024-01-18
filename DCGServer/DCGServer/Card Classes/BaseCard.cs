@@ -19,10 +19,9 @@ namespace card
 
             double sacrifice = 0;
 
-            foreach (var card in game.currentBoard.GetPlayer(action.placerId).fieldRowOne)
+            foreach (var card in action.param)
             {
-                if (card == null) continue;
-                sacrifice += card.SacrificialValue;
+                sacrifice += game.currentBoard.GetPlayer(action.placerId).fieldRowOne[card].SacrificialValue;
             }
 
             int match = 0;
@@ -49,6 +48,15 @@ namespace card
             if (sacrifice < match) return false;
             else
             {
+                for (int i = 0; i < action.param.Count; i++)
+                {
+                    Console.WriteLine(action.param[i].ToString());
+
+                    game.RemoveCard(action, game.currentBoard.GetPlayer(action.placerId).fieldRowOne, action.placerId, action.param[i]);
+                }
+
+                action.param.Clear();
+
                 game.PlaceCard(action);
             }
 
