@@ -50,8 +50,6 @@ namespace card
             {
                 for (int i = 0; i < action.param.Count; i++)
                 {
-                    Console.WriteLine(action.param[i].ToString());
-
                     game.RemoveCard(action, game.currentBoard.GetPlayer(action.placerId).fieldRowOne, action.placerId, action.param[i]);
                 }
 

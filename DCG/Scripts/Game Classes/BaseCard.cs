@@ -43,7 +43,8 @@ namespace card
             }
 
             GameScene.matchSacrifice = match;
-
+            GameScene.sacrificialAmt = 0;
+            GameScene.sacrificed.Clear();
             GameScene.toSummon.Add(card, slot);
             GameScene.ChooseSacrifice(card, slot);
         }

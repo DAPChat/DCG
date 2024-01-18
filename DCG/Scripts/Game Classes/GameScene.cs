@@ -106,8 +106,8 @@ public partial class GameScene : Node3D
     public static int currentPhase = 0;
 
     public static int matchSacrifice;
-    private static List<int> sacrificed = new();
-    private static double sacrificialAmt;
+    public static List<int> sacrificed = new();
+    public static double sacrificialAmt;
     public static Dictionary<CardObject, int> toSummon = new();
 
     public static void PlaceCard(CAP _action)
