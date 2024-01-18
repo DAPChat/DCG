@@ -64,7 +64,7 @@ public class Client
 			_msg.CopyTo(byteArr, 0);
 
             // Write the message to the stream to the correct client
-            stream.BeginWrite(byteArr, 0, byteArr.Length);
+            stream.BeginWrite(byteArr, 0, byteArr.Length, null, null);
         }
 
         private void ReadCallback(IAsyncResult _result)

@@ -18,5 +18,10 @@ namespace card
                 ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, action = GetType().Name, targetSlot = slot }));
             }
         }
+
+        public virtual void Summon()
+        {
+
+        }
     }
 }

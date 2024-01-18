@@ -11,7 +11,7 @@ namespace card
 
         public virtual bool Place()
         {
-            if (action.card.Rank == "F" || action.card.Rank == "E" || action.card.Class == "Spell")
+            if (action.card.Rank == "F" || action.card.Rank == "E" || action.card.Class == "Spell" || action.action == "summon")
             {
                 game.PlaceCard(action);
                 return true;
