@@ -291,7 +291,7 @@ public partial class GameScene : Node3D
 
         // Set the scrollable description to the full description of the card (not shortened)
         description.ScrollToLine(0);
-        description.Text = card.card.Description;
+        description.Text = card.card.SacrificialValue + " - " + card.card.Description;
 
         ShowActions(card);
     }
@@ -534,6 +534,7 @@ public partial class GameScene : Node3D
         {
             if (curCard.placerId != ServerManager.client.id) continue;
             if (sacrificed.Contains(curCard.slot)) continue;
+            if (curCard.card.Class == "Spell") continue;
 
             var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
 
@@ -556,6 +557,7 @@ public partial class GameScene : Node3D
             if (HandShown)
             {
                 HandInput();
+                return;
             }
 
             if (chooseTarget != null)
@@ -654,8 +656,12 @@ public partial class GameScene : Node3D
 
                 if (targetPlace == null)
                 {
-                    BaseCard action = (BaseCard)Activator.CreateInstance(Type.GetType("card." + cardObject.Name.Replace(' ', '_')));
-                    action.Summon(cardObject.Clone(), slot);
+                    if (cardObject.Class == "Spell") ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = cardObject, action = "place", targetSlot = slot }));
+                    else
+                    {
+                        BaseCard action = (BaseCard)Activator.CreateInstance(Type.GetType("card." + cardObject.Name.Replace(' ', '_')));
+                        action.Summon(cardObject.Clone(), slot);
+                    }
                 }
                 else
                 {

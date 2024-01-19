@@ -40,7 +40,7 @@ public partial class D2Card : Control
         name.Text = card.Name.ToString();
 
         GetNode<Label>("FrontFace/TopCard/Rank").Text = card.Rank.ToString();
-        description.Text = card.Description.ToString();
+        description.Text = card.SacrificialValue + " - " + card.Description.ToString();
 
         string statsText = "";
 

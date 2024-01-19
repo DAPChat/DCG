@@ -21,8 +21,6 @@ namespace card
 
         public virtual void Summon(GameScene.CardObject card, int slot)
         {
-            if (card.Type == "Spell") ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card, action = "place", targetSlot = slot }));
-
             int match = 0;
 
             switch (card.Rank)

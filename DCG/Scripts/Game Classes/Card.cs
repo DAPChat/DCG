@@ -45,7 +45,7 @@ public partial class Card : Node3D
 		GetNode<Label3D>("FrontFace/Name/Rank").Text = card.Rank.ToString();
 		
 		// Shortens the string if necessary to prevent overflow
-		description.Text = card.Description.Length > 133 ? card.Description.ToString().Substr(0, 130) + "..." : card.Description.ToString();
+		description.Text = card.Description.Length > 133 ? card.SacrificialValue + " - " + card.Description.ToString().Substr(0, 130) + "..." : card.SacrificialValue + " - " + card.Description.ToString();
 
         string statsText = "";
 
