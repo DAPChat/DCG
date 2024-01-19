@@ -9,6 +9,23 @@ namespace card
             public override string name => "Attack";
             public override void Run(Card card)
             {
+                bool empty = true;
+
+                foreach (var item in GameScene.cards)
+                {
+                    if (item.placerId != ServerManager.client.id)
+                    {
+                        empty = false;
+                        break;
+                    }
+                }
+
+                if (empty)
+                {
+                    ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, senderSlot = card.slot, card = card.card, action = GetType().Name }));
+                    return;
+                }
+
                 GameScene.ChooseView();
                 GameScene.chooseTarget = this;
             }

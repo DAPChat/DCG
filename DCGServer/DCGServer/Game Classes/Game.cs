@@ -215,6 +215,35 @@ namespace game
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
+			bool empty = true;
+
+			foreach (var card in p.fieldRowOne)
+			{
+				if (card != null)
+				{
+					empty = false;
+					break;
+				}
+			}
+
+			if (empty)
+			{
+                p.lifePoints -= dmg == null ? action.card.Atk : (int)dmg;
+
+                SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
+
+                if (p.lifePoints <= 0)
+                {
+                    Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
+                    Close();
+                    return;
+                }
+
+                currentBoard.UpdatePlayer(p);
+
+                return;
+            }
+
 			if (!p.fieldRowOne[action.targetSlot].EffectName.Contains("Immortal"))
 				p.fieldRowOne[action.targetSlot].Hp -= dmg == null? action.card.Atk : (int)dmg;
 
