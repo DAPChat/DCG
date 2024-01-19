@@ -91,7 +91,6 @@ public partial class GameScene : Node3D
     public static Card zoomed = null;
 
     public static bool changeScene = false;
-    public static bool selectMode = false;
 
     public static Action chooseTarget = null;
     public static Action targetPlace = null;
@@ -336,12 +335,8 @@ public partial class GameScene : Node3D
 
             action.Pressed += () =>
             {
-                if (selectMode && currentPhase == 2)
-                {
-                    selectMode = false;
-                    cardClass.Run(card);
-                    ShowActions(card);
-                }
+                cardClass.Run(card);
+                ShowActions(card);
             };
 
             vbox.CallDeferred(Node.MethodName.AddChild, action);
@@ -551,15 +546,16 @@ public partial class GameScene : Node3D
 
     public override void _Input(InputEvent @event)
     {
+        if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
+            if (HandShown)
+                HandInput();
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
         // Check if the player clicked
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
         {
-            if (HandShown)
-            {
-                HandInput();
-                return;
-            }
-
             if (chooseTarget != null)
             {
                 ChooseTargetInput(@event);
@@ -574,30 +570,13 @@ public partial class GameScene : Node3D
             {
                 if (targetPlace != null) break;
 
-                if (!selectMode && card.mouse && !card.set && (card != zoomed))
+                if (card.mouse && !card.set && (card != zoomed))
                 {
                     zoomed = card;
                     ViewCard(card.Position, card, card.description);
                     card.set = true;
                     skip = true;
                     continue;
-                }
-                else if (!selectMode && card.mouse && card.set && card == zoomed && card.placerId == ServerManager.client.id)
-                {
-                    selectMode = true;
-                    skip = true;
-                    break;
-                }
-                else if (selectMode && card.set && card == zoomed && card.mouse)
-                {
-                    selectMode = false;
-                    skip = true;
-                    break;
-                }
-                else if (selectMode)
-                {
-                    skip = true;
-                    break;
                 }
 
                 if (card.set)
@@ -715,16 +694,6 @@ public partial class GameScene : Node3D
         // Move between the two camera angles
         buttonCamera.ButtonDown += () =>
         {
-            if (selectMode)
-            {
-                selectMode = false;
-
-                if (zoomed != null)
-                {
-                    ReturnView(zoomed);
-                }
-            }
-
             if (tween != null && tween.IsRunning())
                 tween.Kill();
 
@@ -745,16 +714,6 @@ public partial class GameScene : Node3D
         };
         buttonHand.ButtonDown += () =>
         {
-            if (selectMode)
-            {
-                selectMode = false;
-
-                if (zoomed != null)
-                {
-                    ReturnView(zoomed);
-                }
-            }
-
             hand.Show();
             HandShown = true;
             buttonHand.Disabled = true;

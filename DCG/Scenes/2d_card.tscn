@@ -11,6 +11,7 @@ size = Vector2(225, 300)
 [node name="2DCard" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 1
 script = ExtResource("1_qfx71")
 
 [node name="FrontFace" type="TextureRect" parent="."]

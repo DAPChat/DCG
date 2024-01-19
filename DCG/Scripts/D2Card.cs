@@ -107,6 +107,11 @@ public partial class D2Card : Control
         }
     }
 
+    public override void _GuiInput(InputEvent @event)
+    {
+        GameScene.sceneTree._UnhandledInput(@event);
+    }
+
     public override void _Ready()
     {
         GetNode<Area2D>("FrontFace/Area2D").MouseEntered += () =>
