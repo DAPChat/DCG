@@ -316,8 +316,6 @@ namespace game
             if (curCard.EffectName.Contains(name))
             {
                 curCard.EffectLength[curCard.EffectName.IndexOf(name)] += length;
-
-				Console.WriteLine("Here");
             }
             else
             {

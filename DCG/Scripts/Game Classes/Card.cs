@@ -135,7 +135,7 @@ public partial class Card : Node3D
 	public void AddEffect(string name, int param)
 	{
 		if (GameScene.currentTurn != ServerManager.client.id)
-			tempEffects.Add(name, param);
+			tempEffects[name] = param;
 		else if (!effects.ContainsKey(name)) effects.Add(name, param);
 	}
 

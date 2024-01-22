@@ -29,7 +29,7 @@ namespace card
             game.AddStatus(this, "Attack", 2);
             game.AddStatus(this, action.action, -1);
 
-            return true;
+            return false;
         }
 
         public bool Solitude()
@@ -40,7 +40,7 @@ namespace card
             game.AddStatus(this, action.action, 2);
             game.AddStatus(this, "Attack", 1);
 
-            return true;
+            return false;
         }
 
         public bool HB()
@@ -50,7 +50,7 @@ namespace card
             game.AddEffect(this, "Hp", 2, 750);
             game.AddEffect(this, "Atk", 2, 750);
 
-            return true;
+            return false;
         }
 
         public override bool Death()
