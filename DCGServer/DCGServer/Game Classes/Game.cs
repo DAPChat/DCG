@@ -212,7 +212,7 @@ namespace game
             ActionManager.UpdateCards(currentBoard.GetPlayer(OpponentId(action.placerId)).fieldRowOne, OpponentId(action.placerId), this);
         }
 
-		public void Damage(CAP action, object o, int? dmg = null)
+		public void Damage(CAP action, int? dmg = null)
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
@@ -364,7 +364,7 @@ namespace game
 						placerId = OpponentId(id)
 					};
 
-                    Damage(cap, ActionManager.CreateCard(cap, this), card.EffectParam[effect]);
+                    Damage(cap, card.EffectParam[effect]);
 					break;
 				case "Atk":
 					card.Atk -= card.EffectParam[effect];

@@ -134,7 +134,7 @@ namespace card
 
             var bs = ActionManager.CreateCard(cap, game);
 
-            game.Damage(action, bs);
+            game.Damage(action);
 
             bool died = false;
 
@@ -157,7 +157,7 @@ namespace card
                     CAP ac = new() { card = atkCard, targetSlot = action.senderSlot, placerId = p2.id };
                     var cardBase = ActionManager.CreateCard(ac, game);
 
-                    game.Damage(ac, cardBase, defCard.Atk - atkCard.Atk);
+                    game.Damage(ac, defCard.Atk - atkCard.Atk);
 
                     if (p1.fieldRowOne[action.senderSlot].Hp <= 0)
                     {
