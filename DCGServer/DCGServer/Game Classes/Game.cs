@@ -13,7 +13,7 @@ namespace game
 		public Dictionary<int, Client> clients = new();
 		public List<int> clientIds = new();
 
-		public GameBoard currentBoard = null;
+		public GameBoard currentBoard;
 
 		private bool active;
 
