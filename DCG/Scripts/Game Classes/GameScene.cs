@@ -547,8 +547,30 @@ public partial class GameScene : Node3D
         HandShown = true;
     }
 
+    public static void CancelActions()
+    {
+        chooseTarget = null;
+        targetPlace = null;
+        selectedHand = null;
+
+        if (zoomed != null) ReturnView(zoomed);
+
+        toSummon.Clear();
+        matchSacrifice = 0;
+        sacrificed.Clear();
+        sacrificialAmt = 0;
+
+        ((Button)sceneTree.GetNode("/root/Game/CanvasLayer/Control/Hand")).Disabled = false;
+        ((Container)sceneTree.GetNode("/root/Game/CanvasLayer/Control/PlayerHand")).Hide();
+        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+
+        HandShown = false;
+    }
+
     public override void _Input(InputEvent @event)
     {
+        if (@event.IsActionPressed("ui_cancel")) CancelActions();
+
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
             if (HandShown)
             {
