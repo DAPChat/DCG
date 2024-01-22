@@ -76,8 +76,11 @@ public class Client
 
     public void WriteStream(byte[] _msg)
     {
+		byte[] bytes = new byte[8196];
+		_msg.CopyTo(bytes, 0);
+
         // Write the message to the stream to the correct client
-        stream.BeginWrite(_msg, 0, _msg.Length, null, null);
+        stream.BeginWrite(bytes, 0, bytes.Length, null, null);
     }
 
     private void ConnectCallback()
@@ -111,7 +114,7 @@ public class Client
 			//if(gameId > 0)
 			//	stream.BeginWrite(b, 0, b.Length, null, null);
 
-            buffer = new byte[buffer.Length];
+			buffer = new byte[8196];
 
 			stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, stream);
 		}
