@@ -20,8 +20,8 @@ namespace player
 
 		public List<string> deck;
 		public List<string> hand;
-		public List<string> unforgotten;
-		public List<string> forgotten;
+        public Dictionary<string, int> unforgotten;
+        public List<string> forgotten;
 
 		public string[] fieldRowOne;
 		public string[] fieldRowTwo;

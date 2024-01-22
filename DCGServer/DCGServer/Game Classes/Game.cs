@@ -2,6 +2,7 @@
 using packets;
 using card;
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace game
 {
@@ -307,9 +308,9 @@ namespace game
 			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "status", targetId = card.action.placerId, name = name, card = card.action.card.MakeReady(), slot = card.action.senderSlot }));
 		}
 
-		public void AddEffect(BaseCard card, string name, int length, int param)
+		public void AddEffect(CAP action, string name, int length, int param)
 		{
-            TempCard curCard = currentBoard.GetPlayer(card.action.placerId).fieldRowOne[card.action.senderSlot];
+            TempCard curCard = currentBoard.GetPlayer(action.placerId).fieldRowOne[action.senderSlot];
 
             if (curCard == null) return;
 
@@ -327,9 +328,9 @@ namespace game
 					curCard.GetType().GetProperty(name).SetValue(curCard, (int)curCard.GetType().GetProperty(name).GetValue(curCard) + param);
             }
 
-            SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = card.action.placerId, card = curCard.MakeReady(), targetSlot = card.action.senderSlot }));
+            SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = action.placerId, card = curCard.MakeReady(), targetSlot = action.senderSlot }));
 
-			clients[card.action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = card.action.placerId, name = name, param = param, card = curCard.MakeReady(), slot = card.action.senderSlot }));
+			clients[action.placerId].tcp.WriteStream(PacketManager.ToJson(new EUP { type = "effect", targetId = action.placerId, name = name, param = param, card = curCard.MakeReady(), slot = action.senderSlot }));
         }
 
 		public void ResetStats(int id, int slot, string[] disclude)
@@ -508,6 +509,39 @@ namespace game
                         }
 
 						ActionManager.UpdateCards(p.fieldRowOne, p.id, game);
+
+						for (int i = p.unforgotten.Count-1; i >= 0; i--)
+						{
+                            var card = p.unforgotten.Keys.ToList()[i];
+                            ActionManager.CreateCard(new CAP { card = card.card, placerId = card.placerId }, game).Unforgotten();
+
+							if (p.unforgotten[card] == -1) continue;
+
+							p.unforgotten[card] -= 1;
+							if (p.unforgotten[card] <= 0)
+							{
+								p.unforgotten.Remove(card);
+								p.forgotten.Add(card.card.Id);
+
+                                CAP uCAP = new()
+                                {
+                                    action = "urem",
+                                    card = card.card
+                                };
+
+                                game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
+
+                                uCAP = new()
+                                {
+                                    action = "fadd",
+                                    card = card.card
+                                };
+
+                                game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
+
+                                continue;
+							}
+						}
 
                         Client placer = game.clients[turn];
 

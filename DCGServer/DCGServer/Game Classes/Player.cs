@@ -20,7 +20,7 @@ namespace player
 
 		public List<string> deck;
 		public List<string> hand;
-		public List<string> unforgotten;
+		public Dictionary<packets.CAP, int> unforgotten;
 		public List<string> forgotten;
 
 		public TempCard[] fieldRowOne;

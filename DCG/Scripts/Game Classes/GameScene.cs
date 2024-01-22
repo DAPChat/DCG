@@ -792,6 +792,12 @@ public partial class GameScene : Node3D
                 case "fadd":
                     forgotten.Add(cap.card);
                     break;
+                case "uadd":
+                    unforgotten.Add(cap.card);
+                    break;
+                case "urem":
+                    unforgotten.Remove(cap.card);
+                    break;
                 case "ueffects":
                     UpdateEffects();
                     break;

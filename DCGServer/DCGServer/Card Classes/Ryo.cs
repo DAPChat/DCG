@@ -36,7 +36,7 @@ namespace card
         {
             if(!game.Cost(this, "Mana", 400)) return false;
 
-            game.AddEffect(this, "Immortal", 1, 0);
+            game.AddEffect(action, "Immortal", 1, 0);
             game.AddStatus(this, action.action, 2);
             game.AddStatus(this, "Attack", 1);
 
@@ -47,15 +47,35 @@ namespace card
         {
             if (!game.Cost(this, "Mana", 300)) return false;
 
-            game.AddEffect(this, "Hp", 2, 750);
-            game.AddEffect(this, "Atk", 2, 750);
+            game.AddEffect(action, "Hp", 2, 750);
+            game.AddEffect(action, "Atk", 2, 750);
 
             return false;
         }
 
         public override bool Death()
         {
-            return base.Death();
+            base.UnDeath(2);
+            Unforgotten();
+            return true;
+        }
+
+        public override void Unforgotten()
+        {
+            TempCard[] field = game.currentBoard.GetPlayer(game.OpponentId(action.placerId)).fieldRowOne;
+
+            for (int i = 0; i < field.Length; i++)
+            {
+                if (field[i] == null) continue;
+
+                CAP ac = new()
+                {
+                    senderSlot = i,
+                    placerId = game.OpponentId(action.placerId)
+                };
+
+                game.AddEffect(ac, "Atk", 1, 500);
+            }
         }
     }
 }

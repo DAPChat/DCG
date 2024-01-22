@@ -95,6 +95,27 @@ namespace card
             return true;
         }
 
+        public virtual bool UnDeath(int duration)
+        {
+            Player p = game.currentBoard.GetPlayer(game.OpponentId(action.placerId));
+
+            CAP uCAP = new()
+            {
+                action = "uadd",
+                card = p.fieldRowOne[action.targetSlot].MakeReady()
+            };
+
+            game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
+
+            p.unforgotten.Add(new CAP { card = p.fieldRowOne[action.targetSlot], placerId = action.placerId }, duration);
+
+            game.RemoveCard(action, p.fieldRowOne, p.id, action.targetSlot);
+
+            game.currentBoard.UpdatePlayer(p);
+
+            return true;
+        }
+
         public virtual bool Update()
         {
             game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = action.placerId, card = action.card, targetSlot = action.targetSlot }));
@@ -102,7 +123,7 @@ namespace card
             return true;
         }
 
-        public bool Attack()
+        public virtual bool Attack()
         {
             game.AddStatus(this, "Attack", 1);
 
@@ -165,6 +186,11 @@ namespace card
             }
 
             return false;
+        }
+
+        public virtual void Unforgotten()
+        {
+
         }
     }
 }
