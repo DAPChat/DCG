@@ -23,9 +23,9 @@ public class Client
         tcp = new TCP(id, this);
 	}
 
-	public string Username()
+	public PlayerAccount Acc()
 	{
-		return account.username;
+		return account;
 	}
 
 	public class TCP

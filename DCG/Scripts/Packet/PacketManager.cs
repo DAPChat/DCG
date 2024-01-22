@@ -48,6 +48,11 @@ public class PacketManager
 							break;
                         }
 
+						if (gsp.end)
+						{
+							GameScene.winner = gsp.winner;
+						}
+
 						if (GameScene.currentTurn != gsp.turn && gsp.turn == ServerManager.client.id) GameScene.actionQueue.Add(new CAP { action = "ueffects" });
 
 						GameScene.currentTurn = gsp.turn;

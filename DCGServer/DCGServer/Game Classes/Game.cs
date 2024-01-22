@@ -82,7 +82,7 @@ namespace game
 
 			p.hand = new();
 
-			p.username = _client.Username();
+			p.username = _client.Acc().username;
 
 			for (int i = 0; i < 6; i++)
 			{
@@ -208,6 +208,8 @@ namespace game
 			else if (currentBoard.phase == 2)
 				ActionManager.Register(action, this);
 
+			if (!active) return;
+
             ActionManager.UpdateCards(currentBoard.GetPlayer(action.placerId).fieldRowOne, action.placerId, this);
             ActionManager.UpdateCards(currentBoard.GetPlayer(OpponentId(action.placerId)).fieldRowOne, OpponentId(action.placerId), this);
         }
@@ -230,10 +232,11 @@ namespace game
 
             if (p.lifePoints <= 0)
             {
-                Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
-                Close();
+				PlayerManager.Win(clients[OpponentId(p.id)].Acc(), clients[p.id].Acc(), this);
                 return;
             }
+
+			currentBoard.UpdatePlayer(p);
         }
 
 		public void RemoveCard(CAP action, TempCard[] field, int id, int slot)

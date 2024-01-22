@@ -124,8 +124,6 @@ namespace card
             {
                 game.PlayerDamage(action, p2, -action.card.Atk);
 
-                game.currentBoard.UpdatePlayer(p2);
-
                 return false;
             }
 

@@ -140,6 +140,19 @@ public class Database
         var updateResult = collection.UpdateOne(filter, update);
     }
 
+	public static void UpdateWin(PlayerAccount account)
+	{
+        var collection = client.GetDatabase("DCG").GetCollection<PlayerAccount>("Players");
+
+        var filter = Builders<PlayerAccount>.Filter.Eq(PlayerAccount => PlayerAccount.username, account.username);
+
+		var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.totalWins, account.totalWins)
+			.Set(PlayerAccount => PlayerAccount.totalLosses, account.totalLosses)
+			.Set(PlayerAccount => PlayerAccount.streak, account.streak);
+
+        var updateResult = collection.UpdateOne(filter, update);
+    }
+
 	// Returns a list of all card ids
 	public static List<string> CardIds()
 	{

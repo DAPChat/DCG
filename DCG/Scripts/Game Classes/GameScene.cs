@@ -86,6 +86,7 @@ public partial class GameScene : Node3D
     public static List<CAP> actionQueue = new();
     public static List<PUP> playerQueue = new();
     public static List<EUP> effectQueue = new();
+    public static string winner = null;
 
     public static CardObject cardObject = null;
     public static Card zoomed = null;
@@ -801,6 +802,13 @@ public partial class GameScene : Node3D
             }
 
             effectQueue.RemoveAt(0);
+        }
+
+        if (winner != null)
+        {
+            ((Panel)sceneTree.GetNode("/root/Game/CanvasLayer/Control/EndScreen")).Show();
+            ((Label)sceneTree.GetNode("/root/Game/CanvasLayer/Control/EndScreen/Label")).Text = ServerManager.client.account.username == winner ? "Congratulations!\nYou Won!" : "Uh-oh,\nYou Lose";
+            winner = null;
         }
 
         base._Process(delta);
