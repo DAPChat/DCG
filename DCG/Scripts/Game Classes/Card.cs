@@ -146,5 +146,25 @@ public partial class Card : Node3D
 		// Check if the mouse is inside the object
 		collision.MouseEntered += () => { mouse = true; };
 		collision.MouseExited += () => { mouse = false; };
-	}
+		CardUse();
+    }
+    public void CardUse()
+    {
+        var frontFace = GetNode<MeshInstance3D>("FrontFace");
+        var originalMaterial = (StandardMaterial3D)frontFace.MaterialOverride;
+        var material = new StandardMaterial3D();
+        material.Set("albedo", new Color(0.8f, 0.8f, 0.8f));
+        frontFace.MaterialOverride = material;
+
+        var timer = new Timer();
+        timer.WaitTime = 0.1f;
+        timer.OneShot = true;
+        timer.Timeout += () =>
+        {
+            frontFace.MaterialOverride = originalMaterial;
+            timer.QueueFree();
+        };
+        AddChild(timer);
+        timer.Start();
+    }
 }
