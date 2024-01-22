@@ -122,7 +122,7 @@ namespace card
 
             if (empty)
             {
-                game.PlayerDamage(action, p2, -action.card.Atk);
+                game.PlayerDamage(p2, -action.card.Atk);
 
                 return false;
             }
@@ -140,7 +140,7 @@ namespace card
             {
                 died = true;
 
-                game.PlayerDamage(action, p2, p2.fieldRowOne[action.targetSlot].Hp);
+                game.PlayerDamage(p2, p2.fieldRowOne[action.targetSlot].Hp);
 
                 bs.Death();
             }

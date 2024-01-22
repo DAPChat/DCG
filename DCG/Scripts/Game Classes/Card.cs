@@ -153,7 +153,7 @@ public partial class Card : Node3D
         var frontFace = GetNode<MeshInstance3D>("FrontFace");
         var originalMaterial = (StandardMaterial3D)frontFace.MaterialOverride;
         var material = new StandardMaterial3D();
-        material.Set("albedo", new Color(0.8f, 0.8f, 0.8f));
+        material.Set("albedo_color", new Color(0.8f, 0.8f, 0.8f));
         frontFace.MaterialOverride = material;
 
         var timer = new Timer();

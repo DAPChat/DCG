@@ -551,7 +551,10 @@ public partial class GameScene : Node3D
     {
         if (@event.IsActionPressed("Left_Click") && !@event.IsEcho())
             if (HandShown)
+            {
                 HandInput();
+                ((Control)sceneTree.GetNode("/root/Game/CanvasLayer/Control")).AcceptEvent();
+            }
     }
 
     public override void _UnhandledInput(InputEvent @event)

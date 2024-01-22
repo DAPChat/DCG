@@ -224,7 +224,7 @@ namespace game
             currentBoard.UpdatePlayer(p);
 		}
 
-		public void PlayerDamage(CAP action, Player p, int by)
+		public void PlayerDamage(Player p, int by)
 		{
 			p.lifePoints += by;
 

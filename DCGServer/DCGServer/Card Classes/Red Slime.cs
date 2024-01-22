@@ -10,5 +10,12 @@ namespace card
             action = _action;
             game = _game;
         }
+
+        public override bool Death()
+        {
+            game.PlayerDamage(game.currentBoard.GetPlayer(action.placerId), -250);
+
+            return base.Death();
+        }
     }
 }
