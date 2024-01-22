@@ -105,7 +105,7 @@ public partial class GameScene : Node3D
     public static int currentTurn = 0;
     public static int currentPhase = 0;
 
-    public static int matchSacrifice;
+    public static double matchSacrifice;
     public static List<int> sacrificed = new();
     public static double sacrificialAmt;
     public static Dictionary<CardObject, int> toSummon = new();
@@ -194,9 +194,9 @@ public partial class GameScene : Node3D
                 grid.RemoveChild(c);
                 c.QueueFree();
 
-                gridSeparation = 250;
+                gridSeparation = 300;
 
-                while ((ServerManager.client.hand.Count * gridSeparation + (225 - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
+                while ((ServerManager.client.hand.Count * gridSeparation + ((225) - gridSeparation)) > sceneTree.GetViewport().GetVisibleRect().Size.X)
                 {
                     gridSeparation -= 1;
                 }

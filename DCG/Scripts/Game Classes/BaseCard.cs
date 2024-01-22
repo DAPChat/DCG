@@ -38,7 +38,7 @@ namespace card
 
         public virtual void Summon(GameScene.CardObject card, int slot)
         {
-            int match = 0;
+            double match = 0;
 
             switch (card.Rank)
             {
@@ -46,16 +46,16 @@ namespace card
                     match = 1;
                     break;
                 case "C":
-                    match = 2;
+                    match = 1.5;
                     break;
                 case "B":
-                    match = 3;
+                    match = 2;
                     break;
                 case "A":
-                    match = 4;
+                    match = 3;
                     break;
                 case "S":
-                    match = 5;
+                    match = 4;
                     break;
             }
 

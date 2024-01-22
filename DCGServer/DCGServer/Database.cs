@@ -169,6 +169,11 @@ public class Database
 
 		foreach (Card card in result)
 		{
+			if (card.Rank == "F" || card.Rank == "E")
+			{
+                cardIds.Add(card.Id.ToString());
+                cardIds.Add(card.Id.ToString());
+            }
 			cardIds.Add(card.Id.ToString());
 		}
 
