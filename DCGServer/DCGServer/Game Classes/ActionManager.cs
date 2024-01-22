@@ -7,7 +7,7 @@ public class ActionManager
     {
         if (_action.card.Name == null) return;
 
-        BaseCard card = null;
+        BaseCard card;
 
         player.Player p = _game.currentBoard.GetPlayer(_action.placerId);
 
@@ -31,7 +31,7 @@ public class ActionManager
         char[] name = _action.action.ToArray();
         name[0] = _action.action.ToUpper()[0];
 
-        bool success = false;
+        bool success;
 
         try
         {
@@ -62,7 +62,7 @@ public class ActionManager
 
             if (card == null) continue;
 
-            var b = CreateCard(new CAP { targetSlot = i, card = card, placerId = id }, game);
+            var b = CreateCard(new CAP { targetSlot = i, card = card.MakeReady(), placerId = id }, game);
 
             b.Update();
         }

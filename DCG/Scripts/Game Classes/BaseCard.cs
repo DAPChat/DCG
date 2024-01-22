@@ -13,7 +13,7 @@ namespace card
 
                 foreach (var item in GameScene.cards)
                 {
-                    if (item.placerId != ServerManager.client.id)
+                    if (item.placerId != ServerManager.client.id && item.card.Class != "Spell")
                     {
                         empty = false;
                         break;

@@ -465,9 +465,11 @@ public partial class GameScene : Node3D
             if (c.placerId == eup.targetId && c.card.Id == eup.card.Id && eup.slot == (c.slot))
             {
                 c.AddStatus(eup.name);
-                return;
+                break;
             }
         }
+
+        if (zoomed != null) ShowActions(zoomed);
     }
 
     public static void UpdateTurn()

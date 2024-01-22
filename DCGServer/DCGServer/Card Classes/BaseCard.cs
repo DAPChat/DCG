@@ -11,10 +11,17 @@ namespace card
 
         public virtual bool Place()
         {
-            if (action.card.Rank == "F" || action.card.Rank == "E" || action.card.Class == "Spell" || action.action == "summon")
+            if (action.card.Rank == "F" || action.card.Rank == "E" || action.card.Class == "Spell")
             {
+                if (action.card.Class != "Spell")
+                {
+                    if (game.currentBoard.summoned >= 2) return false;
+                    
+                    game.currentBoard.summoned++;
+                }
+
                 game.PlaceCard(action);
-                return true;
+                return false;
             }
 
             double sacrifice = 0;
@@ -58,12 +65,12 @@ namespace card
                 game.PlaceCard(action);
             }
 
-            return true;
+            return false;
         }
 
         public virtual bool Summon()
         {
-            Place();
+            game.PlaceCard(action);
             return false;
         }
 
@@ -97,9 +104,69 @@ namespace card
 
         public bool Attack()
         {
-            game.Damage(action, this);
+            game.AddStatus(this, "Attack", 1);
 
-            return true;
+            Player p2 = game.currentBoard.GetPlayer(game.OpponentId(action.placerId));
+            Player p1 = game.currentBoard.GetPlayer(action.placerId);
+
+            bool empty = true;
+
+            foreach (var card in p2.fieldRowOne)
+            {
+                if (card != null)
+                {
+                    empty = false;
+                    break;
+                }
+            }
+
+            if (empty)
+            {
+                game.PlayerDamage(action, p2, -action.card.Atk);
+
+                game.currentBoard.UpdatePlayer(p2);
+
+                return false;
+            }
+
+            CAP cap = action.Clone();
+            cap.card = p2.fieldRowOne[action.targetSlot];
+
+            var bs = ActionManager.CreateCard(cap, game);
+
+            game.Damage(action, bs);
+
+            bool died = false;
+
+            if (p2.fieldRowOne[action.targetSlot].Hp <= 0)
+            {
+                died = true;
+
+                game.PlayerDamage(action, p2, p2.fieldRowOne[action.targetSlot].Hp);
+
+                bs.Death();
+            }
+
+            if (!died)
+            {
+                var atkCard = p1.fieldRowOne[action.senderSlot];
+                var defCard = p2.fieldRowOne[action.targetSlot];
+
+                if (defCard.Atk > atkCard.Atk)
+                {
+                    CAP ac = new() { card = atkCard, targetSlot = action.senderSlot, placerId = p2.id };
+                    var cardBase = ActionManager.CreateCard(ac, game);
+
+                    game.Damage(ac, cardBase, defCard.Atk - atkCard.Atk);
+
+                    if (p1.fieldRowOne[action.senderSlot].Hp <= 0)
+                    {
+                        cardBase.Death();
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

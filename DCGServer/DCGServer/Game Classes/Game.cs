@@ -1,6 +1,7 @@
 ﻿using player;
 using packets;
 using card;
+using System;
 
 namespace game
 {
@@ -215,64 +216,25 @@ namespace game
 		{
 			Player p = currentBoard.GetPlayer(OpponentId(action.placerId));
 
-			bool empty = true;
-
-			foreach (var card in p.fieldRowOne)
-			{
-				if (card != null)
-				{
-					empty = false;
-					break;
-				}
-			}
-
-			if (empty)
-			{
-                p.lifePoints -= dmg == null ? action.card.Atk : (int)dmg;
-
-                SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
-
-                if (p.lifePoints <= 0)
-                {
-                    Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
-                    Close();
-                    return;
-                }
-
-                currentBoard.UpdatePlayer(p);
-
-                return;
-            }
-
 			if (!p.fieldRowOne[action.targetSlot].EffectName.Contains("Immortal"))
 				p.fieldRowOne[action.targetSlot].Hp -= dmg == null? action.card.Atk : (int)dmg;
 
-            if (p.fieldRowOne[action.targetSlot].Hp <= 0)
-			{
-                p.lifePoints += p.fieldRowOne[action.targetSlot].Hp;
-
-				SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
-
-                ((BaseCard)o).Death();
-
-				if (p.lifePoints <= 0)
-				{
-					Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
-					Close();
-					return;
-				}
-			}
-			else
-			{
-                CAP _action = action.Clone();
-                _action.targetId = p.id;
-                _action.card = p.fieldRowOne[_action.targetSlot].MakeReady();
-                _action.action = "update";
-                SendAll(PacketManager.ToJson(_action));
-            }
-
             currentBoard.UpdatePlayer(p);
 		}
+
+		public void PlayerDamage(CAP action, Player p, int by)
+		{
+			p.lifePoints += by;
+
+            SendAll(PacketManager.ToJson(new PUP { action = "uhp", player = p.Client() }));
+
+            if (p.lifePoints <= 0)
+            {
+                Console.WriteLine(clients[action.placerId].Username() + " has won the battle!");
+                Close();
+                return;
+            }
+        }
 
 		public void RemoveCard(CAP action, TempCard[] field, int id, int slot)
 		{
@@ -432,6 +394,8 @@ namespace game
 			public int phase;
 			public int round;
 
+			public int summoned;
+
 			string image;
 
 			Player[] players = new Player[2];
@@ -564,7 +528,10 @@ namespace game
                         break;
 					}
 				}
-                return turn;
+
+				summoned = 0;
+				
+				return turn;
 			}
 
 			public int NextPhase()
