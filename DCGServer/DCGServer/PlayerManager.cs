@@ -14,8 +14,6 @@ public class PlayerManager
 
         Database.UpdateWin(winner);
 
-        // Add rank code
-
         loser.totalLosses += 1;
         loser.streak = 0;
 
