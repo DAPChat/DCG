@@ -10,7 +10,7 @@ public class PlayerManager
         winner.streak += 1;
 
         winner.points += 100 * (Power(2, loser.rank) * 0.25) / (Power(2, winner.rank) * 0.25);
-        winner.rank = CheckPoints(winner.points, winner.rank);
+        winner.rank = CheckRank(winner.points, winner.rank);
 
         Database.UpdateWin(winner);
 
@@ -22,14 +22,14 @@ public class PlayerManager
         if (loser.rank >= 2)
             loser.points -= Math.Clamp(100 * (Power(2, loser.rank) * 0.25) / (Power(2, winner.rank) * 0.25), 0, 200);
 
-        loser.rank = CheckPoints(loser.points, loser.rank);
+        loser.rank = CheckRank(loser.points, loser.rank);
 
         Database.UpdateWin(loser);
 
         game.SendAll(PacketManager.ToJson(new GSP { end = true, winner = winner.username, gameId = game.id }));
     }
 
-    public static int CheckPoints(double points, int curRank)
+    public static int CheckRank(double points, int curRank)
     {
         if (curRank == 0) 
             if (points >= 500) return 1;
