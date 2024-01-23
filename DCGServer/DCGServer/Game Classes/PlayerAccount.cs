@@ -13,6 +13,7 @@ namespace player
 		public bool loggedIn;
 
 		public int rank;
+		public double points;
 		public int streak;
 		public int totalWins;
 		public int totalLosses;

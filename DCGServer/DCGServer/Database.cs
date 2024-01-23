@@ -148,7 +148,9 @@ public class Database
 
 		var update = Builders<PlayerAccount>.Update.Set(PlayerAccount => PlayerAccount.totalWins, account.totalWins)
 			.Set(PlayerAccount => PlayerAccount.totalLosses, account.totalLosses)
-			.Set(PlayerAccount => PlayerAccount.streak, account.streak);
+			.Set(PlayerAccount => PlayerAccount.streak, account.streak)
+			.Set(PlayerAccount => PlayerAccount.rank, account.rank)
+			.Set(PlayerAccount => PlayerAccount.points, account.points);
 
         var updateResult = collection.UpdateOne(filter, update);
     }

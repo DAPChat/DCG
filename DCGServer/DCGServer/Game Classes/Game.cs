@@ -520,8 +520,6 @@ namespace game
 							p.unforgotten[card] -= 1;
 							if (p.unforgotten[card] <= 0)
 							{
-								p.unforgotten.Remove(card);
-								p.forgotten.Add(card.card.Id);
 
                                 CAP uCAP = new()
                                 {
@@ -538,6 +536,9 @@ namespace game
                                 };
 
                                 game.clients[p.id].tcp.WriteStream(PacketManager.ToJson(uCAP));
+
+                                p.unforgotten.Remove(card);
+                                p.forgotten.Add(card.card.Id);
 
                                 continue;
 							}

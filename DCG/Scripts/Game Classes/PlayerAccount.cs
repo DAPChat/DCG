@@ -10,6 +10,7 @@ namespace player
 		public string password;
 
 		public int rank;
+		public double points;
 		public int streak;
 		public int totalWins;
 		public int totalLosses;
