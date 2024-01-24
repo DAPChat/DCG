@@ -13,5 +13,6 @@ namespace packets
         public int senderSlot;
 
         public List<int> param;
+        public List<string> handParam;
     }
 }

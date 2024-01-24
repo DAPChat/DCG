@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 
 using packets;
 using card;
-using static System.Collections.Specialized.BitVector32;
 using System.Linq;
 
 public partial class GameScene : Node3D
@@ -56,7 +55,7 @@ public partial class GameScene : Node3D
     }
 
     static bool CameraView = false;
-    static bool HandShown = false;
+    public static bool HandShown = false;
     static Camera3D curCamera = null;
 
     static Vector3 cam1Pos = new(0, 9, 10);
@@ -109,6 +108,10 @@ public partial class GameScene : Node3D
     public static List<int> sacrificed = new();
     public static double sacrificialAmt;
     public static Dictionary<CardObject, int> toSummon = new();
+
+    public static BaseCard summonCard = null;
+    public static Dictionary<CardObject, int> cardSummon = new();
+    public static List<CardObject> chosen = new();
 
     public static void PlaceCard(CAP _action)
     {
@@ -237,11 +240,7 @@ public partial class GameScene : Node3D
         ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
         GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
 
-        foreach (var child in container.GetChildren())
-        {
-            container.RemoveChild(child);
-            child.QueueFree();
-        }
+        ClearTempHand();
 
         foreach (var dead in forgotten)
         {
@@ -255,6 +254,18 @@ public partial class GameScene : Node3D
         }
 
         HandShown = true;
+    }
+
+    public static void ClearTempHand()
+    {
+        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
+        GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
+
+        foreach (var child in container.GetChildren())
+        {
+            container.RemoveChild(child);
+            child.QueueFree();
+        }
     }
 
     // Zoom into the card
@@ -509,22 +520,44 @@ public partial class GameScene : Node3D
         hpLabel.Text = pup.player.lifePoints + " Resolve";
     }
 
+    public static void GetViableCard(string typeFilter)
+    {
+        ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
+        GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
+
+        ClearTempHand();
+
+        foreach (var card in ServerManager.client.hand)
+        {
+            if (card.Type != typeFilter) continue;
+            if (chosen.Contains(card)) continue;
+            if (cardSummon.ContainsKey(card)) continue;
+
+            var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
+
+            container.AddChild(thescene);
+
+            D2Card c = thescene as D2Card;
+
+            c.setCard(card);
+        }
+
+        HandShown = true;
+    }
+
     public static void ChooseSacrifice(CardObject card, int slot)
     {
         ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
         GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
 
-        foreach (var child in container.GetChildren())
-        {
-            container.RemoveChild(child);
-            child.QueueFree();
-        }
+        ClearTempHand();
 
         if (sacrificialAmt >= matchSacrifice)
         {
             ServerManager.client.WriteStream(PacketManager.ToJson(new CAP { placerId = ServerManager.client.id, card = card, action = "place", targetSlot = slot, param = sacrificed }));
             toSummon.Clear();
             ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+            HandShown = false;
             return;
         }
 
@@ -549,6 +582,25 @@ public partial class GameScene : Node3D
 
     public static void CancelActions()
     {
+        if (summonCard != null)
+        {
+            ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Hide();
+            HandShown = false;
+
+            summonCard.skip = true;
+            summonCard.Summon(cardSummon.First().Key, cardSummon.First().Value);
+
+            summonCard = null;
+            cardSummon = new();
+            chosen = new();
+
+            return;
+        }
+
+        summonCard = null;
+        cardSummon = new();
+        chosen = new();
+
         chooseTarget = null;
         targetPlace = null;
         selectedHand = null;
@@ -876,10 +928,19 @@ public partial class GameScene : Node3D
 
                 if (toSummon.Count > 0)
                 {
-                    sacrificed.Add(int.Parse(lastSelectedHand.slot.ToString()));
+                    sacrificed.Add(lastSelectedHand.slot);
                     sacrificialAmt += cardObject.SacrificialValue;
 
                     ChooseSacrifice(toSummon.First().Key, toSummon.First().Value);
+
+                    lastSelectedHand = null;
+                }
+
+                if (summonCard != null)
+                {
+                    chosen.Add(cardObject);
+
+                    summonCard.Summon(cardSummon.First().Key, cardSummon.First().Value);
 
                     lastSelectedHand = null;
                 }

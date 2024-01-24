@@ -160,7 +160,8 @@ public class Client
 	public void AddToHand(GameScene.CardObject card)
 	{
 		// if (card.Id == "6553773c3df79a7a3d4c536f") return;
-		GameScene.hand.Add(card);
+		// GameScene.actionQueue.Add(new CAP { card = card, action = "hadd" });
+        GameScene.hand.Add(card);
 	}
 
 	// All the disconnection tasks the client must do to prevent errors.

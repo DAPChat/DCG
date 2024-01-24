@@ -4,6 +4,8 @@ namespace card
 {
     public abstract class BaseCard
     {
+        public bool skip = false;
+
         public class Attack : Action
         {
             public override string name => "Attack";

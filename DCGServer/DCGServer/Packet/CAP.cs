@@ -13,6 +13,7 @@ namespace packets
         public int senderSlot;
         
         public List<int> param;
+        public List<string> handParam;
 
         public CAP Clone()
         {
@@ -23,7 +24,8 @@ namespace packets
                 action = action,
                 targetSlot = targetSlot,
                 senderSlot = senderSlot,
-                param = param
+                param = param,
+                handParam = handParam
             };
 
             return cap;
