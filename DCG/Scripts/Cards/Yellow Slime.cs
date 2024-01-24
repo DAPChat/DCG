@@ -39,7 +39,7 @@ namespace card
 
                 GameScene.summonCard = this;
                 GameScene.cardSummon[card] = slot;
-                GameScene.GetViableCard("Slime");
+                GameScene.GetViableCard("Slime", new string[] { "D", "C", "B", "A", "S" });
 
                 return;
             }

@@ -520,7 +520,7 @@ public partial class GameScene : Node3D
         hpLabel.Text = pup.player.lifePoints + " Resolve";
     }
 
-    public static void GetViableCard(string typeFilter)
+    public static void GetViableCard(string typeFilter, string[] rankFilter)
     {
         ((ScrollContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands")).Show();
         GridContainer container = (GridContainer)sceneTree.GetNode("CanvasLayer/Control/SelectionHands/GridContainer");
@@ -531,7 +531,8 @@ public partial class GameScene : Node3D
         {
             if (card.Type != typeFilter) continue;
             if (chosen.Contains(card)) continue;
-            if (cardSummon.ContainsKey(card)) continue;
+            if (cardSummon.First().Key.Id == card.Id) continue;
+            if (rankFilter.Contains(card.Rank)) continue;
 
             var thescene = ResourceLoader.Load<PackedScene>("res://Scenes/2d_card.tscn").Instantiate().Duplicate();
 
