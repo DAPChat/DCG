@@ -25,8 +25,6 @@ namespace card
 
             game.currentBoard.GetPlayer(action.placerId).fieldRowOne[action.targetSlot].Atk = action.card.Atk;
 
-            game.SendAll(PacketManager.ToJson(new CAP { action = "update", targetId = action.placerId, card = action.card, targetSlot = action.targetSlot }));
-
             return base.Update();
         }
     }

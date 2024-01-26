@@ -10,5 +10,12 @@ namespace card
             action = _action;
             game = _game;
         }
+
+        public bool Buff()
+        {
+            game.AddEffect(action, "Atk", 1, 600);
+
+            return false;
+        }
     }
 }
