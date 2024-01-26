@@ -13,7 +13,7 @@ namespace card
 
         public override bool Update()
         {
-            game.ResetStats(action.placerId, action.targetSlot, new string[] { "HP", "Mana" });
+            game.ResetStats(action.placerId, action.targetSlot, new string[] { "Atk" });
             player.Player p = game.currentBoard.GetPlayer(action.placerId);
 
             for (int i = 0; i < p.fieldRowOne.Length; i++)

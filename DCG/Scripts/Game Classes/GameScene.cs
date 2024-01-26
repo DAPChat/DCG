@@ -68,7 +68,7 @@ public partial class GameScene : Node3D
     static double zoomNorm = .5;
     static double zoomView = 1;
 
-    public static double zMultiplier = 0;
+    public static double zMultiplier = 1;
 
     static Tween tween;
     static RichTextLabel description;
