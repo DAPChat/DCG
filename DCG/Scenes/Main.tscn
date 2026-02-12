@@ -10,12 +10,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhb6e"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ju3iw"]
-bg_color = Color(0.619608, 0.101961, 0.219608, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvcjr"]
+bg_color = Color(0.4, 0.4, 0.4, 0.87451)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em0xo"]
 bg_color = Color(1, 1, 1, 1)
@@ -24,18 +20,22 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvcjr"]
-bg_color = Color(0.4, 0.4, 0.4, 0.87451)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ju3iw"]
+bg_color = Color(0.619608, 0.101961, 0.219608, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k24we"]
-bg_color = Color(1, 1, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tt5j0"]
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tt5j0"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k24we"]
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -48,15 +48,15 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hh8k7"]
-bg_color = Color(1, 1, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2445"]
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2445"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hh8k7"]
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
@@ -157,13 +157,13 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0.960784, 0.960784, 0.960784, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_bvcjr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
 text = "Play"
 
 [node name="Deck1" type="TextureRect" parent="Home/UI/Home"]
@@ -191,12 +191,12 @@ offset_right = 175.0
 offset_bottom = 368.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 text = "Equip"
 
 [node name="Deck2" type="TextureRect" parent="Home/UI/Home"]
@@ -221,12 +221,12 @@ offset_right = 175.0
 offset_bottom = 368.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 text = "Equip"
 
 [node name="Deck3" type="TextureRect" parent="Home/UI/Home"]
@@ -254,12 +254,12 @@ offset_right = 175.0
 offset_bottom = 368.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 theme_override_styles/hover = SubResource("StyleBoxFlat_tt5j0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_k24we")
 text = "Equip"
 
 [node name="Editor" type="Control" parent="Home/UI"]
@@ -285,13 +285,13 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0.960784, 0.960784, 0.960784, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_566v3")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_bvcjr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_em0xo")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ju3iw")
 text = "Add"
 
 [node name="Title" type="Label" parent="Home/UI/Editor"]
@@ -439,8 +439,8 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Password Here..."
-secret = true
 caret_blink = true
+secret = true
 
 [node name="Login" type="Button" parent="Login/UI/Login"]
 layout_mode = 1
@@ -456,11 +456,11 @@ offset_bottom = 152.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 text = "Login"
 
 [node name="Signup" type="Button" parent="Login/UI/Login"]
@@ -477,11 +477,11 @@ offset_bottom = 238.5
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 text = "Signup"
 
 [node name="Error" type="Label" parent="Login/UI/Login"]
@@ -587,8 +587,8 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Type Password Here..."
-secret = true
 caret_blink = true
+secret = true
 
 [node name="ConfirmPassword" type="LineEdit" parent="Signup/UI/Signup"]
 layout_mode = 1
@@ -607,8 +607,8 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_vsnwm")
 placeholder_text = "   Confirm Password Here..."
-secret = true
 caret_blink = true
+secret = true
 
 [node name="Signup" type="Button" parent="Signup/UI/Signup"]
 layout_mode = 1
@@ -624,9 +624,9 @@ offset_bottom = 224.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h2445")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hh8k7")
 text = "Signup"

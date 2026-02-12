@@ -21,15 +21,15 @@ albedo_color = Color(0, 1, 1, 0.0941176)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7oyu6"]
 size = Vector3(2, 0.1, 2)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nap47"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21e7g"]
+bg_color = Color(0, 0, 0, 0.65098)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21e7g"]
-bg_color = Color(0, 0, 0, 0.65098)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nap47"]
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -377,8 +377,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
-theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 text = "Hand"
 
 [node name="ChangeView" type="Button" parent="CanvasLayer/Control"]
@@ -398,8 +398,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
-theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nap47")
 text = "Change View"
 
 [node name="Phase" type="Label" parent="CanvasLayer/Control"]
@@ -436,8 +436,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_dywko")
-theme_override_styles/normal = SubResource("StyleBoxFlat_e8216")
 theme_override_styles/hover = SubResource("StyleBoxFlat_21e7g")
+theme_override_styles/normal = SubResource("StyleBoxFlat_e8216")
 text = "Surrender"
 
 [node name="EndTurn" type="Button" parent="CanvasLayer/Control"]

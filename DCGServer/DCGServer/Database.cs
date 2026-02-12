@@ -9,15 +9,19 @@ using card;
 
 public class Database
 {
-	private static readonly string connectionUri = "mongodb+srv://thedcg:II7oVRzWUQmjJN5c@cluster0.bcztjvi.mongodb.net/?retryWrites=true&w=majority";
+	private static readonly string connectionUri = "mongodb+srv://thedcg:II7oVRzWUQmjJN5c@cluster0.bcztjvi.mongodb.net/?appName=Cluster0&retryWrites=true&w=majority";
 
 	static MongoClient client = null;
 
 	// Connect to the database
 	public static void Connect()
 	{
-		if (client == null) 
-			client = new MongoClient(connectionUri);
+		MongoClientSettings settings = null;
+
+		if (client == null)
+			settings = MongoClientSettings.FromConnectionString(connectionUri);
+			// Create a new client and connect to the server
+			client = new MongoClient(settings);
 
 		var result = client.GetDatabase("DCG").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
 
